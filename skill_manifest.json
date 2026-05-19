@@ -1,0 +1,58 @@
+{
+  "name": "Biological-Protocol-Reviewer",
+  "version": "1.0.0",
+  "architecture": "single-skill-with-internal-module-routing",
+  "default_language": "zh-CN",
+  "mission": "Publication-grade review and rewriting of biological experimental protocols into bench-facing SOP outputs with audit-ready appendices.",
+  "required_outputs": [
+    "Review_Report.md",
+    "Revised_Protocol.docx"
+  ],
+  "internal_modules": [
+    "animal_experiments",
+    "cell_experiments",
+    "molecular_biology",
+    "flow_cytometry_and_imaging",
+    "omics",
+    "statistics_and_reproducibility",
+    "safety_governance",
+    "failure_modes",
+    "materials_reagents_equipment",
+    "data_records",
+    "frontier_methods",
+    "operator_burden_budget",
+    "mini_pilot_validation"
+  ],
+  "required_quality_gates": [
+    "module_activation_table",
+    "evidence_benchmark_table",
+    "assumption_ledger_when_needed",
+    "parameter_provenance_when_needed",
+    "original_to_revised_mapping",
+    "critical_major_issue_acceptance_criteria",
+    "professional_issue_block_logic_chain",
+    "exact_source_identity_for_grade_A_to_C",
+    "dynamic_standards_check",
+    "operator_burden_budget",
+    "mini_pilot_when_unvalidated",
+    "fair_data_quality_release_gates",
+    "resource_identity_gate",
+    "sop_first_docx_structure",
+    "docx_appendices_A_to_K",
+    "markdown_sop_docx_style_profile",
+    "protocol_output_validator",
+    "output_qc_linter"
+  ],
+  "risk_policy": {
+    "default_assumption": "authorized institutional research by trained personnel when context is consistent with compliant research",
+    "documentation_gaps_are_not_refusal_triggers": true,
+    "redline_topics": [
+      "oversight evasion",
+      "concealment of adverse events or deviations",
+      "non-laboratory execution of regulated work",
+      "harmful biological agent creation or weaponization",
+      "optimization of pathogenicity, transmissibility, host range, immune evasion, persistence, or harmful delivery"
+    ],
+    "redline_response_mode": "non-operational governance and safety guidance only"
+  }
+}

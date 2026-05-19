@@ -1,0 +1,194 @@
+# Review_Report.md template
+
+Default language: Simplified Chinese unless the user requests otherwise.
+
+# Protocol评审报告：<Protocol title>
+
+## 1. Protocol身份信息
+
+| 字段 | 内容 |
+|---|---|
+| 原始文件 |  |
+| Protocol版本 |  |
+| 实验类型 | 动物 / 细胞 / 分子 / 流式 / 成像 / 组学 / frontier / mixed |
+| 目标readout |  |
+| 下游用途 |  |
+| 审核日期 |  |
+| Skill版本 | Biological-Protocol-Reviewer v1.0 |
+
+## 2. Protocol重建 / Protocol reconstruction
+
+| 项目 | 评审重建 | 置信度 | 缺失信息 |
+|---|---|---|---|
+| Intended result |  | High / Moderate / Low |  |
+| Primary readout |  |  |  |
+| Experimental unit |  |  |  |
+| Most fragile step |  |  |  |
+| Decisive QC gate |  |  |  |
+| Conclusion supported by the SOP |  |  |  |
+
+## 3. 执行摘要 / Executive verdict
+
+| 结论项 | 判断 |
+|---|---|
+| 总体结论 |  |
+| 当前成熟度 | Level 0 / 1 / 2 / 3 |
+| 修订目标 | Level 3 publication-grade, bench-facing SOP |
+| 最大失败模式 |  |
+| 是否可直接执行 | 是 / 否 / 仅可在补齐指定QC后执行 |
+| 最小执行前门槛 |  |
+
+## 4. 模块自动判定 / Module activation table
+
+| Module | Status | Triggering evidence from original protocol | Main risk if omitted | Reference file used |
+|---|---|---|---|---|
+
+Status must be one of: `Activated`, `Not activated — not applicable`, or `Unclear — needs confirmation`.
+
+## 5. 金标准证据对标 / Evidence benchmark table
+
+| Protocol component | Benchmark source identity | Grade | Exact supported parameter/requirement | Original protocol status | Reviewer decision | Version/access | Revised SOP location |
+|---|---|---|---|---|---|---|---|
+
+Grade A-C sources must include DOI, PMID, official URL, manual/standard version, vendor document ID, or access date when applicable.
+
+## 6. 资源完整性审计 / Resource identity audit
+
+| 类别 | 缺vendor | 缺Cat. No. | 缺clone/RRID/model/version | 缺lot记录 | 缺储存条件 | 缺◉EXPDATE | 执行影响 | 修订处理 |
+|---|---:|---:|---:|---:|---:|---:|---|---|
+
+## 7. Severity-ranked issues
+
+Use full issue blocks for every Critical and Major issue. Minor and Optimization issues may be shorter only when they do not affect interpretability, safety, or reproducibility.
+
+### C<number>. <致命问题标题>
+
+**具体问题：**  
+
+**为什么严重：**  
+
+**证据：** 原protocol位置；内部证据；外部标准/文献/手册证据。  
+
+**影响：** 威胁的readout、结论、样本可用性、安全性或审计能力。  
+
+**替代解释/漏洞：** 如果不修正，哪些伪阳性、伪阴性、批次效应、污染、偏倚或执行偏差无法排除。  
+
+**解决：** 修订动作、需要加入的控制/QC/记录/参数。  
+
+**决定性 readout：** 最低可接受标准、pass/fail阈值、stop/go规则。  
+
+**SOP修订位置：**  
+
+### M<number>. <重大问题标题>
+
+Use the same labels: `具体问题` / `为什么重要` / `证据` / `影响` / `替代解释/漏洞` / `解决` / `决定性 readout` / `SOP修订位置`.
+
+### m<number>. <次要问题标题>
+
+Shorter block allowed, but still state location, problem, fix, and SOP location.
+
+### O<number>. <优化建议标题>
+
+Focus on robustness, efficiency, scalability, data quality, and reduced operator burden.
+
+## 8. Controls, QC, and release criteria
+
+| Control/QC | Failure mode detected | Original status | Required SOP location | Acceptance criterion | Fail action |
+|---|---|---|---|---|---|
+
+## 9. Metadata, records, and data-quality gaps
+
+| Record/data item | Why it matters | Main body or appendix | Required/optional | Burden justification |
+|---|---|---|---|---|
+
+## 10. Statistics and reproducibility
+
+| Dimension | Current status | Risk | Required action |
+|---|---|---|---|
+| Experimental unit |  |  |  |
+| Biological replicate |  |  |  |
+| Technical replicate |  |  |  |
+| Batch/blocking |  |  |  |
+| Randomization/blinding |  |  |  |
+| Inclusion/exclusion |  |  |  |
+| Sample-size logic |  |  |  |
+| Statistical test/model |  |  |  |
+
+## 11. Safety, ethics, biosafety, and governance
+
+Assume qualified personnel and active institutional approval when context is consistent with compliant institutional research. Missing identifiers are documentation gaps unless the request crosses a red line.
+
+| Topic | Status | Risk | SOP placeholder/action |
+|---|---|---|---|
+
+## 12. Domain-specific review
+
+Only include modules that were activated or marked unclear by routing.
+
+### Animal experiments
+### Cell experiments
+### Molecular biology
+### Flow cytometry / imaging
+### Omics / computational readout
+### Frontier method module
+### Safety / governance
+
+## 13. Assumption ledger / 假设台账
+
+Include when missing context is filled, inferred, or converted into a recommended value.
+
+| Assumption | Basis | Risk if wrong | Verification required before execution | Where used |
+|---|---|---|---|---|
+
+## 14. Parameter provenance / 参数溯源表
+
+Include when recommended or substituted parameters are introduced.
+
+| Parameter | Original value | Revised value | Provenance | Confidence | Local verification requirement |
+|---|---:|---:|---|---|---|
+
+## 15. Operator burden budget / 操作者负担预算
+
+| Added requirement | Burden | Value | Keep/appendix/omit decision |
+|---|---|---|---|
+
+## 16. Local mini-pilot validation
+
+Include when the revised SOP introduces new, substituted, scaled, transferred, or locally unvalidated parameters.
+
+| Mini-pilot item | Requirement |
+|---|---|
+| Purpose |  |
+| Minimum design |  |
+| Positive/negative controls |  |
+| Acceptance threshold |  |
+| Stop/go rule |  |
+| Repeat/rescue/exclusion rule |  |
+| Burden-control rationale |  |
+
+## 17. Original-to-revised mapping
+
+| Original section/step | Preserved | Modified | Removed | Added | Reason | Revised SOP section |
+|---|---:|---:|---:|---:|---|---|
+
+## 18. Execution blockers before use
+
+| Priority | Required change | Reason | Completion criterion |
+|---:|---|---|---|
+
+## 19. Review-to-SOP mapping
+
+| Review finding | Revised_Protocol.docx section | Revision action | Status |
+|---|---|---|---|
+
+## 20. Red-line self-audit
+
+| Gate | Pass/Fail | Evidence |
+|---|---|---|
+| No unsupported operational assumptions presented as facts |  |  |
+| No vague execution language left unresolved |  |  |
+| Critical/Major issues use full logic chain |  |  |
+| Evidence sources include exact identity |  |  |
+| SOP-first structure preserved |  |  |
+| Operator burden justified |  |  |
+| Validator/render checks completed or limitation stated |  |  |
