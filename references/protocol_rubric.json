@@ -1,0 +1,133 @@
+{
+  "version": "1.0.0",
+  "purpose": "Normalize Biological-Protocol-Reviewer scoring, maturity gates, and review category weights across protocol audits.",
+  "score_scale": {
+    "minimum": 0,
+    "maximum": 10,
+    "interpretation": "Score the revised protocol package after review, not the original protocol alone. Penalize unresolved execution blockers, unverified dynamic standards, missing source identity, and missing local validation."
+  },
+  "categories": {
+    "execution_reproducibility": {
+      "weight": 0.22,
+      "checkpoints": [
+        "Are all executable steps specified with concrete inputs, timing, temperature, centrifugation in x g, equipment settings, and pass/fail actions where applicable?",
+        "Can a trained operator reproduce the workflow without relying on undocumented local habit?",
+        "Are pause points, rescue paths, exclusion rules, and troubleshooting links explicit?"
+      ]
+    },
+    "evidence_benchmarking_and_parameter_provenance": {
+      "weight": 0.18,
+      "checkpoints": [
+        "Are Grade A-C sources recorded with exact identity: DOI, PMID, official URL, manual or standard version, vendor document ID, and access date when applicable?",
+        "Are recommended or substituted parameters marked with provenance and local verification status?",
+        "Are dynamic standards checked from official sources or explicitly marked TO BE VERIFIED BEFORE EXECUTION?"
+      ]
+    },
+    "controls_qc_and_failure_mode_coverage": {
+      "weight": 0.18,
+      "checkpoints": [
+        "Does every decisive failure mode have a named control, QC gate, acceptance threshold, and fail action?",
+        "Are positive, negative, process, contamination, instrument, and analysis controls included when the method class requires them?",
+        "Do Critical and Major issues name the false-positive, false-negative, safety, reproducibility, or interpretability risk that remains if unresolved?"
+      ]
+    },
+    "resource_identity_and_traceability": {
+      "weight": 0.12,
+      "checkpoints": [
+        "Are key biological and analytical resources identified by vendor, catalog, clone or RRID, lot, model, version, source, storage, and expiration fields where applicable?",
+        "Are animals, cell lines, antibodies, oligos, kits, instruments, software, references, and raw-data outputs traceable enough for audit?",
+        "Are missing identity fields marked as TO BE CONFIRMED rather than silently inferred?"
+      ]
+    },
+    "statistics_design_and_interpretability": {
+      "weight": 0.12,
+      "checkpoints": [
+        "Are experimental unit, biological versus technical replication, batch or block structure, randomization, blinding, inclusion/exclusion, and analysis model defined when relevant?",
+        "Can the stated readout support the intended conclusion without overclaiming?",
+        "Are omics, imaging, flow, and computational endpoints protected against batch effects, data leakage, reference-version drift, and subjective thresholding?"
+      ]
+    },
+    "safety_governance_and_ethics": {
+      "weight": 0.10,
+      "checkpoints": [
+        "Are approvals, facility authorization, PPE, training, decontamination, waste, sharps, laser, biosafety, animal welfare, and deviation records handled at the right operational level?",
+        "Does the review avoid operational assistance for red-line requests involving evasion, concealment, or harmful biological optimization?",
+        "Are documentation gaps separated from true safety/governance blockers?"
+      ]
+    },
+    "sop_usability_and_operator_burden": {
+      "weight": 0.08,
+      "checkpoints": [
+        "Is the main SOP bench-facing, compact, and ordered so execution content appears before long rationale or audit appendices?",
+        "Does every added record, QC item, and metadata field justify its operator burden?",
+        "Are appendices used for rationale, provenance, audit records, and reporting details rather than interrupting bench execution?"
+      ]
+    }
+  },
+  "maturity_levels": {
+    "level_0_not_executable": {
+      "score_range": [0.0, 3.9],
+      "definition": "The protocol lacks decisive operational detail, safety/governance clarity, controls, or source-backed parameters. It should not be executed as written.",
+      "typical_blockers": [
+        "Missing primary readout or experimental unit",
+        "Unspecified critical parameters",
+        "No decisive QC gate",
+        "Unsafe or unauthorized execution context",
+        "Key resources impossible to identify"
+      ]
+    },
+    "level_1_executable_only_with_expert_rescue": {
+      "score_range": [4.0, 5.9],
+      "definition": "A specialist might execute the workflow using local knowledge, but reproducibility, auditability, and interpretation remain fragile.",
+      "typical_blockers": [
+        "Parameters depend on undocumented local practice",
+        "Controls or fail actions are incomplete",
+        "Resource identity or batch records are incomplete",
+        "Statistics or replicate logic is underdefined"
+      ]
+    },
+    "level_2_locally_usable_with_validation": {
+      "score_range": [6.0, 7.9],
+      "definition": "The SOP is usable by trained personnel after specified local verification, mini-pilot checks, or missing identity fields are resolved.",
+      "typical_requirements": [
+        "Mini-pilot for transferred, scaled, substituted, or locally unvalidated parameters",
+        "Explicit source table and parameter provenance",
+        "Resolved Critical issues and bounded Major issues",
+        "Clear operator burden budget"
+      ]
+    },
+    "level_3_publication_grade_sop": {
+      "score_range": [8.0, 10.0],
+      "definition": "The SOP is bench-facing, source-grounded, locally verified or verification-gated, auditable, and aligned with relevant reporting and safety standards.",
+      "must_have": [
+        "No unresolved Critical issues",
+        "Grade A-C evidence identities complete where used",
+        "All recommended parameters have provenance and verification status",
+        "QC gates include pass/fail criteria and fail actions",
+        "Resource identity, statistics, governance, data release, and appendices are sufficient for audit"
+      ]
+    }
+  },
+  "severity_levels": {
+    "Critical": "Use when a flaw can make execution unsafe, invalidate the primary readout, make the conclusion uninterpretable, prevent audit, or create a non-compliant governance/safety condition.",
+    "Major": "Use when the workflow is likely executable but a missing control, source identity, QC threshold, parameter provenance, resource record, design element, or local validation step materially weakens reproducibility or interpretation.",
+    "Minor": "Use when the issue affects clarity, completeness, traceability, or efficiency without threatening the primary readout or safety if corrected before release.",
+    "Optimization": "Use for improvements that reduce burden, increase robustness, improve scalability, or make records easier to audit without being required for safe interpretable execution."
+  },
+  "readiness_gate": {
+    "ready_for_execution_requires": [
+      "No unresolved Critical issues",
+      "All safety/governance red lines cleared or converted to non-operational guidance",
+      "All Grade A-C benchmark sources have exact source identity",
+      "All recommended or substituted parameters have local verification instructions",
+      "All decisive QC gates include pass/fail thresholds and fail actions"
+    ],
+    "level_3_requires": [
+      "No unresolved Critical or blocking Major issues",
+      "Resource identity gate complete or justified as non-critical",
+      "Mini-pilot completed or specified for every unvalidated parameter transfer",
+      "Output validator passes or documented tool limitation is stated",
+      "DOCX render QA completed when tools are available"
+    ]
+  }
+}

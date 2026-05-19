@@ -1,0 +1,97 @@
+{
+  "version": "1.0.0",
+  "purpose": "Generate targeted source routes for biological protocol benchmarking, parameter provenance, dynamic standards checks, and unresolved execution gaps.",
+  "output_rules": {
+    "do_not_output": [
+      "bare keyword lists without the protocol component being tested",
+      "generic requests such as 'add controls' or 'check literature' without a source type and decision-changing criterion",
+      "vendor-only support for a biological interpretation claim when peer-reviewed protocol or reporting-standard evidence is required",
+      "preprint-only support for safety, governance, or core execution parameters when official standards or peer-reviewed protocols exist"
+    ],
+    "required_fields_per_hint": [
+      "protocol_component_or_gap",
+      "preferred_sources",
+      "search_strings",
+      "decision_changing_evidence",
+      "linked_issue_or_sop_section"
+    ]
+  },
+  "hint_template": {
+    "protocol_component_or_gap": "Name the exact step, parameter, reagent, control, QC gate, readout, resource identity field, instrument setting, metadata item, or governance requirement.",
+    "preferred_sources": "Specify peer-reviewed protocol papers, top-journal methods, reporting standards, official biosafety/governance sources, vendor manuals, instrument manuals, RRID/resource databases, repository rules, or local validation records.",
+    "search_strings": [
+      "pubmed/google scholar: \"<method>\" \"<sample/cell/organism>\" protocol control QC",
+      "publisher methods: \"<assay>\" \"STAR Methods\" \"Extended Methods\" \"<parameter>\"",
+      "official/vendor: \"<kit/instrument/software>\" manual version \"<parameter or QC>\"",
+      "standard: \"<ARRIVE/PREPARE/MIQE/MIFlowCyt/MINSEQE/FAIR/BMBL/NIH Guidelines>\" \"<reporting item>\""
+    ],
+    "decision_changing_evidence": "State what evidence would confirm the original value, justify a recommended replacement, require local validation, or force TO BE CONFIRMED.",
+    "linked_issue_or_sop_section": "Map the search to a Critical/Major issue, benchmark table row, parameter provenance row, or Revised_Protocol.docx section."
+  },
+  "evidence_routes": {
+    "animal_experiments": [
+      "official: ARRIVE 2.0 checklist randomization blinding sample size experimental unit",
+      "official: PREPARE guideline animal facility planning welfare endpoint",
+      "pubmed: <species/strain/procedure> anesthesia analgesia tissue harvest protocol",
+      "institutional/core SOP: <procedure> humane endpoint monitoring record"
+    ],
+    "cell_experiments": [
+      "pubmed/google scholar: <cell type/line> authentication mycoplasma passage density protocol",
+      "RRID/resource: <cell line or antibody> RRID source identity",
+      "vendor/manual: <culture system/reagent> catalog manual storage expiration",
+      "pubmed: <perturbation> batch effect contamination control viability"
+    ],
+    "molecular_biology": [
+      "pubmed: MIQE qPCR primer efficiency no-template no-RT control",
+      "vendor/manual: <polymerase/enzyme/kit> reaction buffer cycling cleanup manual version",
+      "primer design: <target gene/organism> specificity amplicon size melt curve",
+      "pubmed/google scholar: <assay> contamination control input quality limit of detection"
+    ],
+    "flow_cytometry_and_imaging": [
+      "pubmed: MIFlowCyt antibody panel compensation FMO gating reporting",
+      "vendor/manual: <cytometer/microscope/software> acquisition compensation unmixing settings",
+      "RRID/resource: <antibody clone> RRID fluorophore catalog lot",
+      "core SOP: sort purity viability threshold instrument QC"
+    ],
+    "omics": [
+      "pubmed/google scholar: <omics assay> library complexity index balance batch effect protocol",
+      "repository: GEO/SRA/ENA metadata requirements raw data manifest",
+      "standard: MINSEQE FAIR sequencing metadata reporting",
+      "vendor/manual: <library kit/platform chemistry> input amount read structure QC threshold"
+    ],
+    "statistics_and_reproducibility": [
+      "guideline: ARRIVE experimental unit sample size randomization blinding",
+      "pubmed/google scholar: <assay endpoint> biological replicate technical replicate batch effect",
+      "reporting standard: <study type> inclusion exclusion statistical analysis plan",
+      "methods paper: <quantification workflow> threshold validation inter-operator reliability"
+    ],
+    "safety_governance": [
+      "official: NIH Guidelines recombinant synthetic nucleic acids current version",
+      "official: CDC NIH BMBL biosafety containment decontamination waste",
+      "official: WHO Laboratory Biosafety Manual risk assessment good microbiological practice",
+      "institutional: IACUC/IBC/EHS approval training PPE deviation reporting"
+    ],
+    "frontier_methods": [
+      "pubmed/google scholar: CRISPR perturb-seq off-target validation guide RNA library QC",
+      "pubmed/google scholar: organoid co-culture batch effect maturation marker validation",
+      "pubmed/google scholar: spatial omics imaging segmentation registration QC",
+      "pubmed/google scholar: proteomics metabolomics internal standard batch correction missingness"
+    ]
+  },
+  "source_identity_fields": [
+    "full_title_or_standard_name",
+    "source_type",
+    "evidence_grade",
+    "doi_or_pmid_or_official_url_or_manual_version",
+    "vendor_document_id_when_applicable",
+    "access_date_for_web_or_manual_sources",
+    "exact_parameter_control_qc_or_metadata_supported",
+    "supports_original_fact_or_reviewer_recommendation_or_local_validation"
+  ],
+  "decision_labels": {
+    "accept_original": "Use only when the original value is explicitly supported by source identity or local validation.",
+    "recommended_to_verify_locally": "Use for defensible values supported by lower-transferability sources or expert inference: ★RECOMMENDED — TO BE VERIFIED LOCALLY.",
+    "to_be_confirmed": "Use when no defensible value exists or a required identity field is missing: △TO BE CONFIRMED.",
+    "to_be_verified_before_execution": "Use for dynamic standards or current governance requirements that were not live-checked during the review."
+  }
+}

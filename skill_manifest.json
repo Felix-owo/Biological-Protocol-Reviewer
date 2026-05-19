@@ -8,6 +8,11 @@
     "Review_Report.md",
     "Revised_Protocol.docx"
   ],
+  "structured_format_resources": [
+    "references/protocol_rubric.json",
+    "templates/issue_block_templates.json",
+    "templates/source_search_hints.json"
+  ],
   "internal_modules": [
     "animal_experiments",
     "cell_experiments",
@@ -25,6 +30,9 @@
   ],
   "required_quality_gates": [
     "module_activation_table",
+    "protocol_rubric_scoring",
+    "structured_issue_block_template",
+    "source_search_hints_for_evidence_gaps",
     "evidence_benchmark_table",
     "assumption_ledger_when_needed",
     "parameter_provenance_when_needed",

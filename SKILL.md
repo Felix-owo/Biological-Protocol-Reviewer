@@ -52,7 +52,13 @@ Always load at activation:
    dynamic standards, FAIR/data, and resource-identity gates.
 4. `references/risk_classification_and_redlines.md` - authorization defaults,
    red-line topics, and degraded-output mode.
-5. `references/output_qc_linter.md` - final structural and validator gate.
+5. `references/protocol_rubric.json` - readiness scoring, maturity gates, and
+   weighted review categories.
+6. `templates/issue_block_templates.json` - severity calibration, required
+   issue-block fields, and revision-action structure.
+7. `templates/source_search_hints.json` - targeted source routes for protocol
+   evidence gaps and dynamic standards.
+8. `references/output_qc_linter.md` - final structural and validator gate.
 
 Load by phase:
 
@@ -89,7 +95,9 @@ Load by phase:
 3. **Build an evidence dossier.** Separate original-protocol facts from
    external benchmarks, recommendations, local assumptions, and unresolved
    gaps. Grade sources A-D and record DOI/PMID/official URL/manual or standard
-   version/access date for Grade A-C support.
+   version/access date for Grade A-C support. Use
+   `templates/source_search_hints.json` to make evidence searches claim- and
+   parameter-specific rather than generic.
 4. **Benchmark and calibrate.** Compare the protocol against peer-reviewed
    protocols, top-journal methods, reporting standards, vendor manuals,
    core-facility SOPs, and local validation. A parameter is acceptable only if
@@ -101,19 +109,24 @@ Load by phase:
 6. **Audit failure modes.** Identify where the protocol can become unsafe,
    irreproducible, uninterpretable, statistically invalid, or impossible to
    audit.
-7. **Control operator burden.** Every added record, control, or QC field must
+7. **Score readiness and severity.** Use `references/protocol_rubric.json` for
+   category scoring and Level 0-3 maturity, and
+   `templates/issue_block_templates.json` for Critical/Major/Minor/Optimization
+   issue logic. Severity must follow threat to execution, interpretation,
+   safety, and auditability rather than rhetorical intensity.
+8. **Control operator burden.** Every added record, control, or QC field must
    justify its value. Keep bench-critical content in the main SOP and move
    audit/reporting material to appendices.
-8. **Add mini-pilot validation when needed.** New, substituted, scaled,
+9. **Add mini-pilot validation when needed.** New, substituted, scaled,
    transferred, or locally unvalidated parameters require positive/negative
    controls, acceptance thresholds, stop/go criteria, and repeat/rescue/exclude
    rules.
-9. **Rewrite as SOP-first DOCX.** Put execution summary, before-you-begin,
-   numbered procedure, reagent setup, resources/equipment/primers/antibodies,
-   QC, timing, troubleshooting, anticipated results, and minimal analysis in the
-   main body. Put design rationale, governance, audit records, source tables,
-   assumption ledger, and parameter provenance in appendices.
-10. **Validate and render.** Run the output linter, executable validator when
+10. **Rewrite as SOP-first DOCX.** Put execution summary, before-you-begin,
+    numbered procedure, reagent setup, resources/equipment/primers/antibodies,
+    QC, timing, troubleshooting, anticipated results, and minimal analysis in the
+    main body. Put design rationale, governance, audit records, source tables,
+    assumption ledger, and parameter provenance in appendices.
+11. **Validate and render.** Run the output linter, executable validator when
     files exist, and DOCX visual render QA when tools are available. Fix failed
     gates before delivery.
 
@@ -163,8 +176,10 @@ Use module-specific standards rather than generic rigor language:
 ## Output Contract
 
 Use `templates/Review_Report_template.md` and
-`templates/Revised_Protocol_docx_structure.md`. Produce exactly two final
-user-facing files unless the user requests a different package:
+`templates/Revised_Protocol_docx_structure.md`, with scoring and issue structure
+from `references/protocol_rubric.json` and
+`templates/issue_block_templates.json`. Produce exactly two final user-facing
+files unless the user requests a different package:
 
 1. `Review_Report.md`
    - protocol reconstruction and executive verdict;
