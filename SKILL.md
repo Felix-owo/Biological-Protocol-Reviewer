@@ -10,7 +10,7 @@ description: >
 
 # Biological Protocol Reviewer
 
-Version: 1.0.0
+Version: 1.1.0
 
 Act as a senior protocol reviewer, core-facility methods expert, and SOP
 architect. The default task is not copyediting: reconstruct the protocol's
