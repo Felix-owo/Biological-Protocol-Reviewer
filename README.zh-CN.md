@@ -9,7 +9,7 @@ English version: [README.md](README.md).
 默认生成两个用户可见文件：
 
 - `Review_Report.md`：protocol 重建、readiness score、Level 0-3 成熟度门槛、模块激活表、证据对标表、按严重性排序的问题块、假设台账、参数溯源、操作者负担预算、mini-pilot 方案，以及 review-to-SOP 映射。
-- `Revised_Protocol.docx`：面向 bench 的 SOP，包括快速执行摘要、开始前准备、编号步骤、试剂配制、资源/设备/软件/引物/抗体表、QC gate、疑难排查、预期结果、最小数据分析和审计附录。
+- `Revised_Protocol.md`：面向 bench 的 Markdown SOP，包括快速执行摘要、开始前准备、编号步骤、试剂配制、资源/设备/软件/引物/抗体表、QC gate、疑难排查、预期结果、最小数据分析和审计附录。
 
 这个 skill 不把 protocol 审核当作 copyediting。它首先问：这个流程能否执行、解释、复现、审计，并符合安全和治理要求。
 
@@ -54,7 +54,7 @@ Markdown 仍然承载领域规则和 SOP 写作规范；JSON 用来固定重复�
 │   │   └── output_qc_linter.md
 │   ├── templates/
 │   │   ├── Review_Report_template.md
-│   │   ├── Revised_Protocol_docx_structure.md
+│   │   ├── Revised_Protocol_md_structure.md
 │   │   ├── issue_block_templates.json
 │   │   └── source_search_hints.json
 │   ├── validators/
@@ -93,18 +93,18 @@ Codex skill 包。
 4. 用 peer-reviewed protocol、top-journal methods、official standards、vendor/instrument manuals、core-facility SOP 和 local validation 对标参数、控制和 QC。
 5. 执行安全和治理红线检查。
 6. 用 `references/protocol_rubric.json` 和 `templates/issue_block_templates.json` 分配严重性并写完整问题块。
-7. 改写为 SOP-first DOCX：bench-critical 内容放主文，设计理由、治理、记录、证据来源、假设和参数溯源放附录。
-8. 运行 linter、checklist、可执行 validator，并在工具可用时做 DOCX render QA。
+7. 改写为 SOP-first Markdown：bench-critical 内容放主文，设计理由、治理、记录、证据来源、假设和参数溯源放附录。
+8. 运行 linter、checklist 和可执行 validator。
 
 ## 校验方式
 
 当输出文件存在时运行：
 
 ```bash
-python3 Biological-Protocol-Reviewer/scripts/protocol_output_validator.py --report Review_Report.md --docx Revised_Protocol.docx
+python3 Biological-Protocol-Reviewer/scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
 ```
 
-该 validator 检查 Review_Report 和 Revised_Protocol.docx 的必需结构、章节顺序、未解决模糊语言，以及推荐参数是否缺少参数溯源。它不能替代科学判断和 DOCX 视觉检查。
+该 validator 检查 Review_Report 和 Revised_Protocol.md 的必需结构、章节顺序、未解决模糊语言，以及推荐参数是否缺少参数溯源。它不能替代科学判断。
 
 ## 安全边界
 

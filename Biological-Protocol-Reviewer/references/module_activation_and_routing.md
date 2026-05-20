@@ -8,7 +8,7 @@ Before benchmarking or rewriting, scan the supplied protocol for experimental ob
 
 ## Routing table
 
-| Module | Activate if the protocol contains | Required outputs in review | Required insertions in revised DOCX |
+| Module | Activate if the protocol contains | Required outputs in review | Required insertions in revised Markdown SOP |
 |---|---|---|---|
 | Animal experiments | mouse, rat, zebrafish, animal model, surgery, injection, gavage, anesthesia, euthanasia, tissue harvest, genotype, breeding, IACUC | animal welfare audit, ARRIVE/PREPARE gaps, randomization/blinding/sample-size review, humane endpoints, analgesia/anesthesia/welfare records | animal provenance table, procedure authorization placeholders, welfare monitoring, anesthesia/analgesia records, endpoint criteria, tissue harvest metadata |
 | Cell experiments | cell culture, primary cells, organoids, cell lines, transfection, infection, perturbation, differentiation, viability, sorting after culture | authentication/mycoplasma/passage audit, cell density/confluency audit, treatment design, contamination risk, batch effect risk | cell provenance table, culture metadata, authentication and mycoplasma records, passage limits, density/confluency targets, treatment records |

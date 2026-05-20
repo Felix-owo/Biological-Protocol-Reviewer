@@ -1,12 +1,12 @@
 {
   "name": "Biological-Protocol-Reviewer",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "architecture": "single-skill-with-internal-module-routing",
   "default_language": "zh-CN",
-  "mission": "Publication-grade review and rewriting of biological experimental protocols into bench-facing SOP outputs with audit-ready appendices.",
+  "mission": "Publication-grade review and rewriting of biological experimental protocols into bench-facing Markdown SOP outputs with audit-ready appendices.",
   "required_outputs": [
     "Review_Report.md",
-    "Revised_Protocol.docx"
+    "Revised_Protocol.md"
   ],
   "structured_format_resources": [
     "references/protocol_rubric.json",
@@ -45,9 +45,9 @@
     "mini_pilot_when_unvalidated",
     "fair_data_quality_release_gates",
     "resource_identity_gate",
-    "sop_first_docx_structure",
-    "docx_appendices_A_to_K",
-    "markdown_sop_docx_style_profile",
+    "sop_first_markdown_structure",
+    "markdown_appendices_A_to_K",
+    "markdown_sop_style",
     "protocol_output_validator",
     "output_qc_linter"
   ],

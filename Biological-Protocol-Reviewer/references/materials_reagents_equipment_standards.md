@@ -20,7 +20,7 @@ If the original protocol does not specify a required item, the skill must:
 
 ## Key resources table requirement
 
-Every `Revised_Protocol.docx` must contain a Key Resources Table in the Materials section. The table must include, as applicable:
+Every `Revised_Protocol.md` must contain a Key Resources Table in the Materials section. The table must include, as applicable:
 
 | Category | Required fields |
 |---|---|
@@ -115,9 +115,9 @@ When the original protocol lacks a brand/catalog/clone:
 - Number requiring recommended replacements.
 - Critical resources that cannot be safely inferred.
 
-## DOCX appendix requirements
+## Markdown appendix requirements
 
-`Revised_Protocol.docx` must include appendices for:
+`Revised_Protocol.md` must include appendices for:
 
 - Appendix C: Reagent, antibody, kit, consumable, and lot record table.
 - Appendix D: Equipment, software, calibration, and settings record table.

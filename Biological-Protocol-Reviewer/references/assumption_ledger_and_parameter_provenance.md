@@ -8,7 +8,7 @@ Separate facts from the original protocol, literature/vendor-derived recommendat
 
 Both deliverables must preserve traceability between the original protocol and the revised SOP. Add this table to `Review_Report.md`:
 
-| Original section/step | Preserved | Modified | Removed | Added | Reason | Revised DOCX section |
+| Original section/step | Preserved | Modified | Removed | Added | Reason | Revised Markdown SOP section |
 |---|---:|---:|---:|---:|---|---|
 
 ## Assumption ledger

@@ -21,7 +21,7 @@
       "failure_mode_or_loophole": "Name the specific false-positive, false-negative, contamination, batch effect, resource misidentification, calibration drift, subjective threshold, welfare, biosafety, governance, or audit failure mode.",
       "resolution": "Specify the smallest sufficient SOP edit, control, QC gate, record, parameter provenance entry, mini-pilot, or claim narrowing.",
       "decisive_readout_or_acceptance_criterion": "Define the pass/fail threshold, stop/go rule, repeat/rescue/exclusion rule, or local verification result that resolves the issue.",
-      "sop_revision_location": "Map the fix to the exact section or appendix of Revised_Protocol.docx.",
+      "sop_revision_location": "Map the fix to the exact section or appendix of Revised_Protocol.md.",
       "minimum_source_support": "Include at least one source identity for Critical/Major issues. If no source exists, label the item as local validation or TO BE CONFIRMED rather than presenting it as established fact."
     }
   },
@@ -47,7 +47,7 @@
     "Optimization items must explain the burden-value tradeoff rather than adding records or controls by default.",
     "Do not collapse multiple required fields into one sentence."
   ],
-  "template_zh": "### <C/M/m/O><number>. <短标题>\n\n**具体问题：** <指出具体 step/parameter/reagent/control/QC/readout/record/safety item/statistical design/appendix。>\n\n**为什么严重/为什么重要：** <解释对安全、执行、可重复性、primary readout、结论、审计或操作者负担的威胁。>\n\n**证据：** 原protocol证据：<位置或缺失项>；外部文献/标准/手册证据：<DOI/PMID/official URL/manual/version/access date>；本地假设或待确认项：<如有>。\n\n**影响：** <说明如果不修正，会造成哪些 bench failure、false positive/false negative、批次效应、污染、资源误认、统计失效、安全或审计问题。>\n\n**替代解释/漏洞：** <列出需要排除的具体 failure mode 或 interpretation loophole。>\n\n**解决：** <给出最小充分 SOP 修改、控制、QC、记录、mini-pilot、参数溯源或 claim narrowing。>\n\n**决定性 readout：** <最低可接受标准、pass/fail 阈值、stop/go、repeat/rescue/exclude 规则。>\n\n**SOP修订位置：** <Revised_Protocol.docx section/appendix。>",
+  "template_zh": "### <C/M/m/O><number>. <短标题>\n\n**具体问题：** <指出具体 step/parameter/reagent/control/QC/readout/record/safety item/statistical design/appendix。>\n\n**为什么严重/为什么重要：** <解释对安全、执行、可重复性、primary readout、结论、审计或操作者负担的威胁。>\n\n**证据：** 原protocol证据：<位置或缺失项>；外部文献/标准/手册证据：<DOI/PMID/official URL/manual/version/access date>；本地假设或待确认项：<如有>。\n\n**影响：** <说明如果不修正，会造成哪些 bench failure、false positive/false negative、批次效应、污染、资源误认、统计失效、安全或审计问题。>\n\n**替代解释/漏洞：** <列出需要排除的具体 failure mode 或 interpretation loophole。>\n\n**解决：** <给出最小充分 SOP 修改、控制、QC、记录、mini-pilot、参数溯源或 claim narrowing。>\n\n**决定性 readout：** <最低可接受标准、pass/fail 阈值、stop/go、repeat/rescue/exclude 规则。>\n\n**SOP修订位置：** <Revised_Protocol.md section/appendix。>",
   "severity_calibration": {
     "critical": [
       "The protocol could be unsafe or non-compliant if executed as written.",

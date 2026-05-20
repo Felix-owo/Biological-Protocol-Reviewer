@@ -178,7 +178,7 @@ Include when the revised SOP introduces new, substituted, scaled, transferred, o
 
 ## 19. Review-to-SOP mapping
 
-| Review finding | Revised_Protocol.docx section | Revision action | Status |
+| Review finding | Revised_Protocol.md section | Revision action | Status |
 |---|---|---|---|
 
 ## 20. Red-line self-audit
@@ -191,4 +191,4 @@ Include when the revised SOP introduces new, substituted, scaled, transferred, o
 | Evidence sources include exact identity |  |  |
 | SOP-first structure preserved |  |  |
 | Operator burden justified |  |  |
-| Validator/render checks completed or limitation stated |  |  |
+| Validator checks completed or limitation stated |  |  |

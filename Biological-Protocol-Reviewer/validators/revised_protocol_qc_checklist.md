@@ -15,6 +15,5 @@ Use before delivery:
 - [ ] QC gates have pass/fail criteria and corrective actions.
 - [ ] Omics, imaging, flow, and computational outputs have FAIR/data-quality release gates, including raw-data manifest and software/reference versions.
 - [ ] Governance, training, facility, PPE, waste, and deviation records are present.
-- [ ] DOCX style follows `references/markdown_sop_style.md` unless the user supplied a newer style reference.
+- [ ] Markdown structure follows `references/markdown_sop_style.md` unless the user supplied a newer structure reference.
 - [ ] `scripts/protocol_output_validator.py` was run when deliverable files exist.
-- [ ] DOCX rendering was checked when tools are available.

@@ -1,12 +1,14 @@
-# Revised_Protocol.docx SOP-first structure
+# Revised_Protocol.md SOP-first structure
 
 Default language: Simplified Chinese, unless the user explicitly requests another language.
 
-This template defines the required structure for `Revised_Protocol.docx`. The document must be directly usable by trained researchers as a bench-facing SOP. Put the operational workflow in the main body, and place background, governance, design rationale, audit records, provenance, and reporting checklists in appendices unless they are needed at the bench during execution.
+This template defines the required structure for `Revised_Protocol.md`. The document must be directly usable by trained researchers as a bench-facing SOP. Put the operational workflow in the main body, and place background, governance, design rationale, audit records, provenance, and reporting checklists in appendices unless they are needed at the bench during execution.
 
-Use clear Word heading styles, numbered procedure steps, compact execution tables, and standardized callout symbols.
-
-Apply the visual style tokens in `references/markdown_sop_style.md` unless the user supplies a newer reference. In brief: A4 portrait, 0.5 inch margins, LXGW WenKai/霞鹜文楷-style body font, Smiley Sans/得意黑 heading font without extra bold, restrained table fills (`D9D6C2`, `EDEAE0`, `F7F7F2`), and sparse emphasis colors for warnings, pass/fail, and appendix references.
+Use clear Markdown headings, numbered procedure steps, compact Markdown tables,
+and standardized inline callout symbols. Apply the structure rules in
+`references/markdown_sop_style.md`; do not require office-suite export, page
+geometry, or visual layout checks unless the user explicitly asks for an
+exported document.
 
 ## 1. 标题 / Title
 

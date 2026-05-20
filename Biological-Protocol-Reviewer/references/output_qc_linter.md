@@ -5,7 +5,7 @@ Run this check before final delivery.
 When files exist, also run:
 
 ```bash
-python3 scripts/protocol_output_validator.py --report Review_Report.md --docx Revised_Protocol.docx
+python3 scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
 ```
 
 Treat validator failure as a blocking issue unless the failure is a known false positive and the reason is documented in the final response.
@@ -13,8 +13,7 @@ Treat validator failure as a blocking issue unless the failure is a known false 
 ## Required files
 
 - `Review_Report.md` exists.
-- `Revised_Protocol.docx` exists.
-- DOCX was rendered or visually inspected when tools are available.
+- `Revised_Protocol.md` exists.
 
 ## Review_Report.md checks
 
@@ -47,11 +46,11 @@ Every Critical or Major issue must include:
 - `决定性 readout`, including minimum criterion and stop/go rule;
 - `SOP修订位置`.
 
-## Revised_Protocol.docx checks
+## Revised_Protocol.md checks
 
-The DOCX must contain:
+The Markdown SOP must contain:
 - SOP-first Nature Protocols-inspired section structure;
-- document control on the first page;
+- document control near the top of the Markdown SOP;
 - bench-facing execution summary before long background or governance prose;
 - `Before you begin`, numbered procedure, reagent setup, and resources/equipment/primers/oligos/antibodies sections before appendices;
 - numbered procedure with concrete parameters;
@@ -67,9 +66,9 @@ The DOCX must contain:
 - assumption ledger if unresolved context materially affects execution.
 - mini-pilot plan when new, substituted, scaled, transferred, or locally unvalidated parameters are used;
 - FAIR/data-quality release gates when the protocol produces omics, imaging, flow, or computationally interpreted outputs;
-- style profile from `references/markdown_sop_style.md` unless another user-specified style reference overrides it.
+- Markdown structure from `references/markdown_sop_style.md` unless another user-specified structure overrides it.
 
-The procedure section must not be buried behind long introduction, governance, design rationale, or reporting checklist sections. If a DOCX has more than two pages of front matter before the first executable step, the linter fails unless the source protocol is unusually complex and the reason is stated.
+The procedure section must not be buried behind long introduction, governance, design rationale, or reporting checklist sections. The first executable step must appear before long rationale or audit appendices unless the source protocol is unusually complex and the reason is stated.
 
 ## Vague-language blocklist
 

@@ -9,7 +9,7 @@
 By default, the skill produces two user-facing files:
 
 - `Review_Report.md`: protocol reconstruction, readiness score, Level 0-3 maturity gate, module activation table, benchmark evidence table, severity-ranked findings, assumption ledger, parameter provenance, operator-burden budget, mini-pilot plan, and review-to-SOP mapping.
-- `Revised_Protocol.docx`: bench-facing SOP with execution summary, before-you-begin checklist, numbered steps, reagent setup, resource/equipment/software/primer/antibody tables, QC gates, troubleshooting, anticipated results, minimal analysis, and audit-ready appendices.
+- `Revised_Protocol.md`: bench-facing Markdown SOP with execution summary, before-you-begin checklist, numbered steps, reagent setup, resource/equipment/software/primer/antibody tables, QC gates, troubleshooting, anticipated results, minimal analysis, and audit-ready appendices.
 
 The skill is intentionally not a copyeditor. It asks whether the protocol can be executed, interpreted, reproduced, audited, and governed safely.
 
@@ -52,7 +52,7 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 │   │   └── output_qc_linter.md
 │   ├── templates/
 │   │   ├── Review_Report_template.md
-│   │   ├── Revised_Protocol_docx_structure.md
+│   │   ├── Revised_Protocol_md_structure.md
 │   │   ├── issue_block_templates.json
 │   │   └── source_search_hints.json
 │   ├── validators/
@@ -93,18 +93,18 @@ also contains GitHub documentation.
 4. Benchmark parameters and controls against peer-reviewed protocols, top-journal methods, official standards, vendor/instrument manuals, core-facility SOPs, and local validation.
 5. Run safety/governance red lines.
 6. Audit failure modes and assign severity using `references/protocol_rubric.json` and `templates/issue_block_templates.json`.
-7. Rewrite the protocol as a SOP-first DOCX, keeping bench-critical steps in the main body and audit rationale in appendices.
-8. Validate the outputs with the linter, checklist, executable validator, and DOCX render QA when available.
+7. Rewrite the protocol as a SOP-first Markdown document, keeping bench-critical steps in the main body and audit rationale in appendices.
+8. Validate the outputs with the linter, checklist, and executable validator.
 
 ## Validation
 
 When deliverable files exist, run:
 
 ```bash
-python3 Biological-Protocol-Reviewer/scripts/protocol_output_validator.py --report Review_Report.md --docx Revised_Protocol.docx
+python3 Biological-Protocol-Reviewer/scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
 ```
 
-The validator checks required report and DOCX sections, section order, unresolved vague language, and missing provenance for recommended parameters. It does not replace scientific judgment or visual DOCX QA.
+The validator checks required report and protocol sections, section order, unresolved vague language, and missing provenance for recommended parameters. It does not replace scientific judgment.
 
 ## Safety Boundary
 

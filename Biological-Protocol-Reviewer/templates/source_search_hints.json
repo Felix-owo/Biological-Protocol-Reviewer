@@ -26,7 +26,7 @@
       "standard: \"<ARRIVE/PREPARE/MIQE/MIFlowCyt/MINSEQE/FAIR/BMBL/NIH Guidelines>\" \"<reporting item>\""
     ],
     "decision_changing_evidence": "State what evidence would confirm the original value, justify a recommended replacement, require local validation, or force TO BE CONFIRMED.",
-    "linked_issue_or_sop_section": "Map the search to a Critical/Major issue, benchmark table row, parameter provenance row, or Revised_Protocol.docx section."
+    "linked_issue_or_sop_section": "Map the search to a Critical/Major issue, benchmark table row, parameter provenance row, or Revised_Protocol.md section."
   },
   "evidence_routes": {
     "animal_experiments": [

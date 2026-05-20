@@ -59,7 +59,7 @@ Every `Review_Report.md` must include:
 | Protocol component | Benchmark source identity | Grade | Exact supported parameter/requirement | Original protocol status | Reviewer decision | Access/version |
 |---|---|---|---|---|---|---|
 
-Every `Revised_Protocol.docx` must include a `Parameter provenance` table when recommended parameters are introduced.
+Every `Revised_Protocol.md` must include a `Parameter provenance` table when recommended parameters are introduced.
 
 ## 6. FAIR and data-quality release gate
 

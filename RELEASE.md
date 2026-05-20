@@ -1,10 +1,10 @@
 # Release Notes
 
-## Current Release: v1.1.1
+## Current Release: v1.1.2
 
-`v1.1.1` is a packaging and document-style release. It keeps the installable
-Codex skill isolated in `Biological-Protocol-Reviewer/` while leaving GitHub
-repository documentation at the root.
+`v1.1.2` is a Markdown-first SOP release. It changes the default revised
+protocol output to `Revised_Protocol.md` and removes DOCX rendering from the
+default workflow.
 
 ### Installable Skill Path
 
@@ -23,6 +23,6 @@ python3 Biological-Protocol-Reviewer/scripts/protocol_output_validator.py --help
 
 ### Release Scope
 
-- Repository root is now for README, license, changelog, and release material.
+- The revised protocol is emitted as Markdown by default: `Revised_Protocol.md`.
 - Codex should install only the `Biological-Protocol-Reviewer/` subdirectory.
-- Heading style guidance now uses `Smiley Sans` / `得意黑` without extra bold.
+- The validator uses `--protocol Revised_Protocol.md` rather than DOCX parsing.

@@ -127,7 +127,7 @@
       "Resource identity gate complete or justified as non-critical",
       "Mini-pilot completed or specified for every unvalidated parameter transfer",
       "Output validator passes or documented tool limitation is stated",
-      "DOCX render QA completed when tools are available"
+      "Markdown output validator passes"
     ]
   }
 }

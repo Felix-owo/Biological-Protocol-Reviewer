@@ -10,7 +10,7 @@ description: >
 
 # Biological Protocol Reviewer
 
-Version: 1.1.1
+Version: 1.1.2
 
 Act as a senior protocol reviewer, core-facility methods expert, and SOP
 architect. The default task is not copyediting: reconstruct the protocol's
@@ -71,15 +71,14 @@ Load by phase:
 - `references/data_recording_and_sop_records.md` before appendices, raw-data
   manifests, or audit tables.
 - `references/chinese_output_and_nature_protocol_style.md` and
-  `references/markdown_sop_style.md` before creating
-  `Revised_Protocol.docx`.
+  `references/markdown_sop_style.md` before creating `Revised_Protocol.md`.
 - Domain modules only when routed: `animal_experiment_review.md`,
   `cell_experiment_review.md`, `molecular_biology_review.md`,
   `flow_cytometry_and_imaging_review.md`, `omics_review.md`,
   `statistics_and_reproducibility_review.md`,
   `frontier_method_modules.md`, and `protocol_failure_mode_playbook.md`.
 - `templates/Review_Report_template.md` and
-  `templates/Revised_Protocol_docx_structure.md` before drafting final files.
+  `templates/Revised_Protocol_md_structure.md` before drafting final files.
 - `validators/revised_protocol_qc_checklist.md` and
   `scripts/protocol_output_validator.py` before delivery.
 - `examples/cdh5_ai14_protocol_review_example.md` only when the user asks for an
@@ -121,14 +120,13 @@ Load by phase:
    transferred, or locally unvalidated parameters require positive/negative
    controls, acceptance thresholds, stop/go criteria, and repeat/rescue/exclude
    rules.
-10. **Rewrite as SOP-first DOCX.** Put execution summary, before-you-begin,
+10. **Rewrite as SOP-first Markdown.** Put execution summary, before-you-begin,
     numbered procedure, reagent setup, resources/equipment/primers/antibodies,
     QC, timing, troubleshooting, anticipated results, and minimal analysis in the
     main body. Put design rationale, governance, audit records, source tables,
     assumption ledger, and parameter provenance in appendices.
-11. **Validate and render.** Run the output linter, executable validator when
-    files exist, and DOCX visual render QA when tools are available. Fix failed
-    gates before delivery.
+11. **Validate.** Run the output linter and executable validator when files
+    exist. Fix failed gates before delivery.
 
 ## Field Routing
 
@@ -176,7 +174,7 @@ Use module-specific standards rather than generic rigor language:
 ## Output Contract
 
 Use `templates/Review_Report_template.md` and
-`templates/Revised_Protocol_docx_structure.md`, with scoring and issue structure
+`templates/Revised_Protocol_md_structure.md`, with scoring and issue structure
 from `references/protocol_rubric.json` and
 `templates/issue_block_templates.json`. Produce exactly two final user-facing
 files unless the user requests a different package:
@@ -192,11 +190,11 @@ files unless the user requests a different package:
    - operator burden budget and mini-pilot plan when needed;
    - original-to-revised and review-to-SOP mapping.
 
-2. `Revised_Protocol.docx`
-   - SOP-first, bench-facing, Chinese by default unless requested otherwise;
-   - reference SOP style profile by default: A4, compact margins, LXGW
-     WenKai/霞鹜文楷-style body font, Smiley Sans/得意黑-style headings without
-     extra bold, restrained SOP table colors;
+2. `Revised_Protocol.md`
+   - SOP-first, bench-facing Markdown, Chinese by default unless requested
+     otherwise;
+   - clear Markdown heading hierarchy, numbered procedure stages, compact
+     tables, stable section numbers, and inline callout markers;
    - numbered executable steps with inputs, volumes/concentrations, timing,
      temperature, ×g centrifugation, equipment settings, QC gates, fail actions,
      record fields, and troubleshooting links;
@@ -211,8 +209,5 @@ Before delivery, run `references/output_qc_linter.md`,
 `validators/revised_protocol_qc_checklist.md`, and when files exist:
 
 ```bash
-python3 scripts/protocol_output_validator.py --report Review_Report.md --docx Revised_Protocol.docx
+python3 scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
 ```
-
-If DOCX rendering tools are available, render and visually inspect the document;
-otherwise state the exact limitation.

@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.2 - 2026-05-20
+
+- Changed the default revised protocol output from `Revised_Protocol.docx` to `Revised_Protocol.md`.
+- Removed DOCX rendering and office-suite visual QA from the default workflow.
+- Updated the validator to check Markdown SOP files with `--protocol Revised_Protocol.md`.
+- Replaced the DOCX style profile with a Markdown SOP structure profile.
+- Kept SOP content requirements intact: bench-facing steps, reagent setup, resource tables, QC gates, troubleshooting, anticipated results, data analysis, and audit-ready appendices.
+
 ## v1.1.1 - 2026-05-20
 
 - Isolated the installable Codex skill into `Biological-Protocol-Reviewer/`.
@@ -17,4 +25,3 @@
 ## v1.0.0
 
 - Initial public skill release.
-

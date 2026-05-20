@@ -10,7 +10,7 @@ Expected outputs:
    - Major finding: genotyping lacks band-size interpretation table.
    - Major finding: dose records and pregnancy outcome records absent.
 
-2. `Revised_Protocol.docx`
+2. `Revised_Protocol.md`
    - Nature Protocols-inspired structure.
    - Includes document control, ethical considerations, reagent setup, induction procedure, genotyping procedure, timing, troubleshooting, anticipated results, QC release criteria, and appendices.
    - Appendices include dose record, pregnancy outcome record, genotyping plate map, reagent lot table, and deviation log.

@@ -5,15 +5,15 @@
 Unless the user explicitly requests another language, all user-facing outputs must be written primarily in Simplified Chinese.
 
 - `Review_Report.md` must use Chinese headings, Chinese review language, and Chinese severity explanations.
-- `Revised_Protocol.docx` must use Chinese as the primary language.
+- `Revised_Protocol.md` must use Chinese as the primary language.
 - Technical terms may retain standard English names in parentheses on first use, especially reagent names, instrument settings, antibodies, fluorophores, gene names, software, databases, statistical models, and reporting standards.
-- File names should default to Chinese-compatible names unless the user requests English file names. The required canonical outputs remain `Review_Report.md` and `Revised_Protocol.docx`; a Chinese display title may be used inside the documents.
+- File names should default to Chinese-compatible names unless the user requests English file names. The required canonical outputs remain `Review_Report.md` and `Revised_Protocol.md`; a Chinese display title may be used inside the documents.
 
 ## Nature Protocols-inspired SOP-first document style
 
 The revised protocol must be written in a Nature Protocols-inspired style while remaining directly usable as a bench-facing SOP. Use this as a formatting and editorial target, not as a claim of journal endorsement.
 
-The DOCX must contain these major H1-level sections unless genuinely irrelevant:
+The Markdown SOP must contain these major `##`-level sections unless genuinely irrelevant:
 
 1. 标题
 2. 文档控制
@@ -36,7 +36,7 @@ Do not place long background, governance, or reporting-checklist prose before th
 
 ## Required callout symbols
 
-Use the following callout tags consistently throughout `Revised_Protocol.docx`. These tags should appear as visually distinct markers at the start of the relevant sentence or paragraph.
+Use the following callout tags consistently throughout `Revised_Protocol.md`. These tags should appear as inline markers at the start of the relevant sentence or paragraph.
 
 | Tag | Use |
 |---|---|
@@ -55,17 +55,16 @@ Use the following callout tags consistently throughout `Revised_Protocol.docx`. 
 
 Use a professional Chinese SOP tone: concise, imperative, audit-ready, and technically exact.
 
-- Avoid conversational language in the DOCX.
+- Avoid conversational language in the Markdown SOP.
 - Use tables heavily for reagent setup, resources, equipment, primers/oligos, antibodies/probes, QC, timing, troubleshooting, and records.
-- Follow `references/markdown_sop_style.md` for default typography, page geometry, table fills, and color tokens unless the user supplies another DOCX style reference.
-- Use consistent typography: clear heading hierarchy, compact tables, and readable spacing.
-- Use neutral scientific colors if styling is available: dark blue or charcoal for major headings, light gray table headers, subtle borders. Do not use decorative colors that reduce readability.
+- Follow `references/markdown_sop_style.md` for heading hierarchy, table structure, callout markers, and appendix placement unless the user supplies another Markdown structure reference.
+- Use consistent Markdown hierarchy: clear headings, compact tables, and readable spacing.
 - Use bold sparingly for callout tags and acceptance criteria.
 - Preserve enough white space so that long SOP tables remain legible.
 
 ## Materials and reagent style in Chinese output
 
-The Chinese DOCX must still preserve purchase-ready English identifiers:
+The Chinese Markdown SOP must still preserve purchase-ready English identifiers:
 
 - 试剂中文名 / English name
 - Vendor / 品牌
@@ -94,4 +93,4 @@ Do not present a recommended choice as if it was supplied by the original protoc
 - Minor issue / 次要问题
 - Optimization / 优化建议
 
-Every critique must map to one or more revised DOCX sections and must state whether the revised protocol corrected the issue, retained it as a locally validated option, or marked it as `△TO BE CONFIRMED`.
+Every critique must map to one or more revised Markdown SOP sections and must state whether the revised protocol corrected the issue, retained it as a locally validated option, or marked it as `△TO BE CONFIRMED`.

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Validate Biological-Protocol-Reviewer outputs.
+"""Validate Biological-Protocol-Reviewer Markdown outputs.
 
 This script performs deterministic structural checks. It does not replace
-scientific review or rendered DOCX visual QA.
+scientific review.
 """
 
 from __future__ import annotations
@@ -12,11 +12,6 @@ import json
 import re
 import sys
 from pathlib import Path
-from zipfile import ZipFile
-from xml.etree import ElementTree as ET
-
-
-NS = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
 
 
 REQUIRED_REPORT = [
@@ -44,7 +39,7 @@ REQUIRED_REPORT = [
     "Red-line self-audit",
 ]
 
-REQUIRED_DOCX = [
+REQUIRED_PROTOCOL = [
     "文档控制",
     "SOP快速执行摘要",
     "开始前准备",
@@ -101,24 +96,6 @@ VAGUE_PATTERNS = [
     r"短暂",
     r"小心(?![^\\n。；;]{0,40}(避免|确保|记录|指定))",
 ]
-
-
-def read_docx_text(path: Path) -> tuple[str, list[str]]:
-    problems: list[str] = []
-    if not path.exists():
-        return "", [f"Missing DOCX: {path}"]
-    try:
-        with ZipFile(path) as zf:
-            xml = zf.read("word/document.xml")
-    except Exception as exc:  # pragma: no cover - defensive
-        return "", [f"Cannot read DOCX: {exc}"]
-
-    root = ET.fromstring(xml)
-    parts: list[str] = []
-    for t in root.findall(".//w:t", NS):
-        if t.text:
-            parts.append(t.text)
-    return "\n".join(parts), problems
 
 
 def read_text(path: Path | None) -> tuple[str, list[str]]:
@@ -181,27 +158,27 @@ def recommended_without_provenance(text: str) -> bool:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--report", type=Path, help="Path to Review_Report.md")
-    parser.add_argument("--docx", type=Path, help="Path to Revised_Protocol.docx")
+    parser.add_argument("--protocol", type=Path, help="Path to Revised_Protocol.md")
     parser.add_argument("--json", action="store_true", help="Emit JSON")
     args = parser.parse_args()
 
     report_text, report_read_errors = read_text(args.report)
-    docx_text, docx_read_errors = read_docx_text(args.docx) if args.docx else ("", [])
-    all_text = "\n".join([report_text, docx_text])
+    protocol_text, protocol_read_errors = read_text(args.protocol)
+    all_text = "\n".join([report_text, protocol_text])
 
     errors: list[str] = []
     warnings: list[str] = []
     errors.extend(report_read_errors)
-    errors.extend(docx_read_errors)
+    errors.extend(protocol_read_errors)
 
     if args.report:
         miss = missing_required(report_text, REQUIRED_REPORT)
         errors.extend([f"Review_Report missing required content: {x}" for x in miss])
 
-    if args.docx:
-        miss = missing_required(docx_text, REQUIRED_DOCX)
-        errors.extend([f"Revised_Protocol.docx missing required content: {x}" for x in miss])
-        errors.extend(order_errors(docx_text, MAIN_BODY_ORDER))
+    if args.protocol:
+        miss = missing_required(protocol_text, REQUIRED_PROTOCOL)
+        errors.extend([f"Revised_Protocol.md missing required content: {x}" for x in miss])
+        errors.extend(order_errors(protocol_text, MAIN_BODY_ORDER))
 
     hits = vague_hits(all_text)
     if hits:
