@@ -64,12 +64,11 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 ├── README.md
 ├── README.zh-CN.md
 ├── CHANGELOG.md
-├── RELEASE.md
 └── LICENSE
 ```
 
-GitHub-facing README, release notes, and license files live at the repository
-root. The installable skill is intentionally isolated in
+GitHub-facing README, changelog, and license files live at the repository root.
+The installable skill is intentionally isolated in
 `Biological-Protocol-Reviewer/` so the Codex skill package remains clean and
 self-contained.
 

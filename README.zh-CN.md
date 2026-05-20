@@ -66,11 +66,10 @@ Markdown 仍然承载领域规则和 SOP 写作规范；JSON 用来固定重复�
 ├── README.md
 ├── README.zh-CN.md
 ├── CHANGELOG.md
-├── RELEASE.md
 └── LICENSE
 ```
 
-GitHub 发布用的 README、release notes 和 LICENSE 保留在仓库根目录。真正可安装的
+GitHub 发布用的 README、CHANGELOG 和 LICENSE 保留在仓库根目录。真正可安装的
 skill 被隔离在 `Biological-Protocol-Reviewer/` 子目录内，避免把仓库说明文件混入
 Codex skill 包。
 
@@ -83,7 +82,7 @@ Codex skill 包。
 <repo-root>/Biological-Protocol-Reviewer
 ```
 
-不要把仓库根目录直接作为 skill 目录安装，因为根目录包含 GitHub 文档和发布材料。
+不要把仓库根目录直接作为 skill 目录安装，因为根目录包含 GitHub 文档。
 
 ## 核心流程
 

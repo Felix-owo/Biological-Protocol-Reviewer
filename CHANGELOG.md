@@ -4,7 +4,7 @@
 
 - Removed an unreferenced legacy SOP rewrite reference now superseded by the Markdown SOP template and output linter.
 - Added explicit navigation to the assumption ledger and parameter provenance reference.
-- Replaced machine-specific absolute validation paths in release documentation with a repository-local ignored cache path.
+- Replaced machine-specific absolute validation paths in validation documentation with a repository-local ignored cache path.
 - Strengthened frontier-method safety limits for regulated biological delivery systems.
 
 ## v1.1.2 - 2026-05-20
@@ -18,7 +18,7 @@
 ## v1.1.1 - 2026-05-20
 
 - Isolated the installable Codex skill into `Biological-Protocol-Reviewer/`.
-- Kept repository-level README, release documentation, and license files at the GitHub root.
+- Kept repository-level README, changelog, and license files at the GitHub root.
 - Updated validation examples to run through the isolated skill subdirectory.
 - Updated DOCX style guidance to use canonical `Smiley Sans` / `得意黑` heading font without extra bold styling.
 - Synchronized `SKILL.md` and `skill_manifest.json` to version `1.1.1`.
