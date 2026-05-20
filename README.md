@@ -39,28 +39,51 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 ## Repository Layout
 
 ```text
-SKILL.md
-skill_manifest.json
-references/
-  protocol_rubric.json
-  module_activation_and_routing.md
-  evidence_benchmarking_workflow.md
-  evidence_and_standards_hard_gates.md
-  risk_classification_and_redlines.md
-  output_qc_linter.md
-  ...
-templates/
-  Review_Report_template.md
-  Revised_Protocol_docx_structure.md
-  issue_block_templates.json
-  source_search_hints.json
-validators/
-  revised_protocol_qc_checklist.md
-scripts/
-  protocol_output_validator.py
-examples/
-  cdh5_ai14_protocol_review_example.md
+.
+├── Biological-Protocol-Reviewer/        # installable Codex skill directory
+│   ├── SKILL.md
+│   ├── skill_manifest.json
+│   ├── references/
+│   │   ├── protocol_rubric.json
+│   │   ├── module_activation_and_routing.md
+│   │   ├── evidence_benchmarking_workflow.md
+│   │   ├── evidence_and_standards_hard_gates.md
+│   │   ├── risk_classification_and_redlines.md
+│   │   └── output_qc_linter.md
+│   ├── templates/
+│   │   ├── Review_Report_template.md
+│   │   ├── Revised_Protocol_docx_structure.md
+│   │   ├── issue_block_templates.json
+│   │   └── source_search_hints.json
+│   ├── validators/
+│   │   └── revised_protocol_qc_checklist.md
+│   ├── scripts/
+│   │   └── protocol_output_validator.py
+│   └── examples/
+│       └── cdh5_ai14_protocol_review_example.md
+├── README.md
+├── README.zh-CN.md
+├── CHANGELOG.md
+├── RELEASE.md
+└── LICENSE
 ```
+
+GitHub-facing README, release notes, and license files live at the repository
+root. The installable skill is intentionally isolated in
+`Biological-Protocol-Reviewer/` so the Codex skill package remains clean and
+self-contained.
+
+## Installation
+
+Install from this repository using the subpath `Biological-Protocol-Reviewer`.
+For a local install, the path that Codex resolves as the skill should point to:
+
+```text
+<repo-root>/Biological-Protocol-Reviewer
+```
+
+Do not install the repository root as the skill directory, because the root
+also contains GitHub documentation.
 
 ## Core Workflow
 
@@ -78,7 +101,7 @@ examples/
 When deliverable files exist, run:
 
 ```bash
-python scripts/protocol_output_validator.py --report Review_Report.md --docx Revised_Protocol.docx
+python3 Biological-Protocol-Reviewer/scripts/protocol_output_validator.py --report Review_Report.md --docx Revised_Protocol.docx
 ```
 
 The validator checks required report and DOCX sections, section order, unresolved vague language, and missing provenance for recommended parameters. It does not replace scientific judgment or visual DOCX QA.

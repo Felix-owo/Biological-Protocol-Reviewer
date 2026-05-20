@@ -41,28 +41,49 @@ Markdown 仍然承载领域规则和 SOP 写作规范；JSON 用来固定重复�
 ## 仓库结构
 
 ```text
-SKILL.md
-skill_manifest.json
-references/
-  protocol_rubric.json
-  module_activation_and_routing.md
-  evidence_benchmarking_workflow.md
-  evidence_and_standards_hard_gates.md
-  risk_classification_and_redlines.md
-  output_qc_linter.md
-  ...
-templates/
-  Review_Report_template.md
-  Revised_Protocol_docx_structure.md
-  issue_block_templates.json
-  source_search_hints.json
-validators/
-  revised_protocol_qc_checklist.md
-scripts/
-  protocol_output_validator.py
-examples/
-  cdh5_ai14_protocol_review_example.md
+.
+├── Biological-Protocol-Reviewer/        # 可安装的 Codex skill 目录
+│   ├── SKILL.md
+│   ├── skill_manifest.json
+│   ├── references/
+│   │   ├── protocol_rubric.json
+│   │   ├── module_activation_and_routing.md
+│   │   ├── evidence_benchmarking_workflow.md
+│   │   ├── evidence_and_standards_hard_gates.md
+│   │   ├── risk_classification_and_redlines.md
+│   │   └── output_qc_linter.md
+│   ├── templates/
+│   │   ├── Review_Report_template.md
+│   │   ├── Revised_Protocol_docx_structure.md
+│   │   ├── issue_block_templates.json
+│   │   └── source_search_hints.json
+│   ├── validators/
+│   │   └── revised_protocol_qc_checklist.md
+│   ├── scripts/
+│   │   └── protocol_output_validator.py
+│   └── examples/
+│       └── cdh5_ai14_protocol_review_example.md
+├── README.md
+├── README.zh-CN.md
+├── CHANGELOG.md
+├── RELEASE.md
+└── LICENSE
 ```
+
+GitHub 发布用的 README、release notes 和 LICENSE 保留在仓库根目录。真正可安装的
+skill 被隔离在 `Biological-Protocol-Reviewer/` 子目录内，避免把仓库说明文件混入
+Codex skill 包。
+
+## 安装方式
+
+从 GitHub 安装时应使用子路径 `Biological-Protocol-Reviewer`。本地安装时，Codex
+解析到的 skill 路径应指向：
+
+```text
+<repo-root>/Biological-Protocol-Reviewer
+```
+
+不要把仓库根目录直接作为 skill 目录安装，因为根目录包含 GitHub 文档和发布材料。
 
 ## 核心流程
 
@@ -80,7 +101,7 @@ examples/
 当输出文件存在时运行：
 
 ```bash
-python scripts/protocol_output_validator.py --report Review_Report.md --docx Revised_Protocol.docx
+python3 Biological-Protocol-Reviewer/scripts/protocol_output_validator.py --report Review_Report.md --docx Revised_Protocol.docx
 ```
 
 该 validator 检查 Review_Report 和 Revised_Protocol.docx 的必需结构、章节顺序、未解决模糊语言，以及推荐参数是否缺少参数溯源。它不能替代科学判断和 DOCX 视觉检查。

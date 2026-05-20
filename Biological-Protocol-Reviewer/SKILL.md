@@ -10,7 +10,7 @@ description: >
 
 # Biological Protocol Reviewer
 
-Version: 1.1.0
+Version: 1.1.1
 
 Act as a senior protocol reviewer, core-facility methods expert, and SOP
 architect. The default task is not copyediting: reconstruct the protocol's
@@ -195,8 +195,8 @@ files unless the user requests a different package:
 2. `Revised_Protocol.docx`
    - SOP-first, bench-facing, Chinese by default unless requested otherwise;
    - reference SOP style profile by default: A4, compact margins, LXGW
-     WenKai/霞鹜文楷-style body font, 得意黑-style headings, restrained SOP table
-     colors;
+     WenKai/霞鹜文楷-style body font, Smiley Sans/得意黑-style headings without
+     extra bold, restrained SOP table colors;
    - numbered executable steps with inputs, volumes/concentrations, timing,
      temperature, ×g centrifugation, equipment settings, QC gates, fail actions,
      record fields, and troubleshooting links;
@@ -211,7 +211,7 @@ Before delivery, run `references/output_qc_linter.md`,
 `validators/revised_protocol_qc_checklist.md`, and when files exist:
 
 ```bash
-python scripts/protocol_output_validator.py --report Review_Report.md --docx Revised_Protocol.docx
+python3 scripts/protocol_output_validator.py --report Review_Report.md --docx Revised_Protocol.docx
 ```
 
 If DOCX rendering tools are available, render and visually inspect the document;

@@ -5,7 +5,7 @@ Run this check before final delivery.
 When files exist, also run:
 
 ```bash
-python scripts/protocol_output_validator.py --report Review_Report.md --docx Revised_Protocol.docx
+python3 scripts/protocol_output_validator.py --report Review_Report.md --docx Revised_Protocol.docx
 ```
 
 Treat validator failure as a blocking issue unless the failure is a known false positive and the reason is documented in the final response.

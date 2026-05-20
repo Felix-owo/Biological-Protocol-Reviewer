@@ -6,7 +6,7 @@ This template defines the required structure for `Revised_Protocol.docx`. The do
 
 Use clear Word heading styles, numbered procedure steps, compact execution tables, and standardized callout symbols.
 
-Apply the visual style tokens in `references/markdown_sop_style.md` unless the user supplies a newer reference. In brief: A4 portrait, 0.5 inch margins, LXGW WenKai/霞鹜文楷-style body font, 得意黑-style heading font, restrained table fills (`D9D6C2`, `EDEAE0`, `F7F7F2`), and sparse emphasis colors for warnings, pass/fail, and appendix references.
+Apply the visual style tokens in `references/markdown_sop_style.md` unless the user supplies a newer reference. In brief: A4 portrait, 0.5 inch margins, LXGW WenKai/霞鹜文楷-style body font, Smiley Sans/得意黑 heading font without extra bold, restrained table fills (`D9D6C2`, `EDEAE0`, `F7F7F2`), and sparse emphasis colors for warnings, pass/fail, and appendix references.
 
 ## 1. 标题 / Title
 
