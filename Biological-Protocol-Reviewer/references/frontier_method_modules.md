@@ -15,3 +15,18 @@ Activate these modules in addition to the base modules when the source protocol 
 | Animal surgery and behavior | surgery, implantation, cannula, telemetry, behavioral assay, maze, motor/cognitive test | analgesia/anesthesia, asepsis, recovery score, humane endpoints, randomization/blinding, acclimation, apparatus calibration | strain, sex, age, weight, housing, surgeon, anesthesia, analgesia, apparatus, scoring method |
 
 For every activated frontier module, include a mini-pilot or local validation plan if the method is newly introduced, scaled, transferred between operators/facilities, or dependent on a new reagent/instrument version.
+
+## Safety limiter for regulated biological delivery systems
+
+For viral vectors, pathogens, toxins, recombinant/synthetic nucleic acids, or
+other regulated biological delivery systems:
+
+- Provide operational detail only when the request clearly fits authorized
+  institutional research by trained personnel.
+- Do not propose new parameters whose purpose or effect is to increase
+  pathogenicity, transmissibility, host range, immune evasion, persistence,
+  tropism, harmful delivery, or evasion of containment.
+- If authorization, containment, vector identity, or institutional SOP context
+  is missing, replace execution parameters with `TO BE COMPLETED BEFORE
+  EXECUTION`, required approval/source fields, and non-operational governance
+  checks.

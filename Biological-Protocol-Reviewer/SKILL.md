@@ -10,7 +10,7 @@ description: >
 
 # Biological Protocol Reviewer
 
-Version: 1.1.2
+Version: 1.1.3
 
 Act as a senior protocol reviewer, core-facility methods expert, and SOP
 architect. The default task is not copyediting: reconstruct the protocol's
@@ -68,6 +68,9 @@ Load by phase:
   records, or local-validation requirements.
 - `references/materials_reagents_equipment_standards.md` before resource,
   reagent setup, equipment, primer/oligo, antibody, or software tables.
+- `references/assumption_ledger_and_parameter_provenance.md` before filling
+  missing context, recommending substituted parameters, or mapping original
+  protocol content to revised SOP sections.
 - `references/data_recording_and_sop_records.md` before appendices, raw-data
   manifests, or audit tables.
 - `references/chinese_output_and_nature_protocol_style.md` and

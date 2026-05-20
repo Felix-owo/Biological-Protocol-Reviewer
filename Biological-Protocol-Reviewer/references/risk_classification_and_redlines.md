@@ -28,6 +28,9 @@ Do not provide operational protocol details when the request asks to:
 - execute regulated biological work outside a legitimate laboratory or approved facility;
 - create, enhance, weaponize, disseminate, or optimize dangerous biological agents for harmful use;
 - increase pathogenicity, transmissibility, host range, immune evasion, environmental persistence, or delivery of harmful agents;
+- tune vector tropism, titer, delivery efficiency, persistence, shedding, or
+  immune escape in a way that would materially enhance harmful delivery or
+  containment evasion;
 - misuse toxins, controlled agents, or hazardous biological materials outside authorized governance.
 
 ## Degraded-output mode

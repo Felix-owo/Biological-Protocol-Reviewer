@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.3 - 2026-05-20
+
+- Removed an unreferenced legacy SOP rewrite reference now superseded by the Markdown SOP template and output linter.
+- Added explicit navigation to the assumption ledger and parameter provenance reference.
+- Replaced machine-specific absolute validation paths in release documentation with a repository-local ignored cache path.
+- Strengthened frontier-method safety limits for regulated biological delivery systems.
+
 ## v1.1.2 - 2026-05-20
 
 - Changed the default revised protocol output from `Revised_Protocol.docx` to `Revised_Protocol.md`.
