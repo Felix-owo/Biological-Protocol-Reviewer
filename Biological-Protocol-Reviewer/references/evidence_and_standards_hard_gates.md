@@ -14,6 +14,26 @@ Every Grade A-C benchmark source must include:
 
 Do not cite only a venue or source class when a concrete source is available.
 
+
+## Companion-derived source identity gate
+
+If an external companion skill, official plugin, or MCP tool returns a summary,
+the summary must be resolved to a concrete source identity before it can support
+a protocol parameter, QC gate, control, or reporting requirement.
+
+Record:
+
+- companion/tool used;
+- query/entity;
+- returned source identifier;
+- primary source or official record;
+- exact parameter/control/QC/metadata field affected;
+- access date when applicable;
+- local validation status.
+
+If the source cannot be resolved, mark the recommendation as `△TO BE CONFIRMED`
+or `TO BE VERIFIED BEFORE EXECUTION`.
+
 ## Dynamic standards check
 
 Check the current version or official landing page for standards likely to change:

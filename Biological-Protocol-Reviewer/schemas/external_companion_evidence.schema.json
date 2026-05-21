@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "external_companion_evidence.schema.json",
+  "type": "object",
+  "required": [
+    "companion_class",
+    "tool_or_skill",
+    "query_or_task",
+    "returned_identifier",
+    "evidence_role",
+    "protocol_section_affected",
+    "limitation",
+    "verification_status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "companion_class": {
+      "type": "string",
+      "enum": [
+        "official_plugin",
+        "external_skill",
+        "mcp_tool",
+        "host_tool",
+        "manual_lookup"
+      ]
+    },
+    "tool_or_skill": {
+      "type": "string",
+      "minLength": 2
+    },
+    "query_or_task": {
+      "type": "string",
+      "minLength": 4
+    },
+    "returned_identifier": {
+      "type": "string",
+      "minLength": 2
+    },
+    "primary_source_resolved": {
+      "type": "string",
+      "minLength": 2
+    },
+    "evidence_role": {
+      "type": "string",
+      "enum": [
+        "supports",
+        "weakens",
+        "narrows",
+        "neutral",
+        "context",
+        "search_route"
+      ]
+    },
+    "protocol_section_affected": {
+      "type": "string",
+      "minLength": 3
+    },
+    "limitation": {
+      "type": "string",
+      "minLength": 8
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "resolved_to_grade_a_to_c_source",
+        "resolved_to_grade_d_context",
+        "to_be_confirmed",
+        "to_be_verified_before_execution"
+      ]
+    }
+  }
+}

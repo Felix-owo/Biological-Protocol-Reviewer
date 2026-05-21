@@ -1,6 +1,6 @@
 {
   "name": "Biological-Protocol-Reviewer",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "architecture": "single-skill-with-internal-module-routing",
   "default_language": "zh-CN",
   "mission": "Publication-grade review and rewriting of biological experimental protocols into bench-facing Markdown SOP outputs with audit-ready appendices.",
@@ -17,7 +17,9 @@
     "schemas/issue.schema.json",
     "schemas/qc_gate.schema.json",
     "schemas/parameter_provenance.schema.json",
-    "schemas/bioinformatics_handoff.schema.json"
+    "schemas/bioinformatics_handoff.schema.json",
+    "references/external_evidence_companion_policy.md",
+    "schemas/external_companion_evidence.schema.json"
   ],
   "internal_modules": [
     "animal_experiments",
@@ -60,7 +62,10 @@
     "unit_tests",
     "ci_validation",
     "versioned_benchmark_set",
-    "output_qc_linter"
+    "output_qc_linter",
+    "external_evidence_companion_policy",
+    "companion_derived_source_identity_gate",
+    "external_companion_evidence_schema"
   ],
   "risk_policy": {
     "default_assumption": "authorized institutional research by trained personnel when context is consistent with compliant research",

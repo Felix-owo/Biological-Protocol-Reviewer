@@ -78,5 +78,18 @@
       "issue_id": "M01",
       "sop_section": "Section 7 quality control"
     }
+  ],
+  "external_companion_evidence": [
+    {
+      "companion_class": "external_skill",
+      "tool_or_skill": "$paper-lookup",
+      "query_or_task": "Locate MIFlowCyt source identity for flow-cytometry reporting.",
+      "returned_identifier": "PMID:18752282",
+      "primary_source_resolved": "MIFlowCyt guideline, PMID:18752282",
+      "evidence_role": "supports",
+      "protocol_section_affected": "Evidence benchmark table",
+      "limitation": "Companion lookup only identified the source; BPR still assigns SOP relevance.",
+      "verification_status": "resolved_to_grade_a_to_c_source"
+    }
   ]
 }

@@ -52,6 +52,20 @@ Status must be one of: `Activated`, `Not activated — not applicable`, or `Uncl
 
 Grade A-C sources must include DOI, PMID, official URL, manual/standard version, vendor document ID, or access date when applicable.
 
+
+## 5.1 External Evidence Companion Results (optional)
+
+Include only when companion skills, official plugins, MCP tools, or host tools
+were used. Omit when no external companion contributed evidence.
+
+| Companion/tool | Query/entity | Returned source/identifier | Evidence role | Protocol section affected | Limitation / verification needed |
+|---|---|---|---|---|---|
+
+Companion outputs are source-discovery or context inputs. They are not Grade A-C
+support unless resolved to a primary protocol, official standard, vendor or
+instrument manual, core-facility SOP, repository record, or documented local
+validation.
+
 ## 6. 资源完整性审计 / Resource identity audit
 
 | 类别 | 缺vendor | 缺Cat. No. | 缺clone/RRID/model/version | 缺lot记录 | 缺储存条件 | 缺◉EXPDATE | 执行影响 | 修订处理 |
@@ -189,6 +203,7 @@ Include when the revised SOP introduces new, substituted, scaled, transferred, o
 | No vague execution language left unresolved |  |  |
 | Critical/Major issues use full logic chain |  |  |
 | Evidence sources include exact identity |  |  |
+| Companion-derived evidence is resolved or marked for verification |  |  |
 | SOP-first structure preserved |  |  |
 | Operator burden justified |  |  |
 | Validator checks completed or limitation stated |  |  |

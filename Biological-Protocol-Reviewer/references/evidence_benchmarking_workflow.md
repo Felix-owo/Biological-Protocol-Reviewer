@@ -23,6 +23,27 @@ Use sources in this priority order:
 5. Core-facility or institutional SOPs.
 6. Local practice only if explicitly labelled as local validation rather than universal best practice.
 
+
+## 2.1 Optional external evidence companions
+
+Host-provided plugins, external skills, or MCP tools may help locate sources or
+normalize entities, but they do not change the evidence hierarchy.
+
+A companion output is not itself Grade A-C unless it points to a concrete source
+identity that satisfies the Grade A-C rules.
+
+Use companion-derived evidence as:
+
+- a search route;
+- an entity normalization aid;
+- a public database context record;
+- a pointer to a primary protocol, reporting standard, vendor manual,
+  repository record, instrument manual, or core-facility SOP.
+
+Do not convert companion summaries directly into executable SOP parameters. If a
+companion-derived source cannot be resolved, mark the linked recommendation as
+`△TO BE CONFIRMED` or `TO BE VERIFIED BEFORE EXECUTION`.
+
 ## 3. Evidence grading
 
 | Grade | Meaning | Typical use |

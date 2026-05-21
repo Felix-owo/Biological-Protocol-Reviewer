@@ -1,8 +1,15 @@
 # Biological Protocol Reviewer
 
+[中文说明](README.zh-CN.md)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Agent Skills](https://img.shields.io/badge/Standard-Agent_Skills-blueviolet.svg)](https://agentskills.io/specification)
+[![Version](https://img.shields.io/badge/Version-v1.3.0-blue.svg)](CHANGELOG.md)
+[![Python](https://img.shields.io/badge/Python-3.10--3.12-3776AB.svg)](#validation)
+[![Works with](https://img.shields.io/badge/Works_with-Codex-blue.svg)](#installation)
+
 **Biological-Protocol-Reviewer** is a Codex skill for evidence-grounded biological protocol review and SOP rewriting. It audits animal, cell, molecular, flow/imaging, omics, statistics, safety/governance, and frontier-method workflows, then turns incomplete bench notes into a source-backed review report and a directly executable SOP.
 
-中文说明见 [README.zh-CN.md](README.zh-CN.md).
 
 ## What This Skill Produces
 
@@ -20,10 +27,40 @@ This repository now mirrors the useful structure of `rigorous-science-reviewer` 
 - `references/protocol_rubric.json` standardizes readiness scoring, Level 0-3 maturity gates, category weights, severity levels, and execution-readiness gates.
 - `templates/issue_block_templates.json` standardizes Critical/Major/Minor/Optimization issue blocks so findings include the problem, evidence, impact, failure mode, resolution, decisive readout, and SOP location.
 - `templates/source_search_hints.json` standardizes evidence-search routes for protocol parameters, dynamic standards, resource identity, controls, QC, safety/governance, and local validation.
-- `schemas/*.schema.json` defines machine-checkable contracts for structured review reports, revised protocols, issue blocks, QC gates, parameter provenance, and bioinformatics handoff.
+- `schemas/*.schema.json` defines machine-checkable contracts for structured review reports, revised protocols, issue blocks, QC gates, parameter provenance, bioinformatics handoff, and optional external companion evidence.
 - `scripts/lint_structured_protocol.py`, `tests/`, `.github/workflows/`, and `benchmarks/v1.0/` provide deterministic regression checks around the Markdown validator.
 
 JSON is useful here because these resources are structured, machine-checkable, and less ambiguous than free-form prose for repeated reviewer output. The Markdown files remain the main domain guidance; the JSON files define the repeatable output contract.
+
+
+## Optional Companion Ecosystem
+
+Biological Protocol Reviewer can use external skills, official plugins, MCP
+tools, or host-provided capabilities when available. These companions are
+optional evidence or output aids and never replace protocol-readiness judgment,
+SOP authorship, safety/governance review, QC design, or local validation.
+
+Recommended companions:
+
+- ChatGPT Life Science Research: public biological context, entity
+  normalization, and database evidence.
+- K-Dense-AI/scientific-agent-skills: literature, database, source, and standard
+  lookup through skills such as `$paper-lookup`, `$database-lookup`,
+  `$literature-review`, `$scientific-critical-thinking`, and
+  `$scholar-evaluation`.
+- GPTomics/bioSkills: downstream omics-analysis handoff, QC metadata,
+  repository planning, and pipeline expectations.
+- Yuan1z0825/nature-skills: publication-style protocol writing after readiness
+  review is complete.
+- guizang-ppt-skill / open-design / taste-skill: SOP training deck, visual
+  protocol summary, or presentation output after conclusions are fixed.
+- Rigorous-Reviewer: only when evaluating whether protocol-derived evidence
+  supports a manuscript, proposal, or central scientific claim.
+
+All companion outputs must be resolved to concrete source identity before they
+can support SOP parameters, controls, QC gates, metadata requirements, or
+reporting requirements. Unresolved companion-derived suggestions must be marked
+`△TO BE CONFIRMED` or `TO BE VERIFIED BEFORE EXECUTION`.
 
 ## Evidence Standards
 
@@ -50,6 +87,7 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 │   │   ├── module_activation_and_routing.md
 │   │   ├── evidence_benchmarking_workflow.md
 │   │   ├── evidence_and_standards_hard_gates.md
+│   │   ├── external_evidence_companion_policy.md
 │   │   ├── risk_classification_and_redlines.md
 │   │   └── output_qc_linter.md
 │   ├── templates/
@@ -63,7 +101,8 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 │   │   ├── issue.schema.json
 │   │   ├── qc_gate.schema.json
 │   │   ├── parameter_provenance.schema.json
-│   │   └── bioinformatics_handoff.schema.json
+│   │   ├── bioinformatics_handoff.schema.json
+│   │   └── external_companion_evidence.schema.json
 │   ├── validators/
 │   │   └── revised_protocol_qc_checklist.md
 │   ├── scripts/
@@ -106,12 +145,13 @@ also contains GitHub documentation.
 
 1. Reconstruct the intended result, primary readout, experimental unit, decisive QC gates, most fragile step, and conclusion supported by the protocol.
 2. Route the protocol through internal modules: animal, cell, molecular biology, flow/imaging, omics, statistics, safety/governance, frontier methods, materials/equipment, data records, operator burden, and mini-pilot validation.
-3. Build an evidence dossier separating original-protocol facts, external benchmarks, recommendations, local assumptions, and unresolved gaps.
-4. Benchmark parameters and controls against peer-reviewed protocols, top-journal methods, official standards, vendor/instrument manuals, core-facility SOPs, and local validation.
-5. Run safety/governance red lines.
-6. Audit failure modes and assign severity using `references/protocol_rubric.json` and `templates/issue_block_templates.json`.
-7. Rewrite the protocol as a SOP-first Markdown document, keeping bench-critical steps in the main body and audit rationale in appendices.
-8. Validate the outputs with the linter, checklist, and executable validator.
+3. Build an evidence dossier separating original-protocol facts, external benchmarks, recommendations, local assumptions, unresolved gaps, and optional companion-derived source leads.
+4. Use external companions only as evidence-discovery, source-identity, downstream-analysis handoff, or output-conversion aids; do not delegate SOP judgment.
+5. Benchmark parameters and controls against peer-reviewed protocols, top-journal methods, official standards, vendor/instrument manuals, core-facility SOPs, and local validation.
+6. Run safety/governance red lines.
+7. Audit failure modes and assign severity using `references/protocol_rubric.json` and `templates/issue_block_templates.json`.
+8. Rewrite the protocol as a SOP-first Markdown document, keeping bench-critical steps in the main body and audit rationale in appendices.
+9. Validate the outputs with the linter, checklist, and executable validator.
 
 ## Validation
 

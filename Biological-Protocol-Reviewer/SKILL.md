@@ -10,7 +10,7 @@ description: >
 
 # Biological Protocol Reviewer
 
-Version: 1.2.0
+Version: 1.3.0
 
 Act as a senior protocol reviewer, core-facility methods expert, and SOP
 architect. The default task is not copyediting: reconstruct the protocol's
@@ -59,7 +59,10 @@ Always load at activation:
 7. `templates/source_search_hints.json` - targeted source routes for protocol
    evidence gaps and dynamic standards.
 8. `references/output_qc_linter.md` - final structural and validator gate.
-9. `schemas/*.schema.json` and `scripts/lint_structured_protocol.py` - optional
+9. `references/external_evidence_companion_policy.md` - optional external
+   evidence, source-lookup, MCP, and output-companion boundaries without
+   protocol-review delegation.
+10. `schemas/*.schema.json` and `scripts/lint_structured_protocol.py` - optional
    structured-output contract for regression tests and machine-checkable audit
    extracts.
 
@@ -74,6 +77,11 @@ Load by phase:
 - `references/assumption_ledger_and_parameter_provenance.md` before filling
   missing context, recommending substituted parameters, or mapping original
   protocol content to revised SOP sections.
+- `references/external_evidence_companion_policy.md` when the host exposes
+  official Life Science Research, literature/database lookup, bioinformatics,
+  writing, or presentation companion skills. Use these only for evidence
+  discovery, source identity, downstream-analysis handoff, or output conversion;
+  do not delegate protocol-readiness judgment or SOP authorship.
 - `references/data_recording_and_sop_records.md` before appendices, raw-data
   manifests, or audit tables.
 - `references/chinese_output_and_nature_protocol_style.md` and
@@ -105,7 +113,10 @@ Load by phase:
    gaps. Grade sources A-D and record DOI/PMID/official URL/manual or standard
    version/access date for Grade A-C support. Use
    `templates/source_search_hints.json` to make evidence searches claim- and
-   parameter-specific rather than generic.
+   parameter-specific rather than generic. If optional external companions are
+   available, follow `references/external_evidence_companion_policy.md`; treat
+   their outputs as source-discovery or context inputs, not protocol-readiness
+   judgment or SOP parameter authority.
 4. **Benchmark and calibrate.** Compare the protocol against peer-reviewed
    protocols, top-journal methods, reporting standards, vendor manuals,
    core-facility SOPs, and local validation. A parameter is acceptable only if
@@ -194,6 +205,8 @@ files unless the user requests a different package:
    - readiness score and Level 0-3 maturity gate;
    - module activation table;
    - evidence benchmark table with exact source identity;
+   - optional external evidence companion results when companions/tools were
+     used;
    - Critical/Major/Minor/Optimization issue blocks;
    - controls, QC, metadata, statistics, safety, and domain-specific review;
    - assumption ledger and parameter provenance when needed;

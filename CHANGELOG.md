@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.3.0 - 2026-05-21
+
+- Added `references/external_evidence_companion_policy.md` to support optional external skills, official plugins, MCP tools, and output companions without delegating SOP judgment.
+- Added companion-derived source identity gates to evidence benchmarking and standards hard-gate guidance.
+- Added optional `External Evidence Companion Results` table to the review report template.
+- Added `external_companion_evidence.schema.json` and optional structured report support for companion evidence provenance.
+- Updated README files to mirror the Rigorous-Reviewer v2.1.0 companion-ecosystem style while preserving Biological-Protocol-Reviewer single-skill boundaries.
+
 ## v1.2.0 - 2026-05-21
 
 - Added schema-based structured-output contracts for review reports, revised protocols, issue blocks, QC gates, parameter provenance, and bioinformatics handoff.
