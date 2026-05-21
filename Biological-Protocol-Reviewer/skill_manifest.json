@@ -1,6 +1,6 @@
 {
   "name": "Biological-Protocol-Reviewer",
-  "version": "1.1.3",
+  "version": "1.2.0",
   "architecture": "single-skill-with-internal-module-routing",
   "default_language": "zh-CN",
   "mission": "Publication-grade review and rewriting of biological experimental protocols into bench-facing Markdown SOP outputs with audit-ready appendices.",
@@ -11,7 +11,13 @@
   "structured_format_resources": [
     "references/protocol_rubric.json",
     "templates/issue_block_templates.json",
-    "templates/source_search_hints.json"
+    "templates/source_search_hints.json",
+    "schemas/review_report.schema.json",
+    "schemas/revised_protocol.schema.json",
+    "schemas/issue.schema.json",
+    "schemas/qc_gate.schema.json",
+    "schemas/parameter_provenance.schema.json",
+    "schemas/bioinformatics_handoff.schema.json"
   ],
   "internal_modules": [
     "animal_experiments",
@@ -49,6 +55,11 @@
     "markdown_appendices_A_to_K",
     "markdown_sop_style",
     "protocol_output_validator",
+    "schema_based_linter",
+    "golden_output_fixtures",
+    "unit_tests",
+    "ci_validation",
+    "versioned_benchmark_set",
     "output_qc_linter"
   ],
   "risk_policy": {

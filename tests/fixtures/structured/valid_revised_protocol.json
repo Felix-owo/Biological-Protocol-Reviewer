@@ -1,0 +1,88 @@
+{
+  "document_control": {
+    "title": "Demo flow cytometry staining SOP",
+    "version": "test-fixture",
+    "owner": "Core facility",
+    "effective_date": "2026-05-21"
+  },
+  "execution_summary": "Process samples through staining, acquisition, QC release, and minimal analysis.",
+  "before_you_begin": [
+    "Confirm antibody panel and instrument configuration."
+  ],
+  "steps": [
+    {
+      "step_number": 1,
+      "action": "Transfer prepared sample to the labeled staining tube.",
+      "critical_parameters": [
+        "sample ID",
+        "tube label"
+      ],
+      "qc_gate": "QC1",
+      "failure_mode": "Sample identity is lost before staining.",
+      "troubleshooting": "Stop processing and reconcile labels before continuing.",
+      "record_fields": [
+        "sample_id",
+        "operator"
+      ],
+      "provenance": "local_standard"
+    }
+  ],
+  "reagent_setup": [
+    {
+      "parameter": "FMO control",
+      "value": "One FMO control per critical marker",
+      "status": "known_from_source",
+      "source_identity": "MIFlowCyt guideline, PMID:18752282",
+      "local_verification": "Flow core confirms panel before execution.",
+      "linked_step_or_issue": "M01"
+    }
+  ],
+  "resources": [
+    {
+      "resource": "Flow cytometer",
+      "identifier": "instrument ID recorded locally",
+      "lot_or_version": "current acquisition template",
+      "purpose": "sample acquisition"
+    }
+  ],
+  "qc_gates": [
+    {
+      "gate_id": "QC1",
+      "stage": "Acquisition release",
+      "metric": "Viable-cell percentage",
+      "acceptance_threshold": "Local panel threshold recorded before execution",
+      "measurement_method": "Viability dye gate applied before target marker gates",
+      "fail_action": "Repeat preparation or exclude with deviation record",
+      "record_field": "viability_percent"
+    }
+  ],
+  "timing": "Record staining, washing, and acquisition timestamps.",
+  "troubleshooting": [
+    "Repeat sample preparation when viability is below the release threshold."
+  ],
+  "anticipated_results": "Positive-control samples show the expected target population.",
+  "minimal_analysis": "Export FCS files, compensation matrix, gating workspace, and QC release table.",
+  "bioinformatics_handoff": {
+    "raw_data_manifest": [
+      "FCS file list"
+    ],
+    "checksum_plan": "Generate checksums for exported data files.",
+    "software_versions": [
+      "Flow analysis software version"
+    ],
+    "reference_versions": [
+      "Panel version"
+    ],
+    "minimum_metadata": [
+      "sample ID",
+      "operator",
+      "instrument ID"
+    ],
+    "rerun_test": "Reopen exported workspace and confirm gates reproduce the QC table.",
+    "repository_plan": "Store raw data and workspace in the approved project folder."
+  },
+  "appendices": [
+    "Appendix A source table",
+    "Appendix B parameter provenance"
+  ]
+}

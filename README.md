@@ -13,13 +13,15 @@ By default, the skill produces two user-facing files:
 
 The skill is intentionally not a copyeditor. It asks whether the protocol can be executed, interpreted, reproduced, audited, and governed safely.
 
-## Why JSON Format Resources Were Added
+## Structured Resources And Validation
 
 This repository now mirrors the useful structure of `rigorous-science-reviewer` without copying its manuscript-review logic:
 
 - `references/protocol_rubric.json` standardizes readiness scoring, Level 0-3 maturity gates, category weights, severity levels, and execution-readiness gates.
 - `templates/issue_block_templates.json` standardizes Critical/Major/Minor/Optimization issue blocks so findings include the problem, evidence, impact, failure mode, resolution, decisive readout, and SOP location.
 - `templates/source_search_hints.json` standardizes evidence-search routes for protocol parameters, dynamic standards, resource identity, controls, QC, safety/governance, and local validation.
+- `schemas/*.schema.json` defines machine-checkable contracts for structured review reports, revised protocols, issue blocks, QC gates, parameter provenance, and bioinformatics handoff.
+- `scripts/lint_structured_protocol.py`, `tests/`, `.github/workflows/`, and `benchmarks/v1.0/` provide deterministic regression checks around the Markdown validator.
 
 JSON is useful here because these resources are structured, machine-checkable, and less ambiguous than free-form prose for repeated reviewer output. The Markdown files remain the main domain guidance; the JSON files define the repeatable output contract.
 
@@ -55,22 +57,38 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 │   │   ├── Revised_Protocol_md_structure.md
 │   │   ├── issue_block_templates.json
 │   │   └── source_search_hints.json
+│   ├── schemas/
+│   │   ├── review_report.schema.json
+│   │   ├── revised_protocol.schema.json
+│   │   ├── issue.schema.json
+│   │   ├── qc_gate.schema.json
+│   │   ├── parameter_provenance.schema.json
+│   │   └── bioinformatics_handoff.schema.json
 │   ├── validators/
 │   │   └── revised_protocol_qc_checklist.md
 │   ├── scripts/
-│   │   └── protocol_output_validator.py
+│   │   ├── protocol_output_validator.py
+│   │   └── lint_structured_protocol.py
 │   └── examples/
 │       └── cdh5_ai14_protocol_review_example.md
+├── tests/
+├── benchmarks/
+│   └── v1.0/
+├── tools/
+│   └── score_protocol_benchmark.py
+├── .github/
+│   └── workflows/
+│       └── validate.yml
 ├── README.md
 ├── README.zh-CN.md
 ├── CHANGELOG.md
 └── LICENSE
 ```
 
-GitHub-facing README, changelog, and license files live at the repository root.
-The installable skill is intentionally isolated in
-`Biological-Protocol-Reviewer/` so the Codex skill package remains clean and
-self-contained.
+GitHub-facing README, changelog, license, CI, tests, and benchmark definitions
+live at the repository root. The installable skill is intentionally isolated in
+`Biological-Protocol-Reviewer/` so the runtime package remains clean and
+self-contained while the repository remains testable.
 
 ## Installation
 
@@ -104,6 +122,25 @@ python3 Biological-Protocol-Reviewer/scripts/protocol_output_validator.py --repo
 ```
 
 The validator checks required report and protocol sections, section order, unresolved vague language, and missing provenance for recommended parameters. It does not replace scientific judgment.
+
+For structured JSON audit extracts or regression fixtures, run:
+
+```bash
+python3 Biological-Protocol-Reviewer/scripts/lint_structured_protocol.py tests/fixtures/structured/valid_review_report.json
+python3 Biological-Protocol-Reviewer/scripts/lint_structured_protocol.py Revised_Protocol.structured.json --schema Biological-Protocol-Reviewer/schemas/revised_protocol.schema.json
+```
+
+For repository maintenance, run the deterministic test and benchmark-definition checks:
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 tools/score_protocol_benchmark.py --benchmark-root benchmarks/v1.0
+```
+
+GitHub Actions runs the same checks on push and pull request. The benchmark
+definitions are versioned; CI validates their structure, while model-output
+scoring should be used as a release evaluation gate rather than a routine
+per-commit check.
 
 ## Safety Boundary
 

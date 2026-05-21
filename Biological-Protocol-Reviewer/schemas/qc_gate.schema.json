@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "qc_gate.schema.json",
+  "type": "object",
+  "required": [
+    "gate_id",
+    "stage",
+    "metric",
+    "acceptance_threshold",
+    "measurement_method",
+    "fail_action",
+    "record_field"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "gate_id": { "type": "string", "minLength": 3 },
+    "stage": { "type": "string", "minLength": 3 },
+    "metric": { "type": "string", "minLength": 3 },
+    "acceptance_threshold": { "type": "string", "minLength": 3 },
+    "measurement_method": { "type": "string", "minLength": 8 },
+    "fail_action": { "type": "string", "minLength": 8 },
+    "record_field": { "type": "string", "minLength": 3 }
+  }
+}

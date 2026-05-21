@@ -13,15 +13,17 @@ English version: [README.md](README.md).
 
 这个 skill 不把 protocol 审核当作 copyediting。它首先问：这个流程能否执行、解释、复现、审计，并符合安全和治理要求。
 
-## 是否需要像 rigorous-science-reviewer 一样增加 JSON？
+## 结构化资源与校验
 
 需要，但不应该照搬论文评审 skill 的 JSON 逻辑。`rigorous-science-reviewer` 的 JSON 主要服务于论文评分、同行评审问题块和文献检索提示；protocol reviewer 更需要约束的是 **执行成熟度、SOP 可操作性、参数溯源、QC/controls、资源身份、安全治理和本地验证**。
 
-本仓库已经补充三类结构化 JSON：
+本仓库已经补充多类结构化资源：
 
 - `references/protocol_rubric.json`：规范 readiness score、Level 0-3 成熟度、评分权重、严重性定义和执行前门槛。
 - `templates/issue_block_templates.json`：规范 Critical/Major/Minor/Optimization 问题块，强制包含具体问题、证据、影响、failure mode、解决方案、决定性 readout 和 SOP 修订位置。
 - `templates/source_search_hints.json`：规范证据检索路径，避免只写“查文献”或“加 controls”，而是把每个参数、控制、QC、资源身份、动态标准和安全治理要求映射到可验证来源。
+- `schemas/*.schema.json`：约束结构化 Review_Report、Revised_Protocol、issue、QC gate、parameter provenance 和 bioinformatics handoff。
+- `scripts/lint_structured_protocol.py`、`tests/`、`.github/workflows/` 和 `benchmarks/v1.0/`：为 Markdown validator 外再提供确定性回归检查。
 
 Markdown 仍然承载领域规则和 SOP 写作规范；JSON 用来固定重复输出结构，减少不同轮次之间的格式漂移。
 
@@ -57,21 +59,37 @@ Markdown 仍然承载领域规则和 SOP 写作规范；JSON 用来固定重复�
 │   │   ├── Revised_Protocol_md_structure.md
 │   │   ├── issue_block_templates.json
 │   │   └── source_search_hints.json
+│   ├── schemas/
+│   │   ├── review_report.schema.json
+│   │   ├── revised_protocol.schema.json
+│   │   ├── issue.schema.json
+│   │   ├── qc_gate.schema.json
+│   │   ├── parameter_provenance.schema.json
+│   │   └── bioinformatics_handoff.schema.json
 │   ├── validators/
 │   │   └── revised_protocol_qc_checklist.md
 │   ├── scripts/
-│   │   └── protocol_output_validator.py
+│   │   ├── protocol_output_validator.py
+│   │   └── lint_structured_protocol.py
 │   └── examples/
 │       └── cdh5_ai14_protocol_review_example.md
+├── tests/
+├── benchmarks/
+│   └── v1.0/
+├── tools/
+│   └── score_protocol_benchmark.py
+├── .github/
+│   └── workflows/
+│       └── validate.yml
 ├── README.md
 ├── README.zh-CN.md
 ├── CHANGELOG.md
 └── LICENSE
 ```
 
-GitHub 发布用的 README、CHANGELOG 和 LICENSE 保留在仓库根目录。真正可安装的
-skill 被隔离在 `Biological-Protocol-Reviewer/` 子目录内，避免把仓库说明文件混入
-Codex skill 包。
+GitHub 发布用的 README、CHANGELOG、LICENSE、CI、tests 和 benchmark definitions
+保留在仓库根目录。真正可安装的 skill 被隔离在
+`Biological-Protocol-Reviewer/` 子目录内，避免把仓库维护文件混入运行时包。
 
 ## 安装方式
 
@@ -104,6 +122,23 @@ python3 Biological-Protocol-Reviewer/scripts/protocol_output_validator.py --repo
 ```
 
 该 validator 检查 Review_Report 和 Revised_Protocol.md 的必需结构、章节顺序、未解决模糊语言，以及推荐参数是否缺少参数溯源。它不能替代科学判断。
+
+当需要结构化 JSON 审计提取或回归测试 fixture 时运行：
+
+```bash
+python3 Biological-Protocol-Reviewer/scripts/lint_structured_protocol.py tests/fixtures/structured/valid_review_report.json
+python3 Biological-Protocol-Reviewer/scripts/lint_structured_protocol.py Revised_Protocol.structured.json --schema Biological-Protocol-Reviewer/schemas/revised_protocol.schema.json
+```
+
+维护仓库时运行确定性测试和 benchmark 定义检查：
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 tools/score_protocol_benchmark.py --benchmark-root benchmarks/v1.0
+```
+
+GitHub Actions 会在 push 和 pull request 时运行同一组检查。版本化 benchmark
+在 CI 中只校验定义结构；真实模型输出评分更适合作为 release 前评估门槛，而不是每次提交都自动调用模型。
 
 ## 安全边界
 

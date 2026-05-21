@@ -1,0 +1,19 @@
+{
+  "case_id": "golden_missing_flow_qc",
+  "must_detect": [
+    "viability gate",
+    "FMO",
+    "single-stain controls",
+    "antibody clone",
+    "RRID",
+    "event count",
+    "repeat or exclusion rule"
+  ],
+  "minimum_severity": "Major",
+  "forbidden_readiness_levels": ["Level 3"],
+  "required_sop_sections": [
+    "质量控制",
+    "试剂、耗材、仪器",
+    "Parameter provenance"
+  ]
+}

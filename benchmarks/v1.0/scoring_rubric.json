@@ -1,0 +1,18 @@
+{
+  "benchmark_version": "v1.0",
+  "purpose": "Regression and release-gate benchmark for Biological-Protocol-Reviewer review behavior.",
+  "score_components": {
+    "must_detect_recall": 0.55,
+    "severity_gate": 0.2,
+    "readiness_gate": 0.15,
+    "sop_section_coverage": 0.1
+  },
+  "release_gate": {
+    "minimum_case_pass_rate": 0.8,
+    "critical_case_pass_required": true
+  },
+  "notes": [
+    "This set uses synthetic, non-sensitive cases only.",
+    "CI validates benchmark definitions deterministically; model-output scoring is intended for release evaluation."
+  ]
+}

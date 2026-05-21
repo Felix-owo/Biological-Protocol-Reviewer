@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "issue.schema.json",
+  "type": "object",
+  "required": [
+    "issue_id",
+    "severity",
+    "title",
+    "specific_problem",
+    "evidence",
+    "impact",
+    "failure_mode",
+    "resolution",
+    "decisive_readout",
+    "sop_location"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "issue_id": { "type": "string", "minLength": 3 },
+    "severity": {
+      "type": "string",
+      "enum": ["Critical", "Major", "Minor", "Optimization"]
+    },
+    "title": { "type": "string", "minLength": 8 },
+    "specific_problem": { "type": "string", "minLength": 20 },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["source_type", "source_identity", "claim_supported"],
+        "additionalProperties": false,
+        "properties": {
+          "source_type": {
+            "type": "string",
+            "enum": [
+              "original_protocol",
+              "primary_literature",
+              "protocol_paper",
+              "guideline_or_standard",
+              "vendor_manual",
+              "core_facility_sop",
+              "local_validation",
+              "expert_inference"
+            ]
+          },
+          "source_identity": { "type": "string", "minLength": 4 },
+          "claim_supported": { "type": "string", "minLength": 10 }
+        }
+      }
+    },
+    "impact": { "type": "string", "minLength": 20 },
+    "failure_mode": { "type": "string", "minLength": 20 },
+    "resolution": { "type": "string", "minLength": 20 },
+    "decisive_readout": { "type": "string", "minLength": 20 },
+    "sop_location": { "type": "string", "minLength": 4 }
+  }
+}

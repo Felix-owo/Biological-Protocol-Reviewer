@@ -1,0 +1,82 @@
+{
+  "protocol_reconstruction": {
+    "intended_result": "Reproducible flow cytometry identification of a defined target population.",
+    "primary_readout": "Viable target-cell frequency.",
+    "experimental_unit": "One independently processed biological sample.",
+    "fragile_step": "Antibody staining and FMO-defined gate placement."
+  },
+  "readiness": {
+    "score": 82,
+    "maturity_level": 2,
+    "execution_gate": "executable_with_controls"
+  },
+  "module_activation": [
+    "flow_cytometry_and_imaging",
+    "statistics_and_reproducibility"
+  ],
+  "evidence_benchmark": [
+    {
+      "benchmark_question": "Are FMO controls and compensation details required?",
+      "source_grade": "A",
+      "source_identity": "MIFlowCyt guideline, PMID:18752282",
+      "parameter_or_control": "FMO and single-stain controls",
+      "local_status": "known_from_source"
+    }
+  ],
+  "issues": [
+    {
+      "issue_id": "M01",
+      "severity": "Major",
+      "title": "Viability gate is missing",
+      "specific_problem": "The original workflow does not specify a viability gate or fail action.",
+      "evidence": [
+        {
+          "source_type": "guideline_or_standard",
+          "source_identity": "MIFlowCyt guideline, PMID:18752282",
+          "claim_supported": "Flow-cytometry methods need enough detail to interpret results."
+        }
+      ],
+      "impact": "Dead-cell carryover can distort the target-cell frequency.",
+      "failure_mode": "Non-specific antibody binding is mistaken for true signal.",
+      "resolution": "Add viability dye, a release threshold, and a repeat or exclusion rule.",
+      "decisive_readout": "Every sample records viable-cell percentage and the release decision.",
+      "sop_location": "Revised_Protocol section 7"
+    }
+  ],
+  "qc_and_metadata_review": [
+    {
+      "gate_id": "QC1",
+      "stage": "Acquisition release",
+      "metric": "Viable-cell percentage",
+      "acceptance_threshold": "Local panel threshold recorded before execution",
+      "measurement_method": "Viability dye gate applied before target marker gates",
+      "fail_action": "Repeat preparation or exclude with deviation record",
+      "record_field": "viability_percent"
+    }
+  ],
+  "safety_governance_review": "Institutional biosafety and sample-handling approvals are recorded before execution.",
+  "operator_burden_budget": [
+    {
+      "added_requirement": "Viability percentage",
+      "burden": "low",
+      "justification": "Prevents uninterpretable low-quality acquisitions."
+    }
+  ],
+  "mini_pilot_plan": "Run one positive-control and one negative-control sample before the full batch.",
+  "parameter_provenance": [
+    {
+      "parameter": "FMO control",
+      "value": "One FMO control per critical marker",
+      "status": "known_from_source",
+      "source_identity": "MIFlowCyt guideline, PMID:18752282",
+      "local_verification": "Flow core confirms marker panel before execution",
+      "linked_step_or_issue": "M01"
+    }
+  ],
+  "review_to_sop_mapping": [
+    {
+      "issue_id": "M01",
+      "sop_section": "Section 7 quality control"
+    }
+  ]
+}

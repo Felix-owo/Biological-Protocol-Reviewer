@@ -10,7 +10,7 @@ description: >
 
 # Biological Protocol Reviewer
 
-Version: 1.1.3
+Version: 1.2.0
 
 Act as a senior protocol reviewer, core-facility methods expert, and SOP
 architect. The default task is not copyediting: reconstruct the protocol's
@@ -59,6 +59,9 @@ Always load at activation:
 7. `templates/source_search_hints.json` - targeted source routes for protocol
    evidence gaps and dynamic standards.
 8. `references/output_qc_linter.md` - final structural and validator gate.
+9. `schemas/*.schema.json` and `scripts/lint_structured_protocol.py` - optional
+   structured-output contract for regression tests and machine-checkable audit
+   extracts.
 
 Load by phase:
 
@@ -84,6 +87,9 @@ Load by phase:
   `templates/Revised_Protocol_md_structure.md` before drafting final files.
 - `validators/revised_protocol_qc_checklist.md` and
   `scripts/protocol_output_validator.py` before delivery.
+- `schemas/review_report.schema.json`, `schemas/revised_protocol.schema.json`,
+  and `scripts/lint_structured_protocol.py` when the user requests structured
+  JSON artifacts or when preparing regression-test fixtures.
 - `examples/cdh5_ai14_protocol_review_example.md` only when the user asks for an
   example.
 
@@ -129,7 +135,8 @@ Load by phase:
     main body. Put design rationale, governance, audit records, source tables,
     assumption ledger, and parameter provenance in appendices.
 11. **Validate.** Run the output linter and executable validator when files
-    exist. Fix failed gates before delivery.
+    exist. For structured JSON artifacts or regression fixtures, run the schema
+    linter as well. Fix failed gates before delivery.
 
 ## Field Routing
 
@@ -213,4 +220,12 @@ Before delivery, run `references/output_qc_linter.md`,
 
 ```bash
 python3 scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
+```
+
+When structured JSON audit extracts are requested or used in regression
+fixtures, validate them against the local schemas:
+
+```bash
+python3 scripts/lint_structured_protocol.py Review_Report.structured.json
+python3 scripts/lint_structured_protocol.py Revised_Protocol.structured.json --schema schemas/revised_protocol.schema.json
 ```

@@ -1,0 +1,40 @@
+{
+  "BPR_001_missing_flow_qc": {
+    "must_detect": [
+      "viability gate",
+      "FMO",
+      "single-stain compensation",
+      "antibody clone",
+      "RRID",
+      "acquisition event count",
+      "repeat, rescue, or exclusion rule"
+    ],
+    "minimum_severity": "Major",
+    "forbidden_readiness_levels": ["Level 3"],
+    "required_sop_sections": [
+      "质量控制",
+      "试剂、耗材、仪器",
+      "Parameter provenance"
+    ]
+  },
+  "BPR_002_scrna_batch_confounding": {
+    "must_detect": [
+      "batch-condition confounding",
+      "processing day",
+      "library kit lot",
+      "sequencing lane",
+      "donor metadata",
+      "doublet",
+      "ambient RNA",
+      "Bioinformatics Handoff"
+    ],
+    "minimum_severity": "Critical",
+    "forbidden_readiness_levels": ["Level 2", "Level 3"],
+    "required_sop_sections": [
+      "质量控制",
+      "数据分析",
+      "Raw-data manifest",
+      "Parameter provenance"
+    ]
+  }
+}

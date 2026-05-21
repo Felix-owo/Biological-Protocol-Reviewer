@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "parameter_provenance.schema.json",
+  "type": "object",
+  "required": [
+    "parameter",
+    "value",
+    "status",
+    "source_identity",
+    "local_verification",
+    "linked_step_or_issue"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "parameter": { "type": "string", "minLength": 3 },
+    "value": { "type": "string", "minLength": 1 },
+    "status": {
+      "type": "string",
+      "enum": [
+        "known_from_source",
+        "recommended_to_verify_locally",
+        "to_be_confirmed",
+        "local_standard"
+      ]
+    },
+    "source_identity": { "type": "string", "minLength": 4 },
+    "local_verification": { "type": "string", "minLength": 8 },
+    "linked_step_or_issue": { "type": "string", "minLength": 2 }
+  }
+}

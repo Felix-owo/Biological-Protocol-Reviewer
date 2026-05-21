@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.2.0 - 2026-05-21
+
+- Added schema-based structured-output contracts for review reports, revised protocols, issue blocks, QC gates, parameter provenance, and bioinformatics handoff.
+- Added a dependency-free structured JSON linter for CI and regression fixtures.
+- Added unit tests, valid/invalid fixtures, golden-output expectations, and a versioned benchmark set.
+- Added GitHub Actions CI for deterministic validation on push and pull request.
+- Kept default user-facing deliverables as `Review_Report.md` and `Revised_Protocol.md`.
+
 ## v1.1.3 - 2026-05-20
 
 - Removed an unreferenced legacy SOP rewrite reference now superseded by the Markdown SOP template and output linter.
