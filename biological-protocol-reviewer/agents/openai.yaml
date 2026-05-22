@@ -1,0 +1,7 @@
+interface:
+  display_name: "Biological Protocol Reviewer"
+  short_description: "Audit and rewrite biological protocols into executable SOPs"
+  brand_color: "#0F766E"
+  default_prompt: "Use $biological-protocol-reviewer to review this biological protocol, reconstruct the intended result and primary readout, benchmark evidence and parameter authority, run protocol-panel and failure-mode checks, lock the Protocol Readiness Contract, then produce a Review_Report.md and Revised_Protocol.md with QC gates, local validation, source identity, and SOP-ready execution details."
+policy:
+  allow_implicit_invocation: true

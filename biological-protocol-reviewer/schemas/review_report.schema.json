@@ -5,8 +5,12 @@
   "required": [
     "protocol_reconstruction",
     "readiness",
+    "protocol_readiness_contract",
     "module_activation",
     "evidence_benchmark",
+    "parameter_authority_isolation",
+    "readout_contracts",
+    "protocol_panel_synthesis",
     "issues",
     "qc_and_metadata_review",
     "safety_governance_review",
@@ -75,6 +79,15 @@
         }
       }
     },
+    "user_supplied_corpus_handling": {
+      "type": "array"
+    },
+    "protocol_readiness_contract": {
+      "type": "object"
+    },
+    "claim_readout_handoff": {
+      "$ref": "claim_readout_handoff.schema.json"
+    },
     "module_activation": {
       "type": "array",
       "minItems": 1,
@@ -124,6 +137,21 @@
           }
         }
       }
+    },
+    "parameter_authority_isolation": {
+      "type": "array",
+      "minItems": 1
+    },
+    "readout_contracts": {
+      "type": "array",
+      "minItems": 1
+    },
+    "data_records_repository_gate": {
+      "type": "array"
+    },
+    "protocol_panel_synthesis": {
+      "type": "array",
+      "minItems": 1
     },
     "issues": {
       "type": "array",
@@ -206,6 +234,9 @@
           }
         }
       }
+    },
+    "protocol_passport_summary": {
+      "type": "object"
     },
     "external_companion_evidence": {
       "type": "array",

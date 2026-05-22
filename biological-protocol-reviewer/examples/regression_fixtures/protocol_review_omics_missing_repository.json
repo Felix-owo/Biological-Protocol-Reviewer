@@ -1,0 +1,117 @@
+{
+  "protocol_reconstruction": {
+    "intended_result": "Generate reusable single-cell expression data for downstream interpretation.",
+    "primary_readout": "single-cell expression matrix",
+    "experimental_unit": "sequencing library",
+    "fragile_step": "library QC and metadata capture before sequencing"
+  },
+  "readiness": {
+    "score": 72,
+    "maturity_level": 2,
+    "execution_gate": "pilot_required"
+  },
+  "protocol_readiness_contract": {
+    "primary_readout": "single-cell expression matrix",
+    "decisive_QC_gates": ["library complexity", "metadata completeness"],
+    "parameters_not_to_fill": ["repository accession"]
+  },
+  "module_activation": ["omics", "statistics_and_reproducibility"],
+  "evidence_benchmark": [
+    {
+      "benchmark_question": "Does the protocol define reusable data and repository outputs?",
+      "source_grade": "A",
+      "source_identity": "FAIR Guiding Principles DOI 10.1038/sdata.2016.18",
+      "parameter_or_control": "metadata and reusable data record",
+      "local_status": "repository accession unresolved"
+    }
+  ],
+  "parameter_authority_isolation": [
+    {
+      "parameter": "repository accession",
+      "value": "TO BE CONFIRMED",
+      "authority_class": "Unresolved gap",
+      "source_identity": "not yet assigned",
+      "local_validation_status": "must be confirmed before publication",
+      "sop_label": "△TO BE CONFIRMED"
+    }
+  ],
+  "readout_contracts": [
+    {
+      "readout_id": "R1",
+      "conclusion_supported": "Reusable single-cell expression data if QC and metadata pass",
+      "acceptance_criterion": "library QC and metadata completeness pass",
+      "fail_action": "hold release until corrected"
+    }
+  ],
+  "data_records_repository_gate": [
+    {
+      "output": "single-cell count matrix",
+      "repository": "TO BE CONFIRMED",
+      "identifier_status": "unresolved"
+    }
+  ],
+  "protocol_panel_synthesis": [
+    {
+      "panel_role": "statistics and data reviewer",
+      "finding": "Repository and metadata plan are incomplete.",
+      "severity": "Major",
+      "minimum_resolution": "Add repository/accession plan and metadata dictionary."
+    }
+  ],
+  "issues": [
+    {
+      "issue_id": "MAJ1",
+      "severity": "Major",
+      "title": "Repository and reusable data plan are incomplete",
+      "specific_problem": "The protocol produces reusable omics data but lacks a repository/accession plan.",
+      "evidence": [
+        {
+          "source_type": "guideline_or_standard",
+          "source_identity": "FAIR DOI 10.1038/sdata.2016.18",
+          "claim_supported": "Reusable data need metadata and access planning."
+        }
+      ],
+      "impact": "Publication and independent reuse are blocked until data outputs are traceable.",
+      "failure_mode": "A successful experiment could still produce non-reusable data.",
+      "resolution": "Add raw/processed data formats, metadata dictionary, QC files, and repository/accession plan.",
+      "decisive_readout": "Repository plan and metadata support reuse; absence forces execution/publication gate.",
+      "sop_location": "Appendix K data records"
+    }
+  ],
+  "qc_and_metadata_review": [
+    {
+      "gate_id": "QC1",
+      "stage": "library QC",
+      "metric": "metadata completeness",
+      "acceptance_threshold": "all required fields present",
+      "measurement_method": "metadata manifest review",
+      "fail_action": "hold release until corrected",
+      "record_field": "data manifest"
+    }
+  ],
+  "safety_governance_review": "No red-line issue; data release governance remains to be confirmed.",
+  "operator_burden_budget": [
+    {
+      "added_requirement": "metadata manifest",
+      "burden": "medium",
+      "justification": "Required for reusable omics data and audit"
+    }
+  ],
+  "mini_pilot_plan": "Pilot one library and verify metadata/QC manifest before full run.",
+  "parameter_provenance": [
+    {
+      "parameter": "repository accession",
+      "value": "TO BE CONFIRMED",
+      "status": "to_be_confirmed",
+      "source_identity": "FAIR DOI 10.1038/sdata.2016.18",
+      "local_verification": "data manager confirms repository",
+      "linked_step_or_issue": "MAJ1"
+    }
+  ],
+  "review_to_sop_mapping": [
+    {
+      "issue_id": "MAJ1",
+      "sop_section": "Appendix K"
+    }
+  ]
+}

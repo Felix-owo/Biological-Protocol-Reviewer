@@ -12,6 +12,7 @@ External companions may provide:
 - entity normalization;
 - literature or database discovery;
 - public dataset lookup;
+- protocol corpus integrity and source consistency checks;
 - downstream bioinformatics handoff information;
 - source identifiers;
 - output formatting or presentation support after the review is complete.
@@ -45,7 +46,7 @@ Before using a companion:
 4. Do not claim a companion was used unless it returned concrete evidence,
    identifiers, artifacts, checks, or outputs.
 5. Convert every companion result that affects execution back into the
-   Biological-Protocol-Reviewer evidence hierarchy and local-validation rules.
+   biological-protocol-reviewer evidence hierarchy and local-validation rules.
 
 ## Evidence hierarchy rule
 
@@ -125,6 +126,49 @@ Bring back:
   supported;
 - whether the source supports an original-protocol fact, reviewer
   recommendation, or local-validation requirement.
+
+## Academic Research Pipeline / Integrity Companions
+
+Use installed skills or plugin capabilities from
+`Imbad0202/academic-research-skills` or equivalent academic-pipeline companions
+only when they are visible in the current host or when the user explicitly asks
+to use them. Treat them as corpus, integrity, revision-traceability, and passport
+companions, not as protocol-readiness authorities.
+
+Use for:
+
+- screening user-supplied SOPs, manuals, datasheets, lab notes, prior revisions,
+  or article corpora before external recommendations;
+- no-silent-skip corpus logs and exclusion reasons;
+- source-consistency checks between protocol text, tables, datasheets,
+  repository records, and manuscript methods;
+- protocol/passport resumability metadata for long or resumed reviews;
+- revision traceability from review issue to SOP change to residual blocker;
+- citation and data-availability integrity checks after readiness judgment.
+
+Do not use for:
+
+- final protocol-readiness score;
+- SOP authorship;
+- changing parameter authority or local validation status;
+- replacing biological-protocol-reviewer safety/governance red-line review;
+- converting companion summaries directly into executable parameters;
+- sending confidential protocols, private data, unpublished methods, local
+  paths, credentials, or personal information to a networked service without
+  explicit user approval.
+
+Minimum record to bring back:
+
+```text
+ARS companion or command:
+Companion class: corpus / passport / integrity / citation / revision / output
+Input protocol material handled:
+Returned artifact or identifier:
+Protocol section, source, parameter, or revision affected:
+Evidence role: supports / weakens / narrows / flags / context / search_route
+Limitation and data-access level:
+Local validation status:
+```
 
 ## Bioinformatics workflow companions
 

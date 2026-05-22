@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check and optionally score the Biological-Protocol-Reviewer benchmark set."""
+"""Check and optionally score the biological-protocol-reviewer benchmark set."""
 
 from __future__ import annotations
 

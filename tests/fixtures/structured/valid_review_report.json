@@ -14,6 +14,14 @@
     "flow_cytometry_and_imaging",
     "statistics_and_reproducibility"
   ],
+  "protocol_readiness_contract": {
+    "intended_result": "Reproducible flow cytometry identification of a defined target population.",
+    "primary_readout": "Viable target-cell frequency.",
+    "experimental_unit": "One independently processed biological sample.",
+    "decisive_qc_gates": ["viability gate", "FMO-defined threshold", "compensation matrix"],
+    "local_validation_requirements": ["Flow core confirms fluorophore panel before execution"],
+    "blocked_parameters": ["local viability acceptance threshold"]
+  },
   "evidence_benchmark": [
     {
       "benchmark_question": "Are FMO controls and compensation details required?",
@@ -21,6 +29,30 @@
       "source_identity": "MIFlowCyt guideline, PMID:18752282",
       "parameter_or_control": "FMO and single-stain controls",
       "local_status": "known_from_source"
+    }
+  ],
+  "parameter_authority_isolation": [
+    {
+      "parameter": "FMO control",
+      "authority_class": "guideline_or_standard",
+      "source_identity": "MIFlowCyt guideline, PMID:18752282",
+      "local_validation_status": "Flow core confirms marker panel before execution"
+    }
+  ],
+  "readout_contracts": [
+    {
+      "readout_id": "R1",
+      "conclusion_supported": "Target-cell frequency is interpretable only after viability and FMO gates pass.",
+      "positive_control": "Known positive-control sample",
+      "negative_control": "FMO and unstained controls",
+      "acceptance_criterion": "Viability percentage and FMO-defined threshold recorded for every sample",
+      "fail_action": "Repeat preparation or exclude with deviation record"
+    }
+  ],
+  "protocol_panel_synthesis": [
+    {
+      "role": "core_facility_operator",
+      "finding": "The SOP needs viability release criteria and FMO-defined gates before batch execution."
     }
   ],
   "issues": [
@@ -55,6 +87,14 @@
     }
   ],
   "safety_governance_review": "Institutional biosafety and sample-handling approvals are recorded before execution.",
+  "data_records_repository_gate": [
+    {
+      "output": "Flow cytometry FCS files",
+      "raw_data": "FCS files retained with acquisition metadata",
+      "metadata": "sample ID, antibody panel, compensation matrix, viability percentage",
+      "repository": "local institutional storage unless publication requires deposition"
+    }
+  ],
   "operator_burden_budget": [
     {
       "added_requirement": "Viability percentage",

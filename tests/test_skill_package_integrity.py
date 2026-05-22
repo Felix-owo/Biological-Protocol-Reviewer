@@ -7,19 +7,19 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL_ROOT = ROOT / "Biological-Protocol-Reviewer"
+SKILL_ROOT = ROOT / "biological-protocol-reviewer"
 
 
 class SkillPackageIntegrityTests(unittest.TestCase):
     def test_manifest_resource_paths_exist(self) -> None:
-        manifest = json.loads((SKILL_ROOT / "skill_manifest.json").read_text(encoding="utf-8"))
+        manifest = json.loads((SKILL_ROOT / "references" / "skill_manifest.json").read_text(encoding="utf-8"))
         for rel_path in manifest.get("structured_format_resources", []):
             with self.subTest(path=rel_path):
                 self.assertTrue((SKILL_ROOT / rel_path).exists(), rel_path)
 
     def test_skill_md_referenced_local_paths_exist(self) -> None:
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
-        paths = sorted(set(re.findall(r"`((?:references|templates|validators|scripts|schemas)/[^`]+)`", skill_text)))
+        paths = sorted(set(re.findall(r"`((?:references|templates|scripts|schemas)/[^`]+)`", skill_text)))
         self.assertGreater(len(paths), 8)
         for rel_path in paths:
             if "*.schema.json" in rel_path:
@@ -27,6 +27,24 @@ class SkillPackageIntegrityTests(unittest.TestCase):
                 continue
             with self.subTest(path=rel_path):
                 self.assertTrue((SKILL_ROOT / rel_path).exists(), rel_path)
+
+    def test_installable_skill_checker_passes(self) -> None:
+        import subprocess
+        import sys
+
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(SKILL_ROOT / "scripts" / "check_installable_skill.py"),
+                "--skill-dir",
+                str(SKILL_ROOT),
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
 if __name__ == "__main__":

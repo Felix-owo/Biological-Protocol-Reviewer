@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.3.3 - 2026-05-22
+
+- Renamed the installable skill package to canonical Agent Skills style:
+  `biological-protocol-reviewer`.
+- Added `agents/openai.yaml`, installability smoke checks, version consistency
+  checks, and bundled regression-fixture validation.
+- Moved runtime package metadata and QC checklist resources into `references/`
+  so the skill package keeps standard top-level resource directories.
+- Added GitHub engineering root files: `CONTRIBUTING.md`, `SECURITY.md`,
+  `pyproject.toml`, `requirements-dev.txt`, Dependabot config, pull request
+  template, and issue templates.
+- Expanded CI to Python 3.10, 3.11, and 3.12 with JSON validation, script
+  compilation, installable package checks, regression fixtures, unit tests, and
+  benchmark-definition validation.
+
 ## v1.3.0 - 2026-05-21
 
 - Added `references/external_evidence_companion_policy.md` to support optional external skills, official plugins, MCP tools, and output companions without delegating SOP judgment.

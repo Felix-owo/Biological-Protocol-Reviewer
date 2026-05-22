@@ -1,6 +1,6 @@
 {
   "benchmark_version": "v1.0",
-  "purpose": "Regression and release-gate benchmark for Biological-Protocol-Reviewer review behavior.",
+  "purpose": "Regression and release-gate benchmark for biological-protocol-reviewer review behavior.",
   "score_components": {
     "must_detect_recall": 0.55,
     "severity_gate": 0.2,

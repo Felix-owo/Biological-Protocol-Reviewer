@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate structured Biological-Protocol-Reviewer JSON outputs.
+"""Validate structured biological-protocol-reviewer JSON outputs.
 
 This intentionally implements only the JSON Schema subset used by this skill,
 so CI can run with the Python standard library and no network dependency.

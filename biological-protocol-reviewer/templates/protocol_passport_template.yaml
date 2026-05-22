@@ -1,0 +1,58 @@
+protocol_id: ""
+skill_version: "biological-protocol-reviewer v1.3.3"
+source_materials:
+  user_supplied:
+    - id: ""
+      type: ""
+      status: "screened"
+      role: ""
+      exclusion_reason: ""
+  external_sources_checked:
+    - source: ""
+      grade: ""
+      identifier: ""
+      role: ""
+sample_material:
+  organism_or_cell_type: ""
+  sample_type: ""
+  input_constraints: ""
+primary_readout: ""
+experimental_unit: ""
+module_activation:
+  activated: []
+  unclear: []
+  not_applicable: []
+resource_identity:
+  missing_required_ids: []
+  complete_resources: []
+parameter_authority:
+  - parameter: ""
+    value: ""
+    authority_class: ""
+    source_identity: ""
+    local_validation_status: ""
+    sop_label: ""
+qc_gates:
+  - gate_id: ""
+    readout_id: ""
+    acceptance_criterion: ""
+    fail_action: ""
+local_validation_status: ""
+safety_governance_status:
+  red_line_status: ""
+  approvals_or_placeholders: []
+unresolved_gaps:
+  - gap: ""
+    blocks: ""
+    confirmation_owner: ""
+mini_pilot_plan:
+  required: false
+  summary: ""
+review_to_sop_mapping:
+  - finding_id: ""
+    sop_section: ""
+    status: ""
+validator_status:
+  review_report: ""
+  revised_protocol: ""
+  structured_passport: ""

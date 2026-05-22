@@ -4,11 +4,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Standard-Agent_Skills-blueviolet.svg)](https://agentskills.io/specification)
-[![Version](https://img.shields.io/badge/Version-v1.3.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.3.3-blue.svg)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/Python-3.10--3.12-3776AB.svg)](#validation)
 [![Works with](https://img.shields.io/badge/Works_with-Codex-blue.svg)](#installation)
 
-**Biological-Protocol-Reviewer** is a Codex skill for evidence-grounded biological protocol review and SOP rewriting. It audits animal, cell, molecular, flow/imaging, omics, statistics, safety/governance, and frontier-method workflows, then turns incomplete bench notes into a source-backed review report and a directly executable SOP.
+**biological-protocol-reviewer** is a Codex skill for evidence-grounded biological protocol review and SOP rewriting. It audits animal, cell, molecular, flow/imaging, omics, statistics, safety/governance, and frontier-method workflows, then turns incomplete bench notes into a source-backed review report and a directly executable SOP.
 
 
 ## What This Skill Produces
@@ -79,17 +79,20 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 
 ```text
 .
-├── Biological-Protocol-Reviewer/        # installable Codex skill directory
+├── biological-protocol-reviewer/        # installable Codex skill directory
 │   ├── SKILL.md
-│   ├── skill_manifest.json
+│   ├── agents/
+│   │   └── openai.yaml
 │   ├── references/
 │   │   ├── protocol_rubric.json
+│   │   ├── skill_manifest.json
 │   │   ├── module_activation_and_routing.md
 │   │   ├── evidence_benchmarking_workflow.md
 │   │   ├── evidence_and_standards_hard_gates.md
 │   │   ├── external_evidence_companion_policy.md
 │   │   ├── risk_classification_and_redlines.md
-│   │   └── output_qc_linter.md
+│   │   ├── output_qc_linter.md
+│   │   └── revised_protocol_qc_checklist.md
 │   ├── templates/
 │   │   ├── Review_Report_template.md
 │   │   ├── Revised_Protocol_md_structure.md
@@ -103,11 +106,12 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 │   │   ├── parameter_provenance.schema.json
 │   │   ├── bioinformatics_handoff.schema.json
 │   │   └── external_companion_evidence.schema.json
-│   ├── validators/
-│   │   └── revised_protocol_qc_checklist.md
 │   ├── scripts/
 │   │   ├── protocol_output_validator.py
-│   │   └── lint_structured_protocol.py
+│   │   ├── lint_structured_protocol.py
+│   │   ├── check_installable_skill.py
+│   │   ├── check_version_consistency.py
+│   │   └── run_regression_fixtures.py
 │   └── examples/
 │       └── cdh5_ai14_protocol_review_example.md
 ├── tests/
@@ -116,26 +120,30 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 ├── tools/
 │   └── score_protocol_benchmark.py
 ├── .github/
+│   ├── ISSUE_TEMPLATE/
 │   └── workflows/
 │       └── validate.yml
 ├── README.md
 ├── README.zh-CN.md
 ├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── SECURITY.md
+├── pyproject.toml
 └── LICENSE
 ```
 
 GitHub-facing README, changelog, license, CI, tests, and benchmark definitions
 live at the repository root. The installable skill is intentionally isolated in
-`Biological-Protocol-Reviewer/` so the runtime package remains clean and
+`biological-protocol-reviewer/` so the runtime package remains clean and
 self-contained while the repository remains testable.
 
 ## Installation
 
-Install from this repository using the subpath `Biological-Protocol-Reviewer`.
+Install from this repository using the subpath `biological-protocol-reviewer`.
 For a local install, the path that Codex resolves as the skill should point to:
 
 ```text
-<repo-root>/Biological-Protocol-Reviewer
+<repo-root>/biological-protocol-reviewer
 ```
 
 Do not install the repository root as the skill directory, because the root
@@ -158,7 +166,7 @@ also contains GitHub documentation.
 When deliverable files exist, run:
 
 ```bash
-python3 Biological-Protocol-Reviewer/scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
+python3 biological-protocol-reviewer/scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
 ```
 
 The validator checks required report and protocol sections, section order, unresolved vague language, and missing provenance for recommended parameters. It does not replace scientific judgment.
@@ -166,13 +174,16 @@ The validator checks required report and protocol sections, section order, unres
 For structured JSON audit extracts or regression fixtures, run:
 
 ```bash
-python3 Biological-Protocol-Reviewer/scripts/lint_structured_protocol.py tests/fixtures/structured/valid_review_report.json
-python3 Biological-Protocol-Reviewer/scripts/lint_structured_protocol.py Revised_Protocol.structured.json --schema Biological-Protocol-Reviewer/schemas/revised_protocol.schema.json
+python3 biological-protocol-reviewer/scripts/lint_structured_protocol.py tests/fixtures/structured/valid_review_report.json
+python3 biological-protocol-reviewer/scripts/lint_structured_protocol.py Revised_Protocol.structured.json --schema biological-protocol-reviewer/schemas/revised_protocol.schema.json
 ```
 
 For repository maintenance, run the deterministic test and benchmark-definition checks:
 
 ```bash
+python3 biological-protocol-reviewer/scripts/check_installable_skill.py --skill-dir biological-protocol-reviewer
+python3 biological-protocol-reviewer/scripts/check_version_consistency.py
+python3 biological-protocol-reviewer/scripts/run_regression_fixtures.py
 python3 -m unittest discover -s tests -v
 python3 tools/score_protocol_benchmark.py --benchmark-root benchmarks/v1.0
 ```
@@ -189,7 +200,7 @@ The skill assumes legitimate institutional work by trained personnel when the co
 ## Typical Prompt
 
 ```text
-Use Biological-Protocol-Reviewer to review and rewrite this protocol.
+Use biological-protocol-reviewer to review and rewrite this protocol.
 
 Protocol title/version:
 Purpose and primary readout:

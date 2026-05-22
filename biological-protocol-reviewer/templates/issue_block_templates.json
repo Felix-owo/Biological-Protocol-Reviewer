@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "purpose": "Force Biological-Protocol-Reviewer findings to be self-contained, evidence-backed protocol issue blocks rather than generic comments.",
+  "purpose": "Force biological-protocol-reviewer findings to be self-contained, evidence-backed protocol issue blocks rather than generic comments.",
   "issue_logic_chain": {
     "required_fields": [
       "specific_problem",

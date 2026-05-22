@@ -4,11 +4,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Standard-Agent_Skills-blueviolet.svg)](https://agentskills.io/specification)
-[![Version](https://img.shields.io/badge/Version-v1.3.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.3.3-blue.svg)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/Python-3.10--3.12-3776AB.svg)](#校验方式)
 [![Works with](https://img.shields.io/badge/Works_with-Codex-blue.svg)](#安装方式)
 
-**Biological-Protocol-Reviewer** 是一个用于生物实验 protocol 严格评审和 SOP 重写的 Codex skill。它面向动物、细胞、分子生物学、流式/成像、组学、统计复现性、安全治理和前沿实验方法，目标不是润色文字，而是判断 protocol 是否能被安全执行、正确解释、稳定复现、完整审计，并把不完整 bench notes 改写成有证据支撑的可执行 SOP。
+**biological-protocol-reviewer** 是一个用于生物实验 protocol 严格评审和 SOP 重写的 Codex skill。它面向动物、细胞、分子生物学、流式/成像、组学、统计复现性、安全治理和前沿实验方法，目标不是润色文字，而是判断 protocol 是否能被安全执行、正确解释、稳定复现、完整审计，并把不完整 bench notes 改写成有证据支撑的可执行 SOP。
 
 
 ## 默认输出
@@ -67,11 +67,13 @@ Biological Protocol Reviewer 可以在当前 host 已暴露相关能力时使用
 
 ```text
 .
-├── Biological-Protocol-Reviewer/        # 可安装的 Codex skill 目录
+├── biological-protocol-reviewer/        # 可安装的 Agent Skill 目录
 │   ├── SKILL.md
-│   ├── skill_manifest.json
+│   ├── agents/
+│   │   └── openai.yaml
 │   ├── references/
 │   │   ├── protocol_rubric.json
+│   │   ├── skill_manifest.json
 │   │   ├── module_activation_and_routing.md
 │   │   ├── evidence_benchmarking_workflow.md
 │   │   ├── evidence_and_standards_hard_gates.md
@@ -91,11 +93,12 @@ Biological Protocol Reviewer 可以在当前 host 已暴露相关能力时使用
 │   │   ├── parameter_provenance.schema.json
 │   │   ├── bioinformatics_handoff.schema.json
 │   │   └── external_companion_evidence.schema.json
-│   ├── validators/
-│   │   └── revised_protocol_qc_checklist.md
 │   ├── scripts/
 │   │   ├── protocol_output_validator.py
-│   │   └── lint_structured_protocol.py
+│   │   ├── lint_structured_protocol.py
+│   │   ├── check_installable_skill.py
+│   │   ├── check_version_consistency.py
+│   │   └── run_regression_fixtures.py
 │   └── examples/
 │       └── cdh5_ai14_protocol_review_example.md
 ├── tests/
@@ -109,20 +112,23 @@ Biological Protocol Reviewer 可以在当前 host 已暴露相关能力时使用
 ├── README.md
 ├── README.zh-CN.md
 ├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── SECURITY.md
+├── pyproject.toml
 └── LICENSE
 ```
 
 GitHub 发布用的 README、CHANGELOG、LICENSE、CI、tests 和 benchmark definitions
 保留在仓库根目录。真正可安装的 skill 被隔离在
-`Biological-Protocol-Reviewer/` 子目录内，避免把仓库维护文件混入运行时包。
+`biological-protocol-reviewer/` 子目录内，避免把仓库维护文件混入运行时包。
 
 ## 安装方式
 
-从 GitHub 安装时应使用子路径 `Biological-Protocol-Reviewer`。本地安装时，Codex
+从 GitHub 安装时应使用子路径 `biological-protocol-reviewer`。本地安装时，Codex
 解析到的 skill 路径应指向：
 
 ```text
-<repo-root>/Biological-Protocol-Reviewer
+<repo-root>/biological-protocol-reviewer
 ```
 
 不要把仓库根目录直接作为 skill 目录安装，因为根目录包含 GitHub 文档。
@@ -144,7 +150,7 @@ GitHub 发布用的 README、CHANGELOG、LICENSE、CI、tests 和 benchmark defi
 当输出文件存在时运行：
 
 ```bash
-python3 Biological-Protocol-Reviewer/scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
+python3 biological-protocol-reviewer/scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
 ```
 
 该 validator 检查 Review_Report 和 Revised_Protocol.md 的必需结构、章节顺序、未解决模糊语言，以及推荐参数是否缺少参数溯源。它不能替代科学判断。
@@ -152,13 +158,16 @@ python3 Biological-Protocol-Reviewer/scripts/protocol_output_validator.py --repo
 当需要结构化 JSON 审计提取或回归测试 fixture 时运行：
 
 ```bash
-python3 Biological-Protocol-Reviewer/scripts/lint_structured_protocol.py tests/fixtures/structured/valid_review_report.json
-python3 Biological-Protocol-Reviewer/scripts/lint_structured_protocol.py Revised_Protocol.structured.json --schema Biological-Protocol-Reviewer/schemas/revised_protocol.schema.json
+python3 biological-protocol-reviewer/scripts/lint_structured_protocol.py tests/fixtures/structured/valid_review_report.json
+python3 biological-protocol-reviewer/scripts/lint_structured_protocol.py Revised_Protocol.structured.json --schema biological-protocol-reviewer/schemas/revised_protocol.schema.json
 ```
 
 维护仓库时运行确定性测试和 benchmark 定义检查：
 
 ```bash
+python3 biological-protocol-reviewer/scripts/check_installable_skill.py --skill-dir biological-protocol-reviewer
+python3 biological-protocol-reviewer/scripts/check_version_consistency.py
+python3 biological-protocol-reviewer/scripts/run_regression_fixtures.py
 python3 -m unittest discover -s tests -v
 python3 tools/score_protocol_benchmark.py --benchmark-root benchmarks/v1.0
 ```
@@ -173,7 +182,7 @@ GitHub Actions 会在 push 和 pull request 时运行同一组检查。版本化
 ## 典型输入
 
 ```text
-请使用 Biological-Protocol-Reviewer 审核并重写这个 protocol。
+请使用 biological-protocol-reviewer 审核并重写这个 protocol。
 
 Protocol title/version:
 Purpose and primary readout:

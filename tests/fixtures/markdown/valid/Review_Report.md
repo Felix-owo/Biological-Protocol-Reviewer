@@ -31,7 +31,35 @@ The protocol is executable after adding explicit controls, QC gates, and source-
 | --- | --- | --- | --- |
 | Is FMO control required? | MIFlowCyt, PMID:18752282 | FMO and single-stain controls | known_from_source |
 
-## 6. Severity-ranked findings
+## 6. Protocol Readiness Contract
+
+| Field | Locked value |
+| --- | --- |
+| Intended result | Reproducible identification of a defined cell population. |
+| Primary readout | Gated viable target-cell frequency. |
+| Experimental unit | One independently processed sample. |
+| Decisive QC gates | Viability gate, FMO threshold, compensation matrix. |
+| Local validation requirements | Flow core confirms the fluorophore panel before execution. |
+
+## 7. Parameter authority
+
+| Parameter | Authority class | Source identity | Local validation status |
+| --- | --- | --- | --- |
+| FMO control | guideline_or_standard | MIFlowCyt, PMID:18752282 | Flow core confirms panel before execution. |
+
+## 8. Readout contracts
+
+| Readout | Supported conclusion | Acceptance criterion | Fail action |
+| --- | --- | --- | --- |
+| Viable target-cell frequency | Target-cell frequency is interpretable only after viability and FMO gates pass. | Viability percentage and FMO threshold are recorded for every sample. | Repeat preparation or exclude with deviation record. |
+
+## 9. Protocol panel synthesis
+
+| Panel role | Finding |
+| --- | --- |
+| Core-facility operator | The SOP needs viability release criteria and FMO-defined gates before batch execution. |
+
+## 10. Severity-ranked findings
 
 ### Major issue M01
 
@@ -43,46 +71,52 @@ The protocol is executable after adding explicit controls, QC gates, and source-
 - 决定性 readout: The revised SOP passes when viable-cell percentage and FMO-defined threshold are recorded for every sample.
 - SOP location: Revised_Protocol section 7.
 
-## 7. QC and Metadata review
+## 11. QC and Metadata review
 
 - QC gate: viable-cell percentage, FMO threshold, compensation matrix, acquisition event count.
 
-## 8. 统计 / Statistical review
+## 12. Data records and repository gate
+
+| Output | Raw data | Metadata | Repository |
+| --- | --- | --- | --- |
+| Flow cytometry FCS files | FCS files retained with acquisition metadata. | sample ID, antibody panel, compensation matrix, viability percentage. | Local institutional storage unless publication requires deposition. |
+
+## 13. 统计 / Statistical review
 
 The experimental unit is one independently processed sample. Technical repeats are not treated as biological replicates.
 
-## 9. 安全 / Safety and governance review
+## 14. 安全 / Safety and governance review
 
 The workflow is compatible with institutional biosafety review for non-infectious fixed samples.
 
-## 10. Assumption ledger
+## 15. Assumption ledger
 
 | Assumption | Required confirmation |
 | --- | --- |
 | Instrument configuration supports the fluorophore panel. | Flow core manager confirms before execution. |
 
-## 11. Parameter provenance
+## 16. Parameter provenance
 
 | Parameter | Value | Source and citation | Status |
 | --- | --- | --- | --- |
 | FMO control | one per critical marker | MIFlowCyt, PMID:18752282 | known_from_source |
 
-## 12. Operator burden budget
+## 17. Operator burden budget
 
 | Added field | Burden | Justification |
 | --- | --- | --- |
 | Viability percentage | low | Prevents uninterpretable low-quality acquisitions. |
 
-## 13. mini-pilot
+## 18. mini-pilot
 
 Run one positive-control and one negative-control sample before processing the full batch.
 
-## 14. Original-to-revised mapping
+## 19. Original-to-revised mapping
 
 | Original gap | Revised SOP section |
 | --- | --- |
 | Missing viability gate | Section 7 quality control |
 
-## 15. Red-line self-audit
+## 20. Red-line self-audit
 
 No request asks for harmful biological-agent creation, oversight evasion, or concealment.

@@ -1,6 +1,6 @@
 {
-  "name": "Biological-Protocol-Reviewer",
-  "version": "1.3.0",
+  "name": "biological-protocol-reviewer",
+  "version": "1.3.3",
   "architecture": "single-skill-with-internal-module-routing",
   "default_language": "zh-CN",
   "mission": "Publication-grade review and rewriting of biological experimental protocols into bench-facing Markdown SOP outputs with audit-ready appendices.",
@@ -19,7 +19,18 @@
     "schemas/parameter_provenance.schema.json",
     "schemas/bioinformatics_handoff.schema.json",
     "references/external_evidence_companion_policy.md",
-    "schemas/external_companion_evidence.schema.json"
+    "schemas/external_companion_evidence.schema.json",
+    "references/protocol_readiness_contract.md",
+    "references/protocol_panel_protocol.md",
+    "references/parameter_authority_isolation.md",
+    "references/user_supplied_corpus_policy.md",
+    "references/cross_skill_claim_readout_handoff.md",
+    "references/readout_contract.md",
+    "references/data_records_and_repository_gate.md",
+    "references/protocol_passport.md",
+    "templates/protocol_passport_template.yaml",
+    "schemas/protocol_passport.schema.json",
+    "schemas/claim_readout_handoff.schema.json"
   ],
   "internal_modules": [
     "animal_experiments",
@@ -34,7 +45,14 @@
     "data_records",
     "frontier_methods",
     "operator_burden_budget",
-    "mini_pilot_validation"
+    "mini_pilot_validation",
+    "protocol_readiness_contract",
+    "protocol_panel_protocol",
+    "parameter_authority_isolation",
+    "user_supplied_corpus_handling",
+    "cross_skill_claim_readout_handoff",
+    "readout_contracts",
+    "protocol_passport"
   ],
   "required_quality_gates": [
     "module_activation_table",
@@ -65,7 +83,15 @@
     "output_qc_linter",
     "external_evidence_companion_policy",
     "companion_derived_source_identity_gate",
-    "external_companion_evidence_schema"
+    "external_companion_evidence_schema",
+    "user_corpus_first_no_silent_skip",
+    "protocol_readiness_contract_before_sop_rewrite",
+    "protocol_panel_synthesis_before_readiness_score",
+    "parameter_authority_isolation",
+    "cross_skill_claim_readout_handoff",
+    "readout_contracts_for_qc_release",
+    "data_records_repository_gate",
+    "protocol_passport_validator"
   ],
   "risk_policy": {
     "default_assumption": "authorized institutional research by trained personnel when context is consistent with compliant research",

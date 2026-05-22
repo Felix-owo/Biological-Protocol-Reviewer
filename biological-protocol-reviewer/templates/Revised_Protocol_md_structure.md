@@ -291,3 +291,32 @@ Include reporting-standard checklists, assumption ledger, parameter provenance, 
 
 | Added requirement | Burden | Value | Keep/appendix/omit decision |
 |---|---|---|---|
+
+### K.6 Readout contracts / readout-QC对应表
+
+| Readout ID | Conclusion supported | Experimental unit | Positive control | Negative/control readout | Acceptance criterion | Fail action | Interpretation boundary |
+|---|---|---|---|---|---|---|---|
+
+### K.7 Data records and repository plan / 数据记录与仓储计划
+
+Include when the SOP produces reusable omics, flow, imaging, sequencing,
+behavior, high-content, or computational outputs.
+
+| Dataset/output | Raw data | Processed data | Metadata | Repository/access route | Identifier status | QC file | Retention |
+|---|---|---|---|---|---|---|---|
+
+### K.8 Protocol Passport summary / 协议护照摘要
+
+Include only when an auditable `Protocol_Passport.yaml` or
+`Protocol_Passport.json` is created.
+
+| Passport field | Status | Linked SOP/report section |
+|---|---|---|
+
+### K.9 Cross-skill claim-readout handoff / claim-readout交接表
+
+Include only when the SOP readout is used to support a manuscript, proposal,
+figure set, dataset, or central scientific claim.
+
+| Claim ID | Claim | Evidence role | Readout ID | SOP step/method | Parameter authority | QC gate | Failure mode | Manuscript impact | Revision action |
+|---|---|---|---|---|---|---|---|---|---|

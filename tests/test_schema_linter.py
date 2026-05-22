@@ -8,8 +8,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LINTER = ROOT / "Biological-Protocol-Reviewer" / "scripts" / "lint_structured_protocol.py"
-SCHEMA_DIR = ROOT / "Biological-Protocol-Reviewer" / "schemas"
+LINTER = ROOT / "biological-protocol-reviewer" / "scripts" / "lint_structured_protocol.py"
+SCHEMA_DIR = ROOT / "biological-protocol-reviewer" / "schemas"
 FIXTURES = ROOT / "tests" / "fixtures" / "structured"
 
 

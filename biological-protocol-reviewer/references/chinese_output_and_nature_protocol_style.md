@@ -8,6 +8,13 @@ Unless the user explicitly requests another language, all user-facing outputs mu
 - `Revised_Protocol.md` must use Chinese as the primary language.
 - Technical terms may retain standard English names in parentheses on first use, especially reagent names, instrument settings, antibodies, fluorophores, gene names, software, databases, statistical models, and reporting standards.
 - File names should default to Chinese-compatible names unless the user requests English file names. The required canonical outputs remain `Review_Report.md` and `Revised_Protocol.md`; a Chinese display title may be used inside the documents.
+- Do not translate literally when literal translation weakens scientific or
+  operational precision.
+- Produce publication-facing English only when explicitly requested, and keep
+  unresolved lab-input fields in Chinese when they are action items for the user.
+- Separate prose clarity from executable completeness: polished Chinese or
+  Nature Protocols-style language must not hide missing parameters, QC gates,
+  local validation, or safety/governance placeholders.
 
 ## Nature Protocols-inspired SOP-first document style
 

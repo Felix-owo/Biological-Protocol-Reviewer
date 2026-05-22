@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate Biological-Protocol-Reviewer Markdown outputs.
+"""Validate biological-protocol-reviewer Markdown outputs.
 
 This script performs deterministic structural checks. It does not replace
 scientific review.
@@ -21,6 +21,10 @@ REQUIRED_REPORT = [
     "成熟度",
     "Module activation",
     "Evidence benchmark",
+    "Protocol Readiness Contract",
+    "Parameter authority",
+    "Readout contracts",
+    "Protocol panel synthesis",
     "Severity-ranked",
     "具体问题",
     "证据",
@@ -29,6 +33,7 @@ REQUIRED_REPORT = [
     "决定性 readout",
     "QC",
     "Metadata",
+    "Data records and repository gate",
     "统计",
     "安全",
     "Assumption",
