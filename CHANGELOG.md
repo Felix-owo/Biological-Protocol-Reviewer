@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.2 - 2026-05-23
+
+- Hardened installability validation by cross-checking `SKILL.md` resource references, `skill_manifest.json` resources, and actual files on disk.
+- Strengthened `protocol_output_validator.py` with Critical/Major issue-block completeness checks, Review-to-SOP traceability checks, and optional strict content warnings.
+- Tightened Protocol Passport nested audit requirements for source materials, sample material, safety/governance status, and validator status.
+- Tightened external companion evidence provenance with `identifier_type`, `identifier`, `resolved_source_grade`, and ISO-style `access_date` constraints.
+- Added v1.4.2 hardening tests and a benchmark-results bookkeeping scaffold without claiming model-output scoring that has not been run.
+
 ## v1.4.1 - 2026-05-23
 
 - Hardened CI by installing `requirements-dev.txt`, running Ruff, validating JSON Schema files through `jsonschema`, checking Python 3.10-3.13, and validating the Protocol Passport template through explicit `--allow-template` mode.

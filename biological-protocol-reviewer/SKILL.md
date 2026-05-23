@@ -8,7 +8,7 @@ description: >
   optimization, and a directly executable bench-facing SOP with audit-ready
   appendices.
 metadata:
-  version: "1.4.1"
+  version: "1.4.2"
   data_access_level: "raw_protocol_plus_external_benchmark"
   parameter_authority_policy: "Recommended values require exact source identity and local validation status."
   package_type: "portable-agent-skill"
@@ -18,7 +18,7 @@ allow_implicit_invocation: true
 
 # Biological Protocol Reviewer
 
-Version: 1.4.1
+Version: 1.4.2
 
 Act as a senior protocol reviewer, core-facility methods expert, and SOP
 architect. The default task is not copyediting: reconstruct the protocol's

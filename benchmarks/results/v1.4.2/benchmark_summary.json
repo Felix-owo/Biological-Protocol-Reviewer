@@ -1,0 +1,11 @@
+{
+  "skill": "biological-protocol-reviewer",
+  "version": "1.4.2",
+  "benchmark_set": "benchmarks/v1.0",
+  "definition_validation": "expected to pass with tools/score_protocol_benchmark.py --benchmark-root benchmarks/v1.0",
+  "model_outputs_scored": false,
+  "mean_score": null,
+  "pass_rate": null,
+  "limitation": "No release-time model-output files are bundled by this patch. Add <case_id>.md outputs and rerun the scoring tool before claiming empirical pass rate.",
+  "recommended_next_action": "Populate benchmarks/results/v1.4.2/outputs/ and store scorer JSON output after running real model-output regression."
+}

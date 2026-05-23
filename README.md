@@ -4,7 +4,7 @@
 
 [![License: MPL-2.0](https://img.shields.io/badge/License-MPL--2.0-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Standard-Agent_Skills-blueviolet.svg)](https://agentskills.io/specification)
-[![Version](https://img.shields.io/badge/Version-v1.4.1-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.4.2-blue.svg)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/Python-3.10--3.13-3776AB.svg)](#validation)
 [![Works with](https://img.shields.io/badge/Works_with-Codex-blue.svg)](#installation)
 
@@ -20,7 +20,7 @@ By default, the skill produces two user-facing files:
 
 The skill is intentionally not a copyeditor. It asks whether the protocol can be executed, interpreted, reproduced, audited, and governed safely.
 
-## v1.4.1 Hardening Notes
+## v1.4.2 Hardening Notes
 
 This patch release keeps the v1.4.x skill behavior intact and strengthens repository reliability:
 

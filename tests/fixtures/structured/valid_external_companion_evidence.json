@@ -9,5 +9,8 @@
   "protocol_section_affected": "qPCR QC gate",
   "limitation": "The source supports reporting expectations but does not validate local primer performance.",
   "verification_status": "resolved_to_grade_a_to_c_source",
-  "access_date": "2026-05-23"
+  "access_date": "2026-05-23",
+  "identifier": "PMID 19246619",
+  "identifier_type": "PMID",
+  "resolved_source_grade": "A"
 }

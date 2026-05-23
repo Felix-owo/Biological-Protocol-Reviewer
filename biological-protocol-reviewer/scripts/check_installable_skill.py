@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
-"""Smoke-test the installable biological-protocol-reviewer skill folder."""
+"""Smoke-test the installable biological-protocol-reviewer skill folder.
+
+This validator checks the static package shape and cross-checks resource
+references across SKILL.md, references/skill_manifest.json, and the filesystem.
+"""
 
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import subprocess
 import sys
@@ -12,7 +17,7 @@ from pathlib import Path
 CANONICAL_NAME = "biological-protocol-reviewer"
 REQUIRED_DIRS = ["agents", "examples", "references", "schemas", "scripts", "templates"]
 ALLOWED_TOP_LEVEL = {"SKILL.md", *REQUIRED_DIRS}
-REQUIRED_FILES = [
+BASE_REQUIRED_FILES = [
     "SKILL.md",
     "agents/openai.yaml",
     "references/agent_behavior_core.md",
@@ -35,14 +40,20 @@ REQUIRED_FILES = [
     "schemas/qc_gate.schema.json",
     "schemas/parameter_provenance.schema.json",
     "schemas/external_companion_evidence.schema.json",
+    "schemas/protocol_passport.schema.json",
+    "schemas/claim_readout_handoff.schema.json",
     "scripts/protocol_output_validator.py",
     "scripts/lint_structured_protocol.py",
     "scripts/check_installable_skill.py",
     "scripts/check_version_consistency.py",
     "scripts/run_regression_fixtures.py",
+    "scripts/check_protocol_passport.py",
 ]
 DESCRIPTION_TERMS = ["protocol", "SOP", "QC", "benchmark", "readiness"]
 ALLOWED_LICENSES = {"MPL-2.0"}
+RESOURCE_PATTERN = re.compile(
+    r"(?P<path>(?:agents|examples|references|schemas|scripts|templates)/[A-Za-z0-9_./-]+)"
+)
 
 
 def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
@@ -70,6 +81,42 @@ def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
     return data, header
 
 
+def extract_version_from_skill(text: str) -> str | None:
+    match = re.search(r"metadata:\s*(?:\n\s+[A-Za-z0-9_-]+:.*)*\n\s+version:\s*\"([^\"]+)\"", text)
+    if match:
+        return match.group(1)
+    match = re.search(r"^Version:\s*([0-9]+\.[0-9]+\.[0-9]+)\s*$", text, flags=re.MULTILINE)
+    return match.group(1) if match else None
+
+
+def load_manifest(skill_dir: Path, errors: list[str]) -> dict[str, object]:
+    manifest_path = skill_dir / "references" / "skill_manifest.json"
+    try:
+        return json.loads(manifest_path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        errors.append(f"Could not parse references/skill_manifest.json: {exc}")
+        return {}
+
+
+def referenced_resources_from_skill(text: str) -> set[str]:
+    resources: set[str] = set()
+    for match in RESOURCE_PATTERN.finditer(text):
+        raw = match.group("path").rstrip("`),.;:")
+        if "*" in raw:
+            continue
+        resources.add(raw)
+    return resources
+
+
+def manifest_resources(manifest: dict[str, object]) -> set[str]:
+    resources: set[str] = set()
+    for key in ["structured_format_resources"]:
+        values = manifest.get(key, [])
+        if isinstance(values, list):
+            resources.update(item for item in values if isinstance(item, str))
+    return resources
+
+
 def validate_skill(skill_dir: Path) -> list[str]:
     errors: list[str] = []
     if not skill_dir.exists():
@@ -85,17 +132,20 @@ def validate_skill(skill_dir: Path) -> list[str]:
     for dirname in REQUIRED_DIRS:
         if not (skill_dir / dirname).is_dir():
             errors.append(f"Missing required directory: {dirname}")
-    for filename in REQUIRED_FILES:
+    for filename in BASE_REQUIRED_FILES:
         if not (skill_dir / filename).is_file():
             errors.append(f"Missing required file: {filename}")
     if (skill_dir / "validators").exists():
         errors.append("Do not keep a top-level validators/ directory; use references/ or scripts/")
 
     skill_md = skill_dir / "SKILL.md"
+    skill_text = ""
+    skill_version = None
     if skill_md.exists():
-        text = skill_md.read_text(encoding="utf-8")
+        skill_text = skill_md.read_text(encoding="utf-8")
+        skill_version = extract_version_from_skill(skill_text)
         try:
-            meta, _ = parse_frontmatter(text)
+            meta, _ = parse_frontmatter(skill_text)
         except ValueError as exc:
             errors.append(str(exc))
         else:
@@ -111,10 +161,31 @@ def validate_skill(skill_dir: Path) -> list[str]:
             if license_value not in ALLOWED_LICENSES:
                 errors.append(f"SKILL.md frontmatter license must be one of {sorted(ALLOWED_LICENSES)!r}")
 
-        if "validators/revised_protocol_qc_checklist.md" in text:
+        if "validators/revised_protocol_qc_checklist.md" in skill_text:
             errors.append("SKILL.md still references non-standard validators/ path")
-        if "references/revised_protocol_qc_checklist.md" not in text:
+        if "references/revised_protocol_qc_checklist.md" not in skill_text:
             errors.append("SKILL.md must route the revised-protocol QC checklist from references/")
+
+    manifest = load_manifest(skill_dir, errors)
+    if manifest:
+        if manifest.get("name") != CANONICAL_NAME:
+            errors.append("references/skill_manifest.json name does not match canonical skill name")
+        if skill_version and manifest.get("version") != skill_version:
+            errors.append("references/skill_manifest.json version does not match SKILL.md metadata.version")
+
+    # Cross-check all manifest and SKILL resource references against actual files.
+    declared_resources = manifest_resources(manifest)
+    skill_references = referenced_resources_from_skill(skill_text)
+    for resource in sorted(declared_resources | skill_references):
+        if resource.endswith("/") or resource.endswith("*.schema.json"):
+            continue
+        if not (skill_dir / resource).exists():
+            errors.append(f"Referenced resource is missing: {resource}")
+
+    # `structured_format_resources` is a curated subset of structured templates/schemas,
+    # not a complete resource inventory. Missing files are errors; absence from the
+    # manifest is not. Full inventory enforcement should use a dedicated
+    # `resource_inventory` field in a future schema-compatible release.
 
     openai_yaml = skill_dir / "agents" / "openai.yaml"
     if openai_yaml.exists():

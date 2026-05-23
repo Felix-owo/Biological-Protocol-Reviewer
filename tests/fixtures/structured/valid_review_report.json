@@ -139,7 +139,10 @@
       "limitation": "Companion lookup only identified the source; BPR still assigns SOP relevance.",
       "verification_status": "resolved_to_grade_a_to_c_source",
       "exact_parameter_control_qc_or_metadata_field_affected": "repository and metadata release gate",
-      "access_date": "2026-05-23"
+      "access_date": "2026-05-23",
+      "identifier": "PMID:18752282",
+      "identifier_type": "PMID",
+      "resolved_source_grade": "A"
     }
   ]
 }

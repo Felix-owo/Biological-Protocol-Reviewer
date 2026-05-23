@@ -4,7 +4,7 @@
 
 [![License: MPL-2.0](https://img.shields.io/badge/License-MPL--2.0-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Standard-Agent_Skills-blueviolet.svg)](https://agentskills.io/specification)
-[![Version](https://img.shields.io/badge/Version-v1.4.1-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.4.2-blue.svg)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/Python-3.10--3.13-3776AB.svg)](#校验方式)
 [![Works with](https://img.shields.io/badge/Works_with-Codex-blue.svg)](#安装方式)
 
@@ -20,7 +20,7 @@
 
 这个 skill 不把 protocol 审核当作 copyediting。它首先问：这个流程能否执行、解释、复现、审计，并符合安全和治理要求。
 
-## v1.4.1 加固说明
+## v1.4.2 加固说明
 
 本 patch release 保留 v1.4.x 的核心 Skill 行为，主要增强仓库工程可靠性：
 

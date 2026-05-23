@@ -2,7 +2,8 @@
 """Validate biological-protocol-reviewer Markdown outputs.
 
 This script performs deterministic structural checks. It does not replace
-scientific review.
+scientific review, but it catches empty-shell outputs, unresolved vague language,
+and missing traceability in Critical/Major issue blocks.
 """
 
 from __future__ import annotations
@@ -76,6 +77,15 @@ MAIN_BODY_ORDER = [
     "试剂配制",
     "质量控制",
     "疑难排查",
+]
+
+ISSUE_REQUIRED_LABELS = [
+    "具体问题",
+    "证据",
+    "影响",
+    "解决",
+    "决定性 readout",
+    "SOP修订位置",
 ]
 
 VAGUE_PATTERNS = [
@@ -159,11 +169,93 @@ def recommended_without_provenance(text: str) -> bool:
     return not any(term in text for term in provenance_terms)
 
 
+def extract_issue_blocks(text: str) -> list[tuple[str, str]]:
+    pattern = re.compile(r"(?ms)^###\s+((?:C|M)\d+)\.?[^\n]*\n(?P<body>.*?)(?=^###\s+|^##\s+|\Z)")
+    blocks: list[tuple[str, str]] = []
+    for match in pattern.finditer(text):
+        issue_id = match.group(1)
+        body = match.group("body")
+        # Ignore untouched template placeholders with no issue title/content.
+        if "<" in match.group(0) and "具体问题" in body and not re.search(r"\S{8,}", body.replace("具体问题", "")):
+            continue
+        blocks.append((issue_id, body))
+    return blocks
+
+
+def issue_block_errors(report_text: str) -> list[str]:
+    errors: list[str] = []
+    for issue_id, body in extract_issue_blocks(report_text):
+        missing = [label for label in ISSUE_REQUIRED_LABELS if label not in body]
+        if missing:
+            errors.append(f"{issue_id}: Critical/Major issue block missing labels: {', '.join(missing)}")
+        if not re.search(r"failure mode|失败模式|伪阳性|伪阴性|批次效应|污染|偏倚|执行偏差", body, flags=re.I):
+            errors.append(f"{issue_id}: issue block does not name a concrete failure mode or alternative error mode")
+    return errors
+
+
+def section_after(text: str, title: str) -> str:
+    idx = text.find(title)
+    if idx == -1:
+        return ""
+    rest = text[idx:]
+    next_match = re.search(r"\n##\s+", rest[len(title):])
+    if not next_match:
+        return rest
+    return rest[: len(title) + next_match.start()]
+
+
+def traceability_errors(report_text: str) -> list[str]:
+    errors: list[str] = []
+    issues = extract_issue_blocks(report_text)
+    if not issues:
+        return errors
+    mapping = section_after(report_text, "Review-to-SOP mapping")
+    if not mapping:
+        errors.append("Review-to-SOP mapping section is missing while Critical/Major issues exist")
+        return errors
+    for issue_id, _ in issues:
+        if issue_id not in mapping:
+            errors.append(f"{issue_id}: missing from Review-to-SOP mapping")
+    required_mapping_terms = ["SOP", "Revision", "Status"]
+    for term in required_mapping_terms:
+        if term.lower() not in mapping.lower():
+            errors.append(f"Review-to-SOP mapping appears incomplete; missing {term!r}")
+    return errors
+
+
+def confirmation_warnings(text: str) -> list[str]:
+    warnings: list[str] = []
+    for match in re.finditer(r"△?TO BE CONFIRMED", text):
+        start = max(0, match.start() - 100)
+        end = min(len(text), match.end() + 160)
+        window = text[start:end]
+        if not re.search(r"who|owner|confirm|确认|负责人|由.*确认|confirmation", window, flags=re.I):
+            warnings.append("TO BE CONFIRMED item may lack confirmation owner/context")
+            break
+    return warnings
+
+
+def qc_gate_warnings(report_text: str, protocol_text: str) -> list[str]:
+    text = "\n".join([report_text, protocol_text])
+    warnings: list[str] = []
+    if "QC" in text or "质量控制" in text:
+        if not re.search(r"acceptance criterion|接受标准|判定标准|threshold|阈值", text, flags=re.I):
+            warnings.append("QC content may lack explicit acceptance criteria/thresholds")
+        if not re.search(r"fail action|失败处理|stop/go|repeat|rescue|exclusion|排除|重复|补救", text, flags=re.I):
+            warnings.append("QC content may lack fail action, stop/go, repeat, rescue, or exclusion rule")
+    return warnings
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--report", type=Path, help="Path to Review_Report.md")
     parser.add_argument("--protocol", type=Path, help="Path to Revised_Protocol.md")
     parser.add_argument("--json", action="store_true", help="Emit JSON")
+    parser.add_argument(
+        "--strict-content",
+        action="store_true",
+        help="Promote traceability warnings for TO BE CONFIRMED/QC gates to errors.",
+    )
     args = parser.parse_args()
 
     report_text, report_read_errors = read_text(args.report)
@@ -178,6 +270,8 @@ def main() -> int:
     if args.report:
         miss = missing_required(report_text, REQUIRED_REPORT)
         errors.extend([f"Review_Report missing required content: {x}" for x in miss])
+        errors.extend(issue_block_errors(report_text))
+        errors.extend(traceability_errors(report_text))
 
     if args.protocol:
         miss = missing_required(protocol_text, REQUIRED_PROTOCOL)
@@ -192,8 +286,12 @@ def main() -> int:
     if recommended_without_provenance(all_text):
         errors.append("Recommended parameters are present without parameter provenance/source table")
 
-    if "△TO BE CONFIRMED" in all_text and "who" not in all_text.lower() and "确认" not in all_text:
-        warnings.append("TO BE CONFIRMED items may not state who/what must confirm them")
+    warnings.extend(confirmation_warnings(all_text))
+    warnings.extend(qc_gate_warnings(report_text, protocol_text))
+    if args.strict_content:
+        promoted = [warning for warning in warnings if "TO BE CONFIRMED" in warning or "QC content" in warning]
+        errors.extend(promoted)
+        warnings = [warning for warning in warnings if warning not in promoted]
 
     result = {
         "ok": not errors,
