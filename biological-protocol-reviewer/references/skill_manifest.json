@@ -1,6 +1,6 @@
 {
   "name": "biological-protocol-reviewer",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "architecture": "single-skill-with-internal-module-routing",
   "default_language": "zh-CN",
   "mission": "Publication-grade review and rewriting of biological experimental protocols into bench-facing Markdown SOP outputs with audit-ready appendices.",
@@ -30,7 +30,9 @@
     "references/protocol_passport.md",
     "templates/protocol_passport_template.yaml",
     "schemas/protocol_passport.schema.json",
-    "schemas/claim_readout_handoff.schema.json"
+    "schemas/claim_readout_handoff.schema.json",
+    "references/agent_behavior_core.md",
+    "references/sop_traceability_and_change_discipline.md"
   ],
   "internal_modules": [
     "animal_experiments",
@@ -52,7 +54,9 @@
     "user_supplied_corpus_handling",
     "cross_skill_claim_readout_handoff",
     "readout_contracts",
-    "protocol_passport"
+    "protocol_passport",
+    "scope_discipline",
+    "sop_change_traceability"
   ],
   "required_quality_gates": [
     "module_activation_table",
@@ -91,7 +95,9 @@
     "cross_skill_claim_readout_handoff",
     "readout_contracts_for_qc_release",
     "data_records_repository_gate",
-    "protocol_passport_validator"
+    "protocol_passport_validator",
+    "agent_behavior_core_scope_gate",
+    "sop_change_traceability_gate"
   ],
   "risk_policy": {
     "default_assumption": "authorized institutional research by trained personnel when context is consistent with compliant research",

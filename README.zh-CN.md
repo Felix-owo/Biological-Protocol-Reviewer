@@ -2,9 +2,9 @@
 
 [English version](README.md)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MPL-2.0](https://img.shields.io/badge/License-MPL--2.0-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Standard-Agent_Skills-blueviolet.svg)](https://agentskills.io/specification)
-[![Version](https://img.shields.io/badge/Version-v1.3.3-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.4.0-blue.svg)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/Python-3.10--3.12-3776AB.svg)](#校验方式)
 [![Works with](https://img.shields.io/badge/Works_with-Codex-blue.svg)](#安装方式)
 
