@@ -1,0 +1,22 @@
+{
+  "handoff_id": "invalid-source-id",
+  "skill_context": "cross-skill",
+  "claim_readout_map": [
+    {
+      "claim_id": "C1",
+      "claim_text": "A decisive claim is mapped to a readout but lacks a real source id.",
+      "evidence_role": "decisive",
+      "readout_id": "R1",
+      "readout_supports": "Readout supports the claim only if controls pass.",
+      "protocol_step_or_method": "Imaging quantification",
+      "parameter_authority": "unresolved",
+      "qc_gate": "Positive control and negative control define interpretation.",
+      "failure_mode": "Uncontrolled thresholding can create a false positive.",
+      "manuscript_impact": "The claim cannot be decisive without this gate.",
+      "revision_action": "add_qc_gate",
+      "source_ids": [
+        ""
+      ]
+    }
+  ]
+}

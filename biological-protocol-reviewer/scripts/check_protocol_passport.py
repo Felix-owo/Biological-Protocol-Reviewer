@@ -2,8 +2,9 @@
 """Validate a biological-protocol-reviewer Protocol Passport.
 
 Accepts JSON directly. For YAML, this supports the simple YAML subset used by
-templates/protocol_passport_template.yaml and falls back to structural text
-checks if PyYAML is unavailable.
+``templates/protocol_passport_template.yaml``. Use ``--allow-template`` only for
+blank templates: it preserves structural checks while allowing empty placeholder
+strings that would be invalid in a completed passport.
 """
 
 from __future__ import annotations
@@ -14,7 +15,6 @@ import re
 import sys
 from pathlib import Path
 from typing import Any
-
 
 REQUIRED_KEYS = [
     "protocol_id",
@@ -55,18 +55,39 @@ def load_data(path: Path) -> tuple[Any, list[str]]:
         return yaml.safe_load(text), []
     except Exception:
         missing = [key for key in REQUIRED_KEYS if not re.search(rf"^{re.escape(key)}\s*:", text, re.M)]
-        return {"__raw_yaml_text__": text}, [f"YAML parser unavailable; missing top-level key `{key}`" for key in missing]
+        return {"__raw_yaml_text__": text}, [
+            f"YAML parser unavailable; missing top-level key `{key}`" for key in missing
+        ]
 
 
-def non_empty_string(value: Any) -> bool:
+def non_empty_string(value: Any, allow_empty_placeholder: bool = False) -> bool:
+    if allow_empty_placeholder and value == "":
+        return True
     return isinstance(value, str) and bool(value.strip())
 
 
-def validate(data: Any, parser_warnings: list[str]) -> tuple[list[str], list[str]]:
+def _require_string(
+    item: dict[str, Any],
+    key: str,
+    path: str,
+    errors: list[str],
+    allow_empty_template: bool,
+) -> None:
+    if not non_empty_string(item.get(key), allow_empty_template):
+        errors.append(f"{path}.{key} must be non-empty")
+
+
+def validate(
+    data: Any,
+    parser_warnings: list[str],
+    allow_empty_template: bool = False,
+) -> tuple[list[str], list[str]]:
     errors = list(parser_warnings)
     warnings: list[str] = []
 
-    if "__raw_yaml_text__" in data:
+    if isinstance(data, dict) and "__raw_yaml_text__" in data:
+        if allow_empty_template and not errors:
+            return [], ["Only top-level YAML keys were checked because PyYAML is unavailable."]
         return errors, ["Only top-level YAML keys were checked because PyYAML is unavailable."]
 
     if not isinstance(data, dict):
@@ -76,12 +97,9 @@ def validate(data: Any, parser_warnings: list[str]) -> tuple[list[str], list[str
         if key not in data:
             errors.append(f"missing required field `{key}`")
 
-    if not non_empty_string(data.get("skill_version")):
-        errors.append("skill_version must be non-empty")
-    if not non_empty_string(data.get("primary_readout")):
-        errors.append("primary_readout must be non-empty")
-    if not non_empty_string(data.get("experimental_unit")):
-        errors.append("experimental_unit must be non-empty")
+    for key in ["skill_version", "primary_readout", "experimental_unit"]:
+        if not non_empty_string(data.get(key), allow_empty_template):
+            errors.append(f"{key} must be non-empty")
 
     module_activation = data.get("module_activation")
     if not isinstance(module_activation, dict):
@@ -100,9 +118,8 @@ def validate(data: Any, parser_warnings: list[str]) -> tuple[list[str], list[str
             if not isinstance(item, dict):
                 errors.append(f"{path} must be an object")
                 continue
-            for key in ["parameter", "authority_class", "local_validation_status"]:
-                if not non_empty_string(item.get(key)):
-                    errors.append(f"{path}.{key} must be non-empty")
+            for key in ["parameter", "authority_class", "local_validation_status", "source_identity"]:
+                _require_string(item, key, path, errors, allow_empty_template)
             authority_class = item.get("authority_class")
             if authority_class and authority_class not in AUTHORITY_CLASSES:
                 warnings.append(f"{path}.authority_class is non-standard: {authority_class}")
@@ -121,8 +138,7 @@ def validate(data: Any, parser_warnings: list[str]) -> tuple[list[str], list[str
                 errors.append(f"{path} must be an object")
                 continue
             for key in ["gate_id", "readout_id", "acceptance_criterion", "fail_action"]:
-                if not non_empty_string(gate.get(key)):
-                    errors.append(f"{path}.{key} must be non-empty")
+                _require_string(gate, key, path, errors, allow_empty_template)
 
     mini_pilot = data.get("mini_pilot_plan")
     if not isinstance(mini_pilot, dict):
@@ -141,6 +157,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("passport", type=Path)
     parser.add_argument("--json", action="store_true")
+    parser.add_argument(
+        "--allow-template",
+        action="store_true",
+        help="Allow blank placeholder strings in the bundled protocol passport template.",
+    )
     args = parser.parse_args()
 
     try:
@@ -149,7 +170,7 @@ def main() -> int:
         print(f"Invalid passport input: {exc}", file=sys.stderr)
         return 2
 
-    errors, warnings = validate(data, parser_warnings)
+    errors, warnings = validate(data, parser_warnings, allow_empty_template=args.allow_template)
     result = {"ok": not errors, "errors": errors, "warnings": warnings}
     if args.json:
         print(json.dumps(result, indent=2, ensure_ascii=False))

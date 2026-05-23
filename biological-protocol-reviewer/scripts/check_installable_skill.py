@@ -9,7 +9,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 CANONICAL_NAME = "biological-protocol-reviewer"
 REQUIRED_DIRS = ["agents", "examples", "references", "schemas", "scripts", "templates"]
 ALLOWED_TOP_LEVEL = {"SKILL.md", *REQUIRED_DIRS}
@@ -126,9 +125,16 @@ def validate_skill(skill_dir: Path) -> list[str]:
 
     version_check = skill_dir / "scripts" / "check_version_consistency.py"
     if version_check.exists():
-        result = subprocess.run([sys.executable, str(version_check.resolve())], cwd=skill_dir, text=True)
+        result = subprocess.run(
+            [sys.executable, str(version_check.resolve())],
+            cwd=skill_dir,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
         if result.returncode:
-            errors.append("scripts/check_version_consistency.py failed")
+            detail = (result.stdout + result.stderr).strip()
+            errors.append(f"scripts/check_version_consistency.py failed: {detail}")
 
     return errors
 

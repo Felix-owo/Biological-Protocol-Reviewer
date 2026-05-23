@@ -7,14 +7,17 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "examples" / "regression_fixtures"
 
 
 def run(cmd: list[str]) -> int:
     print("$ " + " ".join(cmd))
-    result = subprocess.run(cmd, text=True)
+    result = subprocess.run(cmd, text=True, capture_output=True, check=False)
+    if result.stdout:
+        print(result.stdout, end="")
+    if result.stderr:
+        print(result.stderr, end="", file=sys.stderr)
     return result.returncode
 
 

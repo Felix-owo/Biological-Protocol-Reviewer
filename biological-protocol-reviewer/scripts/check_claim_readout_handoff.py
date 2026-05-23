@@ -9,7 +9,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-
 ALLOWED_ROLES = {"decisive", "supporting", "contextual", "exploratory"}
 ALLOWED_AUTHORITY = {
     "original",
@@ -75,12 +74,23 @@ def validate(data: Any) -> list[str]:
             errors.append(f"{path}.parameter_authority is invalid")
         if item.get("revision_action") not in ALLOWED_ACTIONS:
             errors.append(f"{path}.revision_action is invalid")
-        if not isinstance(item.get("source_ids"), list) or not item["source_ids"]:
+        source_ids = item.get("source_ids")
+        if not isinstance(source_ids, list) or not source_ids:
             errors.append(f"{path}.source_ids must be a non-empty array")
+        else:
+            for source_idx, source_id in enumerate(source_ids):
+                if not substantive(source_id, 2):
+                    errors.append(f"{path}.source_ids[{source_idx}] must be substantive")
         if item.get("evidence_role") == "decisive":
-            if item.get("parameter_authority") in {"recommended_unvalidated", "unresolved"}:
-                if item.get("revision_action") not in {"add_validation", "add_qc_gate", "narrow_claim", "author_input_needed"}:
-                    errors.append(f"{path}: decisive unresolved/unvalidated readout needs validation, QC, claim narrowing, or author input")
+            if (
+                item.get("parameter_authority") in {"recommended_unvalidated", "unresolved"}
+                and item.get("revision_action")
+                not in {"add_validation", "add_qc_gate", "narrow_claim", "author_input_needed"}
+            ):
+                errors.append(
+                    f"{path}: decisive unresolved/unvalidated readout needs validation, QC, "
+                    "claim narrowing, or author input"
+                )
             if "control" not in str(item.get("qc_gate", "")).lower() and "对照" not in str(item.get("qc_gate", "")):
                 errors.append(f"{path}: decisive readout qc_gate should name control logic")
     return errors

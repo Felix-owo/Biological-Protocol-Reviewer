@@ -1,0 +1,94 @@
+{
+  "protocol_id": "passport-cdh5-ai14-minimal",
+  "skill_version": "biological-protocol-reviewer v1.4.1",
+  "source_materials": {
+    "user_supplied": [
+      {
+        "id": "P1",
+        "type": "protocol draft",
+        "status": "screened",
+        "role": "primary protocol",
+        "exclusion_reason": "not excluded"
+      }
+    ],
+    "external_sources_checked": [
+      {
+        "source": "ARRIVE 2.0",
+        "grade": "A",
+        "identifier": "official guideline URL",
+        "role": "reporting and planning benchmark"
+      }
+    ]
+  },
+  "sample_material": {
+    "organism_or_cell_type": "mouse endothelial lineage sample",
+    "sample_type": "fixed tissue section",
+    "input_constraints": "institutional approvals and local imaging settings required"
+  },
+  "primary_readout": "fluorescence lineage readout",
+  "experimental_unit": "biological replicate animal",
+  "module_activation": {
+    "activated": [
+      "animal_experiments",
+      "flow_cytometry_and_imaging"
+    ],
+    "unclear": [
+      "statistics_and_reproducibility"
+    ],
+    "not_applicable": [
+      "omics"
+    ]
+  },
+  "resource_identity": {
+    "missing_required_ids": [
+      "antibody clone/RRID pending"
+    ],
+    "complete_resources": []
+  },
+  "parameter_authority": [
+    {
+      "parameter": "imaging threshold rule",
+      "value": "positive and negative controls define threshold before sample scoring",
+      "authority_class": "Recommended but unvalidated",
+      "source_identity": "local core-facility SOP to be confirmed",
+      "local_validation_status": "must be verified in local pilot",
+      "sop_label": "★RECOMMENDED — TO BE VERIFIED LOCALLY",
+      "identifier_type": "institutional_sop",
+      "identifier": "TO BE CONFIRMED",
+      "source_title": "local imaging core SOP",
+      "access_date": "2026-05-23",
+      "supports_parameter_or_qc": "threshold-setting QC gate",
+      "evidence_grade": "C"
+    }
+  ],
+  "local_validation_status": "mini-pilot required before execution",
+  "safety_governance_status": {
+    "red_line_status": "no red-line issue identified",
+    "approvals_or_placeholders": [
+      "IACUC protocol ID to be confirmed"
+    ]
+  },
+  "unresolved_gaps": [
+    {
+      "gap": "antibody clone/RRID missing",
+      "blocks": "resource identity and reproducibility",
+      "confirmation_owner": "operator or PI"
+    }
+  ],
+  "mini_pilot_plan": {
+    "required": true,
+    "summary": "Run one positive-control and one negative-control sample before full execution."
+  },
+  "review_to_sop_mapping": [
+    {
+      "finding_id": "MAJ1",
+      "sop_section": "质量控制",
+      "status": "mapped"
+    }
+  ],
+  "validator_status": {
+    "review_report": "not run",
+    "revised_protocol": "not run",
+    "structured_passport": "passed"
+  }
+}

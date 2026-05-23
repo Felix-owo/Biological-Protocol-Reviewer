@@ -14,7 +14,7 @@ Default language: Simplified Chinese unless the user requests otherwise.
 | 目标readout |  |
 | 下游用途 |  |
 | 审核日期 |  |
-| Skill版本 | biological-protocol-reviewer v1.4.0 |
+| Skill版本 | biological-protocol-reviewer v1.4.1 |
 
 ## 2. Protocol重建 / Protocol reconstruction
 

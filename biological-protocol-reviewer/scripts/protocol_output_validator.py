@@ -13,7 +13,6 @@ import re
 import sys
 from pathlib import Path
 
-
 REQUIRED_REPORT = [
     "Protocol",
     "Protocol重建",
@@ -123,7 +122,7 @@ def order_errors(text: str, ordered: list[str]) -> list[str]:
             continue
         positions.append((item, pos))
     errors = []
-    for (prev_item, prev_pos), (item, pos) in zip(positions, positions[1:]):
+    for (prev_item, prev_pos), (item, pos) in zip(positions, positions[1:], strict=False):
         if pos < prev_pos:
             errors.append(f"Section order problem: {item} appears before {prev_item}")
     return errors

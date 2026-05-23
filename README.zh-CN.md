@@ -4,8 +4,8 @@
 
 [![License: MPL-2.0](https://img.shields.io/badge/License-MPL--2.0-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Standard-Agent_Skills-blueviolet.svg)](https://agentskills.io/specification)
-[![Version](https://img.shields.io/badge/Version-v1.4.0-blue.svg)](CHANGELOG.md)
-[![Python](https://img.shields.io/badge/Python-3.10--3.12-3776AB.svg)](#校验方式)
+[![Version](https://img.shields.io/badge/Version-v1.4.1-blue.svg)](CHANGELOG.md)
+[![Python](https://img.shields.io/badge/Python-3.10--3.13-3776AB.svg)](#校验方式)
 [![Works with](https://img.shields.io/badge/Works_with-Codex-blue.svg)](#安装方式)
 
 **biological-protocol-reviewer** 是一个用于生物实验 protocol 严格评审和 SOP 重写的 Codex skill。它面向动物、细胞、分子生物学、流式/成像、组学、统计复现性、安全治理和前沿实验方法，目标不是润色文字，而是判断 protocol 是否能被安全执行、正确解释、稳定复现、完整审计，并把不完整 bench notes 改写成有证据支撑的可执行 SOP。
@@ -19,6 +19,15 @@
 - `Revised_Protocol.md`：面向 bench 的 Markdown SOP，包括快速执行摘要、开始前准备、编号步骤、试剂配制、资源/设备/软件/引物/抗体表、QC gate、疑难排查、预期结果、最小数据分析和审计附录。
 
 这个 skill 不把 protocol 审核当作 copyediting。它首先问：这个流程能否执行、解释、复现、审计，并符合安全和治理要求。
+
+## v1.4.1 加固说明
+
+本 patch release 保留 v1.4.x 的核心 Skill 行为，主要增强仓库工程可靠性：
+
+- CI 现在会安装 `requirements-dev.txt`，运行 Ruff，用 `jsonschema` 校验 JSON Schema，覆盖 Python 3.10-3.13，并用显式 template mode 检查 Protocol Passport 模板。
+- `protocol_passport`、`claim_readout_handoff` 和 `external_companion_evidence` schema 收紧字段契约和来源身份要求。
+- 回归 fixture 与 benchmark 增加 Protocol Passport、companion source resolution、动物 randomization/blinding、qPCR/MIQE 缺口和 resource identity failure 覆盖。
+- 一次性的 v1.4.0 升级说明已移动到 `docs/release_notes/v1.4.0.md`。
 
 ## 结构化资源与校验
 
@@ -74,16 +83,16 @@ Biological Protocol Reviewer 可以在当前 host 已暴露相关能力时使用
 │   ├── references/
 │   │   ├── protocol_rubric.json
 │   │   ├── skill_manifest.json
-│   │   ├── module_activation_and_routing.md
-│   │   ├── evidence_benchmarking_workflow.md
-│   │   ├── evidence_and_standards_hard_gates.md
+│   │   ├── agent_behavior_core.md
+│   │   ├── sop_traceability_and_change_discipline.md
 │   │   ├── external_evidence_companion_policy.md
-│   │   ├── risk_classification_and_redlines.md
-│   │   └── output_qc_linter.md
+│   │   ├── protocol_passport.md
+│   │   └── cross_skill_claim_readout_handoff.md
 │   ├── templates/
 │   │   ├── Review_Report_template.md
 │   │   ├── Revised_Protocol_md_structure.md
 │   │   ├── issue_block_templates.json
+│   │   ├── protocol_passport_template.yaml
 │   │   └── source_search_hints.json
 │   ├── schemas/
 │   │   ├── review_report.schema.json
@@ -92,21 +101,30 @@ Biological Protocol Reviewer 可以在当前 host 已暴露相关能力时使用
 │   │   ├── qc_gate.schema.json
 │   │   ├── parameter_provenance.schema.json
 │   │   ├── bioinformatics_handoff.schema.json
-│   │   └── external_companion_evidence.schema.json
+│   │   ├── external_companion_evidence.schema.json
+│   │   ├── protocol_passport.schema.json
+│   │   └── claim_readout_handoff.schema.json
 │   ├── scripts/
 │   │   ├── protocol_output_validator.py
 │   │   ├── lint_structured_protocol.py
 │   │   ├── check_installable_skill.py
 │   │   ├── check_version_consistency.py
+│   │   ├── check_protocol_passport.py
+│   │   ├── check_claim_readout_handoff.py
 │   │   └── run_regression_fixtures.py
 │   └── examples/
-│       └── cdh5_ai14_protocol_review_example.md
+│       ├── cdh5_ai14_protocol_review_example.md
+│       └── regression_fixtures/
 ├── tests/
+│   └── fixtures/
 ├── benchmarks/
 │   └── v1.0/
 ├── tools/
 │   └── score_protocol_benchmark.py
+├── docs/
+│   └── release_notes/
 ├── .github/
+│   ├── ISSUE_TEMPLATE/
 │   └── workflows/
 │       └── validate.yml
 ├── README.md
@@ -115,6 +133,7 @@ Biological Protocol Reviewer 可以在当前 host 已暴露相关能力时使用
 ├── CONTRIBUTING.md
 ├── SECURITY.md
 ├── pyproject.toml
+├── requirements-dev.txt
 └── LICENSE
 ```
 
@@ -155,20 +174,25 @@ python3 biological-protocol-reviewer/scripts/protocol_output_validator.py --repo
 
 该 validator 检查 Review_Report 和 Revised_Protocol.md 的必需结构、章节顺序、未解决模糊语言，以及推荐参数是否缺少参数溯源。它不能替代科学判断。
 
-当需要结构化 JSON 审计提取或回归测试 fixture 时运行：
+当需要结构化 JSON 审计提取、Protocol Passport 或回归测试 fixture 时运行：
 
 ```bash
 python3 biological-protocol-reviewer/scripts/lint_structured_protocol.py tests/fixtures/structured/valid_review_report.json
 python3 biological-protocol-reviewer/scripts/lint_structured_protocol.py Revised_Protocol.structured.json --schema biological-protocol-reviewer/schemas/revised_protocol.schema.json
+python3 biological-protocol-reviewer/scripts/check_protocol_passport.py tests/fixtures/structured/passport_valid_minimal.json
+python3 biological-protocol-reviewer/scripts/check_claim_readout_handoff.py biological-protocol-reviewer/examples/regression_fixtures/handoff_figure_readout_missing_qc.json
 ```
 
 维护仓库时运行确定性测试和 benchmark 定义检查：
 
 ```bash
+python3 -m pip install -r requirements-dev.txt
+python3 -m ruff check .
 python3 biological-protocol-reviewer/scripts/check_installable_skill.py --skill-dir biological-protocol-reviewer
 python3 biological-protocol-reviewer/scripts/check_version_consistency.py
+python3 biological-protocol-reviewer/scripts/check_protocol_passport.py biological-protocol-reviewer/templates/protocol_passport_template.yaml --allow-template
 python3 biological-protocol-reviewer/scripts/run_regression_fixtures.py
-python3 -m unittest discover -s tests -v
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q
 python3 tools/score_protocol_benchmark.py --benchmark-root benchmarks/v1.0
 ```
 

@@ -4,8 +4,8 @@
 
 [![License: MPL-2.0](https://img.shields.io/badge/License-MPL--2.0-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Standard-Agent_Skills-blueviolet.svg)](https://agentskills.io/specification)
-[![Version](https://img.shields.io/badge/Version-v1.4.0-blue.svg)](CHANGELOG.md)
-[![Python](https://img.shields.io/badge/Python-3.10--3.12-3776AB.svg)](#validation)
+[![Version](https://img.shields.io/badge/Version-v1.4.1-blue.svg)](CHANGELOG.md)
+[![Python](https://img.shields.io/badge/Python-3.10--3.13-3776AB.svg)](#validation)
 [![Works with](https://img.shields.io/badge/Works_with-Codex-blue.svg)](#installation)
 
 **biological-protocol-reviewer** is a Codex skill for evidence-grounded biological protocol review and SOP rewriting. It audits animal, cell, molecular, flow/imaging, omics, statistics, safety/governance, and frontier-method workflows, then turns incomplete bench notes into a source-backed review report and a directly executable SOP.
@@ -20,13 +20,14 @@ By default, the skill produces two user-facing files:
 
 The skill is intentionally not a copyeditor. It asks whether the protocol can be executed, interpreted, reproduced, audited, and governed safely.
 
-## v1.4.0 Upgrade Notes
+## v1.4.1 Hardening Notes
 
-This release adds a small but strict behavior layer on top of the existing v1.3.3 architecture:
+This patch release keeps the v1.4.x skill behavior intact and strengthens repository reliability:
 
-- `references/agent_behavior_core.md` for scope discipline, anti-slop, no-faux-precision, assumption-ledger, and verification contracts.
-- `references/sop_traceability_and_change_discipline.md` for controlled SOP rewrites and review-to-SOP mapping.
-- MPL-2.0 licensing consistency across `LICENSE`, `SKILL.md`, and `pyproject.toml`.
+- CI now installs `requirements-dev.txt`, runs Ruff, validates JSON Schemas with `jsonschema`, tests Python 3.10-3.13, and checks the Protocol Passport template in explicit template mode.
+- `protocol_passport`, `claim_readout_handoff`, and `external_companion_evidence` schemas now use stricter field contracts and source-identity requirements.
+- Regression fixtures and benchmark cases now cover Protocol Passport, companion-source resolution, animal randomization/blinding, qPCR/MIQE gaps, and resource-identity failures.
+- The one-off v1.4.0 upgrade note moved to `docs/release_notes/v1.4.0.md`.
 
 
 ## Structured Resources And Validation
@@ -88,24 +89,23 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 
 ```text
 .
-├── biological-protocol-reviewer/        # installable Codex skill directory
+├── biological-protocol-reviewer/        # installable Agent Skill directory
 │   ├── SKILL.md
 │   ├── agents/
 │   │   └── openai.yaml
 │   ├── references/
 │   │   ├── protocol_rubric.json
 │   │   ├── skill_manifest.json
-│   │   ├── module_activation_and_routing.md
-│   │   ├── evidence_benchmarking_workflow.md
-│   │   ├── evidence_and_standards_hard_gates.md
+│   │   ├── agent_behavior_core.md
+│   │   ├── sop_traceability_and_change_discipline.md
 │   │   ├── external_evidence_companion_policy.md
-│   │   ├── risk_classification_and_redlines.md
-│   │   ├── output_qc_linter.md
-│   │   └── revised_protocol_qc_checklist.md
+│   │   ├── protocol_passport.md
+│   │   └── cross_skill_claim_readout_handoff.md
 │   ├── templates/
 │   │   ├── Review_Report_template.md
 │   │   ├── Revised_Protocol_md_structure.md
 │   │   ├── issue_block_templates.json
+│   │   ├── protocol_passport_template.yaml
 │   │   └── source_search_hints.json
 │   ├── schemas/
 │   │   ├── review_report.schema.json
@@ -114,20 +114,28 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 │   │   ├── qc_gate.schema.json
 │   │   ├── parameter_provenance.schema.json
 │   │   ├── bioinformatics_handoff.schema.json
-│   │   └── external_companion_evidence.schema.json
+│   │   ├── external_companion_evidence.schema.json
+│   │   ├── protocol_passport.schema.json
+│   │   └── claim_readout_handoff.schema.json
 │   ├── scripts/
 │   │   ├── protocol_output_validator.py
 │   │   ├── lint_structured_protocol.py
 │   │   ├── check_installable_skill.py
 │   │   ├── check_version_consistency.py
+│   │   ├── check_protocol_passport.py
+│   │   ├── check_claim_readout_handoff.py
 │   │   └── run_regression_fixtures.py
 │   └── examples/
-│       └── cdh5_ai14_protocol_review_example.md
+│       ├── cdh5_ai14_protocol_review_example.md
+│       └── regression_fixtures/
 ├── tests/
+│   └── fixtures/
 ├── benchmarks/
 │   └── v1.0/
 ├── tools/
 │   └── score_protocol_benchmark.py
+├── docs/
+│   └── release_notes/
 ├── .github/
 │   ├── ISSUE_TEMPLATE/
 │   └── workflows/
@@ -138,6 +146,7 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 ├── CONTRIBUTING.md
 ├── SECURITY.md
 ├── pyproject.toml
+├── requirements-dev.txt
 └── LICENSE
 ```
 
@@ -180,20 +189,25 @@ python3 biological-protocol-reviewer/scripts/protocol_output_validator.py --repo
 
 The validator checks required report and protocol sections, section order, unresolved vague language, and missing provenance for recommended parameters. It does not replace scientific judgment.
 
-For structured JSON audit extracts or regression fixtures, run:
+For structured JSON audit extracts, Protocol Passport artifacts, or regression fixtures, run:
 
 ```bash
 python3 biological-protocol-reviewer/scripts/lint_structured_protocol.py tests/fixtures/structured/valid_review_report.json
 python3 biological-protocol-reviewer/scripts/lint_structured_protocol.py Revised_Protocol.structured.json --schema biological-protocol-reviewer/schemas/revised_protocol.schema.json
+python3 biological-protocol-reviewer/scripts/check_protocol_passport.py tests/fixtures/structured/passport_valid_minimal.json
+python3 biological-protocol-reviewer/scripts/check_claim_readout_handoff.py biological-protocol-reviewer/examples/regression_fixtures/handoff_figure_readout_missing_qc.json
 ```
 
 For repository maintenance, run the deterministic test and benchmark-definition checks:
 
 ```bash
+python3 -m pip install -r requirements-dev.txt
+python3 -m ruff check .
 python3 biological-protocol-reviewer/scripts/check_installable_skill.py --skill-dir biological-protocol-reviewer
 python3 biological-protocol-reviewer/scripts/check_version_consistency.py
+python3 biological-protocol-reviewer/scripts/check_protocol_passport.py biological-protocol-reviewer/templates/protocol_passport_template.yaml --allow-template
 python3 biological-protocol-reviewer/scripts/run_regression_fixtures.py
-python3 -m unittest discover -s tests -v
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q
 python3 tools/score_protocol_benchmark.py --benchmark-root benchmarks/v1.0
 ```
 

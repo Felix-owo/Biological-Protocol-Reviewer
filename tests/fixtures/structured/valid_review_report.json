@@ -18,9 +18,17 @@
     "intended_result": "Reproducible flow cytometry identification of a defined target population.",
     "primary_readout": "Viable target-cell frequency.",
     "experimental_unit": "One independently processed biological sample.",
-    "decisive_qc_gates": ["viability gate", "FMO-defined threshold", "compensation matrix"],
-    "local_validation_requirements": ["Flow core confirms fluorophore panel before execution"],
-    "blocked_parameters": ["local viability acceptance threshold"]
+    "decisive_qc_gates": [
+      "viability gate",
+      "FMO-defined threshold",
+      "compensation matrix"
+    ],
+    "local_validation_requirements": [
+      "Flow core confirms fluorophore panel before execution"
+    ],
+    "blocked_parameters": [
+      "local viability acceptance threshold"
+    ]
   },
   "evidence_benchmark": [
     {
@@ -129,7 +137,9 @@
       "evidence_role": "supports",
       "protocol_section_affected": "Evidence benchmark table",
       "limitation": "Companion lookup only identified the source; BPR still assigns SOP relevance.",
-      "verification_status": "resolved_to_grade_a_to_c_source"
+      "verification_status": "resolved_to_grade_a_to_c_source",
+      "exact_parameter_control_qc_or_metadata_field_affected": "repository and metadata release gate",
+      "access_date": "2026-05-23"
     }
   ]
 }

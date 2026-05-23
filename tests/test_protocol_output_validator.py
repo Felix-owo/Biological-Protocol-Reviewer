@@ -6,7 +6,6 @@ import sys
 import unittest
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 VALIDATOR = ROOT / "biological-protocol-reviewer" / "scripts" / "protocol_output_validator.py"
 VALID_MARKDOWN = ROOT / "tests" / "fixtures" / "markdown" / "valid"

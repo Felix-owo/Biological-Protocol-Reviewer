@@ -1,6 +1,6 @@
 {
   "name": "biological-protocol-reviewer",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "architecture": "single-skill-with-internal-module-routing",
   "default_language": "zh-CN",
   "mission": "Publication-grade review and rewriting of biological experimental protocols into bench-facing Markdown SOP outputs with audit-ready appendices.",

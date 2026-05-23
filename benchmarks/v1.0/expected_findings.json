@@ -10,7 +10,9 @@
       "repeat, rescue, or exclusion rule"
     ],
     "minimum_severity": "Major",
-    "forbidden_readiness_levels": ["Level 3"],
+    "forbidden_readiness_levels": [
+      "Level 3"
+    ],
     "required_sop_sections": [
       "质量控制",
       "试剂、耗材、仪器",
@@ -29,11 +31,122 @@
       "Bioinformatics Handoff"
     ],
     "minimum_severity": "Critical",
-    "forbidden_readiness_levels": ["Level 2", "Level 3"],
+    "forbidden_readiness_levels": [
+      "Level 2",
+      "Level 3"
+    ],
     "required_sop_sections": [
       "质量控制",
       "数据分析",
       "Raw-data manifest",
+      "Parameter provenance"
+    ]
+  },
+  "BPR_003_animal_randomization_blinding": {
+    "must_detect": [
+      "randomization",
+      "blinding",
+      "experimental unit",
+      "allocation concealment",
+      "exclusion rule",
+      "sample-size rationale",
+      "ARRIVE"
+    ],
+    "minimum_severity": "Critical",
+    "forbidden_readiness_levels": [
+      "Level 2",
+      "Level 3"
+    ],
+    "required_sop_sections": [
+      "质量控制",
+      "统计",
+      "Assumption",
+      "Protocol Readiness Contract"
+    ]
+  },
+  "BPR_004_qpcr_miqe_gaps": {
+    "must_detect": [
+      "MIQE",
+      "primer sequence",
+      "amplicon length",
+      "efficiency",
+      "melt curve",
+      "no-template control",
+      "reverse-transcription minus control",
+      "reference-gene validation"
+    ],
+    "minimum_severity": "Major",
+    "forbidden_readiness_levels": [
+      "Level 3"
+    ],
+    "required_sop_sections": [
+      "试剂、耗材、仪器",
+      "质量控制",
+      "Parameter provenance",
+      "Readout contracts"
+    ]
+  },
+  "BPR_005_resource_identity_antibody": {
+    "must_detect": [
+      "vendor",
+      "catalog number",
+      "clone",
+      "lot",
+      "RRID",
+      "secondary antibody",
+      "positive control",
+      "negative control"
+    ],
+    "minimum_severity": "Major",
+    "forbidden_readiness_levels": [
+      "Level 3"
+    ],
+    "required_sop_sections": [
+      "试剂、耗材、仪器",
+      "质量控制",
+      "Parameter provenance",
+      "resource identity"
+    ]
+  },
+  "BPR_006_external_companion_unresolved": {
+    "must_detect": [
+      "companion-derived",
+      "source lead",
+      "TO BE CONFIRMED",
+      "TO BE VERIFIED BEFORE EXECUTION",
+      "exact source identity",
+      "access date",
+      "local validation"
+    ],
+    "minimum_severity": "Major",
+    "forbidden_readiness_levels": [
+      "Level 3"
+    ],
+    "required_sop_sections": [
+      "External Evidence Companion",
+      "Parameter provenance",
+      "Assumption",
+      "mini-pilot"
+    ]
+  },
+  "BPR_007_protocol_passport_missing_authority": {
+    "must_detect": [
+      "Protocol Passport",
+      "parameter authority",
+      "source identity",
+      "review-to-SOP mapping",
+      "sop_label",
+      "recommended",
+      "local validation status"
+    ],
+    "minimum_severity": "Major",
+    "forbidden_readiness_levels": [
+      "Level 3"
+    ],
+    "required_sop_sections": [
+      "Protocol Readiness Contract",
+      "Parameter authority",
+      "Original-to-revised",
       "Parameter provenance"
     ]
   }

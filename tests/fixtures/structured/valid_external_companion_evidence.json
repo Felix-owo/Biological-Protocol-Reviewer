@@ -1,0 +1,13 @@
+{
+  "companion_class": "manual_lookup",
+  "tool_or_skill": "official guideline lookup",
+  "query_or_task": "Resolve MIQE source identity for qPCR reporting requirements.",
+  "returned_identifier": "PMID 19246619",
+  "primary_source_resolved": "MIQE guideline PMID 19246619",
+  "exact_parameter_control_qc_or_metadata_field_affected": "qPCR primer efficiency and reporting metadata",
+  "evidence_role": "supports",
+  "protocol_section_affected": "qPCR QC gate",
+  "limitation": "The source supports reporting expectations but does not validate local primer performance.",
+  "verification_status": "resolved_to_grade_a_to_c_source",
+  "access_date": "2026-05-23"
+}

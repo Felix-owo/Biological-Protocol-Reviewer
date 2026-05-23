@@ -1,6 +1,6 @@
 [project]
 name = "biological-protocol-reviewer-skill"
-version = "1.4.0"
+version = "1.4.1"
 description = "Portable agent skill for evidence-grounded biological protocol review and SOP rewriting."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -12,6 +12,7 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
   "Topic :: Scientific/Engineering",
 ]
@@ -27,6 +28,15 @@ dev = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
+addopts = [
+  "-p", "no:ddtrace",
+  "-p", "no:metadata",
+  "-p", "no:json-report",
+  "-p", "no:cov",
+  "-p", "no:Faker",
+  "-p", "no:anyio",
+  "-p", "no:asyncio",
+]
 
 [tool.ruff]
 line-length = 100

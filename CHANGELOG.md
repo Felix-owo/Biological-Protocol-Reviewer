@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.1 - 2026-05-23
+
+- Hardened CI by installing `requirements-dev.txt`, running Ruff, validating JSON Schema files through `jsonschema`, checking Python 3.10-3.13, and validating the Protocol Passport template through explicit `--allow-template` mode.
+- Tightened `protocol_passport.schema.json`, `claim_readout_handoff.schema.json`, and `external_companion_evidence.schema.json` with stricter `additionalProperties` behavior and stronger source-identity requirements.
+- Added Protocol Passport, external companion evidence, and claim-readout handoff validator fixtures and tests.
+- Expanded benchmark coverage with animal randomization/blinding, qPCR/MIQE, antibody/resource identity, unresolved companion-derived parameter, and Protocol Passport authority-mapping cases.
+- Moved the one-off v1.4.0 upgrade guide to `docs/release_notes/v1.4.0.md` so the root stays release-oriented.
+
 ## v1.4.0 - 2026-05-23
 
 - Added `references/agent_behavior_core.md` for task-boundary reconstruction, anti-slop discipline, no-faux-precision, assumption-ledger, and verification-contract behavior.

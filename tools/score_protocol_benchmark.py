@@ -9,7 +9,6 @@ import re
 import sys
 from pathlib import Path
 
-
 VALID_SEVERITIES = {"Critical": 3, "Major": 2, "Minor": 1, "Optimization": 0}
 VALID_LEVELS = {"Level 0", "Level 1", "Level 2", "Level 3"}
 
