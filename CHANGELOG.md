@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.0 - 2026-05-23
+
+- Added `references/agent_behavior_core.md` for task-boundary reconstruction, anti-slop discipline, no-faux-precision, assumption-ledger, and verification-contract behavior.
+- Added `references/sop_traceability_and_change_discipline.md` to require each SOP edit to map to a review issue, failure mode, readout contract, parameter-authority class, safety/governance requirement, or user-supplied fact.
+- Updated `SKILL.md` routing to load the new behavior and SOP-change traceability references without replacing the v1.3.3 module architecture.
+- Updated `skill_manifest.json` and the installable-skill checker to treat the new files as package integrity requirements.
+- Switched repository licensing metadata from inconsistent all-rights-reserved/MIT markers to MPL-2.0 across `LICENSE`, `SKILL.md`, `pyproject.toml`, and README badges.
+
 ## v1.3.3 - 2026-05-22
 
 - Renamed the installable skill package to canonical Agent Skills style:

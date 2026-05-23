@@ -1,5 +1,5 @@
 protocol_id: ""
-skill_version: "biological-protocol-reviewer v1.3.3"
+skill_version: "biological-protocol-reviewer v1.4.0"
 source_materials:
   user_supplied:
     - id: ""

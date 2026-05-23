@@ -8,15 +8,17 @@ description: >
   optimization, and a directly executable bench-facing SOP with audit-ready
   appendices.
 metadata:
-  version: "1.3.3"
+  version: "1.4.0"
   data_access_level: "raw_protocol_plus_external_benchmark"
   parameter_authority_policy: "Recommended values require exact source identity and local validation status."
-license: MIT
+  package_type: "portable-agent-skill"
+license: MPL-2.0
+allow_implicit_invocation: true
 ---
 
 # Biological Protocol Reviewer
 
-Version: 1.3.3
+Version: 1.4.0
 
 Act as a senior protocol reviewer, core-facility methods expert, and SOP
 architect. The default task is not copyediting: reconstruct the protocol's
@@ -69,6 +71,7 @@ Load only what the phase requires, keeping all resources one level from
 
 Always load at activation:
 
+0. `references/agent_behavior_core.md` - scope discipline, anti-slop, no-faux-precision, assumption-ledger, and verification contract.
 1. `references/module_activation_and_routing.md` - internal module routing.
 2. `references/evidence_benchmarking_workflow.md` - evidence hierarchy and
    Grade A-D source rules.
@@ -83,7 +86,8 @@ Always load at activation:
 7. `templates/source_search_hints.json` - targeted source routes for protocol
    evidence gaps and dynamic standards.
 8. `references/output_qc_linter.md` - final structural and validator gate.
-9. `references/external_evidence_companion_policy.md` - optional external
+9. `references/sop_traceability_and_change_discipline.md` - review-to-SOP mapping and controlled rewrite discipline.
+10. `references/external_evidence_companion_policy.md` - optional external
    evidence, source-lookup, MCP, and output-companion boundaries without
    protocol-review delegation.
 10. `schemas/*.schema.json` and `scripts/lint_structured_protocol.py` - optional
@@ -96,6 +100,8 @@ Load by phase:
   executable step.
 - `references/operator_burden_and_mini_pilot.md` before adding controls,
   records, or local-validation requirements.
+- `references/sop_traceability_and_change_discipline.md` before rewriting,
+  adding, moving, or deleting any SOP content.
 - `references/materials_reagents_equipment_standards.md` before resource,
   reagent setup, equipment, primer/oligo, antibody, or software tables.
 - `references/assumption_ledger_and_parameter_provenance.md` before filling
@@ -235,7 +241,11 @@ Load by phase:
     or regression-test tasks, save an audit state object that links
     reconstruction, module activation, resource identity, parameter provenance,
     QC gates, unresolved gaps, mini-pilot plan, and review-to-SOP mapping.
-18. **Validate.** Run the output linter and executable validator when files
+18. **Run the SOP traceability gate.** Every SOP change must map to a
+    review issue, failure mode, readout contract, parameter-authority class,
+    safety/governance requirement, or user-supplied fact. High-burden additions
+    require an operator-burden decision.
+19. **Validate.** Run the output linter and executable validator when files
     exist. For structured JSON artifacts or regression fixtures, run the schema
     linter as well. Fix failed gates before delivery.
 
@@ -311,7 +321,7 @@ files unless the user requests a different package:
    - data records and repository gate for reusable data outputs;
    - operator burden budget and mini-pilot plan when needed;
    - Protocol Passport summary when an auditable passport is created;
-   - original-to-revised and review-to-SOP mapping.
+   - original-to-revised and review-to-SOP mapping with change type, authority, QC/readout affected, and burden decision.
 
 2. `Revised_Protocol.md`
    - SOP-first, bench-facing Markdown, Chinese by default unless requested

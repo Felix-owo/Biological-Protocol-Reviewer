@@ -16,12 +16,14 @@ ALLOWED_TOP_LEVEL = {"SKILL.md", *REQUIRED_DIRS}
 REQUIRED_FILES = [
     "SKILL.md",
     "agents/openai.yaml",
+    "references/agent_behavior_core.md",
     "references/module_activation_and_routing.md",
     "references/evidence_benchmarking_workflow.md",
     "references/evidence_and_standards_hard_gates.md",
     "references/risk_classification_and_redlines.md",
     "references/protocol_rubric.json",
     "references/output_qc_linter.md",
+    "references/sop_traceability_and_change_discipline.md",
     "references/revised_protocol_qc_checklist.md",
     "references/skill_manifest.json",
     "templates/Review_Report_template.md",
@@ -41,6 +43,7 @@ REQUIRED_FILES = [
     "scripts/run_regression_fixtures.py",
 ]
 DESCRIPTION_TERMS = ["protocol", "SOP", "QC", "benchmark", "readiness"]
+ALLOWED_LICENSES = {"MPL-2.0"}
 
 
 def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
@@ -105,6 +108,10 @@ def validate_skill(skill_dir: Path) -> list[str]:
             missing_terms = [term for term in DESCRIPTION_TERMS if term.lower() not in description.lower()]
             if missing_terms:
                 errors.append(f"SKILL.md description lacks trigger terms: {missing_terms}")
+            license_value = meta.get("license", "")
+            if license_value not in ALLOWED_LICENSES:
+                errors.append(f"SKILL.md frontmatter license must be one of {sorted(ALLOWED_LICENSES)!r}")
+
         if "validators/revised_protocol_qc_checklist.md" in text:
             errors.append("SKILL.md still references non-standard validators/ path")
         if "references/revised_protocol_qc_checklist.md" not in text:

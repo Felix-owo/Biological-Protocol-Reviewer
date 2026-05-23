@@ -2,9 +2,9 @@
 
 [中文说明](README.zh-CN.md)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MPL-2.0](https://img.shields.io/badge/License-MPL--2.0-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Standard-Agent_Skills-blueviolet.svg)](https://agentskills.io/specification)
-[![Version](https://img.shields.io/badge/Version-v1.3.3-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.4.0-blue.svg)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/Python-3.10--3.12-3776AB.svg)](#validation)
 [![Works with](https://img.shields.io/badge/Works_with-Codex-blue.svg)](#installation)
 
@@ -19,6 +19,15 @@ By default, the skill produces two user-facing files:
 - `Revised_Protocol.md`: bench-facing Markdown SOP with execution summary, before-you-begin checklist, numbered steps, reagent setup, resource/equipment/software/primer/antibody tables, QC gates, troubleshooting, anticipated results, minimal analysis, and audit-ready appendices.
 
 The skill is intentionally not a copyeditor. It asks whether the protocol can be executed, interpreted, reproduced, audited, and governed safely.
+
+## v1.4.0 Upgrade Notes
+
+This release adds a small but strict behavior layer on top of the existing v1.3.3 architecture:
+
+- `references/agent_behavior_core.md` for scope discipline, anti-slop, no-faux-precision, assumption-ledger, and verification contracts.
+- `references/sop_traceability_and_change_discipline.md` for controlled SOP rewrites and review-to-SOP mapping.
+- MPL-2.0 licensing consistency across `LICENSE`, `SKILL.md`, and `pyproject.toml`.
+
 
 ## Structured Resources And Validation
 
