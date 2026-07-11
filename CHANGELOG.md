@@ -1,9 +1,28 @@
 # Changelog
 
+## v1.5.0 - 2026-07-11
+
+- Changed the default output to review-only `protocol_gate`; `Revised_Protocol.md` now requires an explicit `protocol_full` request, and `delta_review` limits context to changed sections and open findings.
+- Unified readiness on a numeric 0-10 scale with Level 0-3 consistency checks, and standardized operator burden as `low`, `moderate`, or `high`.
+- Adopted the versioned Claim-Readout Handoff 1.0.0 contract with sealed root/item fields, unique source IDs, bounded reviewer extensions, and a domain-specific issue-schema URN.
+- Split package-only and release-repository version validation, allowed package validation in arbitrary cache directory names, and made completed YAML Passport validation fail closed without PyYAML.
+- Added behavioral benchmark gates and adversarial tests for keyword stuffing, invalid readiness scales, extra contract fields, wrong contract versions, and duplicate source IDs.
+- Extended the dependency-free structured linter with local JSON Pointer references, `const`, and `uniqueItems` support required by the shared contract.
+- Added a v1.5.0 benchmark-results placeholder with `model_outputs_scored: false`; no empirical model pass rate is claimed by this release candidate.
+- Made Markdown strict-content checks the default with explicit
+  `--lenient-content` only for legacy non-decision drafts; added machine-verifiable
+  profile contracts, delta ID carry-forward checks, and reproducible per-profile
+  file/character budgets.
+- Linked every benchmark `must_detect` concept and its severity floor to the same
+  reasoned finding, and rejected `/100`, range, placeholder, and invalid burden
+  values rather than accepting prefix matches.
+- Made package validation enforce the complete local JSON Schema `$ref` closure,
+  so a cache missing a runtime dependency cannot pass installability checks.
+
 ## v1.4.2 - 2026-05-23
 
 - Hardened installability validation by cross-checking `SKILL.md` resource references, `skill_manifest.json` resources, and actual files on disk.
-- Strengthened `protocol_output_validator.py` with Critical/Major issue-block completeness checks, Review-to-SOP traceability checks, and optional strict content warnings.
+- Strengthened `protocol_output_validator.py` with Critical/Major issue-block completeness checks, Review-to-SOP traceability checks, and strict content warnings (made default in v1.5.0).
 - Tightened Protocol Passport nested audit requirements for source materials, sample material, safety/governance status, and validator status.
 - Tightened external companion evidence provenance with `identifier_type`, `identifier`, `resolved_source_grade`, and ISO-style `access_date` constraints.
 - Added v1.4.2 hardening tests and a benchmark-results bookkeeping scaffold without claiming model-output scoring that has not been run.

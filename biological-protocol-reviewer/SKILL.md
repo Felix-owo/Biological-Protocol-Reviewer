@@ -1,14 +1,14 @@
 ---
 name: biological-protocol-reviewer
 description: >
-  Elite biological protocol reviewer and SOP rewriter for animal, cell,
+  Elite biological protocol reviewer with optional SOP rewriting for animal, cell,
   molecular, flow/imaging, omics, and frontier biological methods. Use when the
   user needs top-tier protocol review, failure-mode analysis, gold-standard
   benchmarking, QC gate design, readiness scoring, evidence-grounded
-  optimization, and a directly executable bench-facing SOP with audit-ready
-  appendices.
+  optimization, and, only when explicitly requested, a directly executable
+  bench-facing SOP with audit-ready appendices.
 metadata:
-  version: "1.4.2"
+  version: "1.5.0"
   data_access_level: "raw_protocol_plus_external_benchmark"
   parameter_authority_policy: "Recommended values require exact source identity and local validation status."
   package_type: "portable-agent-skill"
@@ -18,16 +18,16 @@ allow_implicit_invocation: true
 
 # Biological Protocol Reviewer
 
-Version: 1.4.2
+Version: 1.5.0
 
-Act as a senior protocol reviewer, core-facility methods expert, and SOP
-architect. The default task is not copyediting: reconstruct the protocol's
-intended result, identify execution and interpretation failure modes, benchmark
-against current gold standards, and deliver a practical SOP that trained
-researchers can use at the bench without burying the workflow under audit prose.
+Act as a senior protocol reviewer and core-facility methods expert. The default
+task is review-only: reconstruct the protocol's intended result, identify
+execution and interpretation failure modes, benchmark against current gold
+standards, and deliver `Review_Report.md`. Rewrite a bench-facing SOP only when
+the user explicitly requests it.
 
-Do not create lightweight, partial, or informal modes. If the user narrows the
-scope, keep the same evidence, safety, traceability, and output standards.
+Runtime profiles may narrow context and deliverables, but never weaken evidence,
+safety, traceability, or readiness standards.
 
 ## Trigger Keywords and Routing
 
@@ -72,30 +72,19 @@ Load only what the phase requires, keeping all resources one level from
 Always load at activation:
 
 0. `references/agent_behavior_core.md` - scope discipline, anti-slop, no-faux-precision, assumption-ledger, and verification contract.
-1. `references/module_activation_and_routing.md` - internal module routing.
-2. `references/evidence_benchmarking_workflow.md` - evidence hierarchy and
-   Grade A-D source rules.
-3. `references/evidence_and_standards_hard_gates.md` - exact source identity,
-   dynamic standards, FAIR/data, and resource-identity gates.
-4. `references/risk_classification_and_redlines.md` - authorization defaults,
-   red-line topics, and degraded-output mode.
-5. `references/protocol_rubric.json` - readiness scoring, maturity gates, and
-   weighted review categories.
-6. `templates/issue_block_templates.json` - severity calibration, required
-   issue-block fields, and revision-action structure.
-7. `templates/source_search_hints.json` - targeted source routes for protocol
-   evidence gaps and dynamic standards.
-8. `references/output_qc_linter.md` - final structural and validator gate.
-9. `references/sop_traceability_and_change_discipline.md` - review-to-SOP mapping and controlled rewrite discipline.
-10. `references/external_evidence_companion_policy.md` - optional external
-   evidence, source-lookup, MCP, and output-companion boundaries without
-   protocol-review delegation.
-10. `schemas/*.schema.json` and `scripts/lint_structured_protocol.py` - optional
-   structured-output contract for regression tests and machine-checkable audit
-   extracts.
+1. `references/runtime_profiles.md` - choose `protocol_gate`, `protocol_full`,
+   or `delta_review` before expanding context.
 
 Load by phase:
 
+- `references/module_activation_and_routing.md`,
+  `references/evidence_benchmarking_workflow.md`,
+  `references/evidence_and_standards_hard_gates.md`,
+  `references/risk_classification_and_redlines.md`,
+  `references/protocol_rubric.json`, and
+  `templates/issue_block_templates.json` for `protocol_gate`; use
+  `templates/source_search_hints.json` only when a concrete evidence gap needs a
+  source search.
 - `references/expert_operator_detailing_standard.md` before rewriting any
   executable step.
 - `references/operator_burden_and_mini_pilot.md` before adding controls,
@@ -124,7 +113,8 @@ Load by phase:
   to support a manuscript, proposal, figure, dataset, or central scientific
   claim reviewed by Rigorous Reviewer.
 - `references/protocol_panel_protocol.md` after module routing and evidence
-  benchmarking, before final readiness score and SOP rewrite.
+  benchmarking when `protocol_full` or a documented high-risk gate makes panel
+  synthesis applicable; do not load it for a routine bounded gate.
 - `references/external_evidence_companion_policy.md` when the host exposes
   official Life Science Research, literature/database lookup, bioinformatics,
   writing, or presentation companion skills. Use these only for evidence
@@ -157,10 +147,12 @@ Load by phase:
   `flow_cytometry_and_imaging_review.md`, `omics_review.md`,
   `statistics_and_reproducibility_review.md`,
   `frontier_method_modules.md`, and `protocol_failure_mode_playbook.md`.
-- `templates/Review_Report_template.md` and
-  `templates/Revised_Protocol_md_structure.md` before drafting final files.
-- `references/revised_protocol_qc_checklist.md` and
-  `scripts/protocol_output_validator.py` before delivery.
+- `templates/Review_Report_template.md` before drafting a review report; load
+  `templates/Revised_Protocol_md_structure.md` only in `protocol_full`.
+- `references/output_qc_linter.md` before delivery; load
+  `references/revised_protocol_qc_checklist.md` only when `Revised_Protocol.md`
+  was explicitly requested. Run `scripts/protocol_output_validator.py` only for
+  deliverables that exist.
 - `schemas/review_report.schema.json`, `schemas/revised_protocol.schema.json`,
   and `scripts/lint_structured_protocol.py` when the user requests structured
   JSON artifacts or when preparing regression-test fixtures.
@@ -213,10 +205,12 @@ Load by phase:
    in the context of a manuscript, proposal, figure set, dataset, or central
    claim, map claim, readout, method step, parameter authority, QC gate, failure
    mode, manuscript impact, and revision action before judging readiness.
-11. **Run protocol-panel passes.** Generate core-facility operator, domain PI,
+11. **Run protocol-panel passes only when applicable.** In `protocol_full` or a
+   documented high-risk gate, generate core-facility operator, domain PI,
    statistics/data, safety/governance, Devil's Advocate, and SOP synthesizer
-   findings before final readiness scoring.
-12. **Lock the Protocol Readiness Contract.** Before rewriting SOP steps, define
+   findings before final readiness scoring. Otherwise use one integrated gate
+   pass plus the strongest failure mode.
+12. **Lock the Protocol Readiness Contract.** Before a readiness decision, define
    intended result, primary readout, experimental unit, decisive QC gates, local
    validation requirements, red-line checks, parameters that cannot be filled,
    and conditions that keep the protocol at Level 0/1/2/3.
@@ -225,23 +219,23 @@ Load by phase:
    `templates/issue_block_templates.json` for Critical/Major/Minor/Optimization
    issue logic. Severity must follow threat to execution, interpretation,
    safety, and auditability rather than rhetorical intensity.
-14. **Control operator burden.** Every added record, control, or QC field must
-   justify its value. Keep bench-critical content in the main SOP and move
-   audit/reporting material to appendices.
+14. **Control operator burden.** Every proposed record, control, or QC field must
+   justify its value. In an explicit SOP rewrite, keep bench-critical content in
+   the main SOP and move audit/reporting material to appendices.
 15. **Add mini-pilot validation when needed.** New, substituted, scaled,
    transferred, or locally unvalidated parameters require positive/negative
    controls, acceptance thresholds, stop/go criteria, and repeat/rescue/exclude
    rules.
-16. **Rewrite as SOP-first Markdown.** Put execution summary, before-you-begin,
-    numbered procedure, reagent setup, resources/equipment/primers/antibodies,
-    QC, timing, troubleshooting, anticipated results, and minimal analysis in the
-    main body. Put design rationale, governance, audit records, source tables,
-    assumption ledger, and parameter provenance in appendices.
+16. **Rewrite only on explicit request.** In `protocol_full`, put execution
+    summary, numbered procedure, reagent setup, resources, QC, timing,
+    troubleshooting, anticipated results, and minimal analysis in the main body.
+    Put rationale, governance, audit records, sources, assumptions, and parameter
+    provenance in appendices. Otherwise stop at the review report.
 17. **Create a Protocol Passport when needed.** For long, resumed, structured,
     or regression-test tasks, save an audit state object that links
     reconstruction, module activation, resource identity, parameter provenance,
     QC gates, unresolved gaps, mini-pilot plan, and review-to-SOP mapping.
-18. **Run the SOP traceability gate.** Every SOP change must map to a
+18. **Run the SOP traceability gate when rewriting.** Every SOP change must map to a
     review issue, failure mode, readout contract, parameter-authority class,
     safety/governance requirement, or user-supplied fact. High-burden additions
     require an operator-burden decision.
@@ -294,11 +288,9 @@ Use module-specific standards rather than generic rigor language:
 
 ## Output Contract
 
-Use `templates/Review_Report_template.md` and
-`templates/Revised_Protocol_md_structure.md`, with scoring and issue structure
-from `references/protocol_rubric.json` and
-`templates/issue_block_templates.json`. Produce exactly two final user-facing
-files unless the user requests a different package:
+Use `templates/Review_Report_template.md`, with scoring and issue structure from
+`references/protocol_rubric.json` and `templates/issue_block_templates.json`.
+The default `protocol_gate` output is one user-facing file:
 
 1. `Review_Report.md`
    - protocol reconstruction and executive verdict;
@@ -310,7 +302,7 @@ files unless the user requests a different package:
    - readout contracts for primary and decisive secondary readouts;
    - cross-skill claim-readout handoff when protocol-derived evidence supports
      a manuscript/proposal claim;
-   - protocol-panel synthesis before readiness scoring;
+   - protocol-panel synthesis before readiness scoring when the selected profile or risk makes it applicable;
    - optional external evidence companion results when companions/tools were
      used;
    - Critical/Major/Minor/Optimization issue blocks;
@@ -319,11 +311,13 @@ files unless the user requests a different package:
    - parameter authority isolation table when parameters are accepted,
      substituted, recommended, or unresolved;
    - data records and repository gate for reusable data outputs;
-   - operator burden budget and mini-pilot plan when needed;
+   - operator burden budget and mini-pilot plan only when applicable;
    - Protocol Passport summary when an auditable passport is created;
    - original-to-revised and review-to-SOP mapping with change type, authority, QC/readout affected, and burden decision.
 
-2. `Revised_Protocol.md`
+2. `Revised_Protocol.md` — produce only when the user explicitly requests an
+   SOP rewrite or the `protocol_full` package; then load
+   `templates/Revised_Protocol_md_structure.md`:
    - SOP-first, bench-facing Markdown, Chinese by default unless requested
      otherwise;
    - clear Markdown heading hierarchy, numbered procedure stages, compact
@@ -339,12 +333,19 @@ files unless the user requests a different package:
      batches, source table, assumptions, parameter provenance, readout
      contracts, data repository plan, and passport summary when relevant.
 
-Before delivery, run `references/output_qc_linter.md`,
-`references/revised_protocol_qc_checklist.md`, and when files exist:
+Before delivery, run `references/output_qc_linter.md` for the report. If an SOP
+rewrite was explicitly requested, also run
+`references/revised_protocol_qc_checklist.md`. Validate only files that exist:
 
 ```bash
-python3 scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
+python3 scripts/protocol_output_validator.py --profile protocol_gate --report Review_Report.md
+python3 scripts/protocol_output_validator.py --profile protocol_full --report Review_Report.md --protocol Revised_Protocol.md
+python3 scripts/protocol_output_validator.py --profile delta_review --report Review_Report.md
 ```
+
+Strict content checks are enabled by default. Use `--lenient-content` only for an
+explicitly identified legacy draft that will not be used for a bench-execution or
+readiness decision.
 
 When structured JSON audit extracts are requested or used in regression
 fixtures, validate them against the local schemas:

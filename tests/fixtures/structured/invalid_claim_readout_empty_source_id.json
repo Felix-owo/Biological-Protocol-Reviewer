@@ -1,4 +1,5 @@
 {
+  "contract_version": "1.0.0",
   "handoff_id": "invalid-source-id",
   "skill_context": "cross-skill",
   "claim_readout_map": [

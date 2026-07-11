@@ -5,15 +5,19 @@ Run this check before final delivery.
 When files exist, also run:
 
 ```bash
-python3 scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
+python3 scripts/protocol_output_validator.py --profile protocol_full --report Review_Report.md --protocol Revised_Protocol.md
 ```
 
 Treat validator failure as a blocking issue unless the failure is a known false positive and the reason is documented in the final response.
+Strict content checks are the default. `--lenient-content` is limited to labeled
+legacy drafts that are not execution/readiness decision artifacts.
 
 ## Required files
 
 - `Review_Report.md` exists.
-- `Revised_Protocol.md` exists.
+- `Revised_Protocol.md` exists only when the user explicitly requested an SOP
+  rewrite (`protocol_full`). Its absence is valid in the default review-only
+  profile.
 
 ## Review_Report.md checks
 
@@ -30,7 +34,7 @@ The report must contain:
 - safety, ethics, and biosafety review;
 - assumption ledger when missing details are filled;
 - parameter provenance table when recommended parameters are introduced;
-- operator burden budget;
+- operator burden budget when applicable (always for `protocol_full`);
 - mini-pilot plan when new, substituted, scaled, transferred, or locally unvalidated parameters are used;
 - original-to-revised mapping table;
 - required changes before execution;

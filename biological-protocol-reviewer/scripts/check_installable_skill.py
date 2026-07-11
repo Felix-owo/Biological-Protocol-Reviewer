@@ -39,6 +39,7 @@ BASE_REQUIRED_FILES = [
     "schemas/issue.schema.json",
     "schemas/qc_gate.schema.json",
     "schemas/parameter_provenance.schema.json",
+    "schemas/bioinformatics_handoff.schema.json",
     "schemas/external_companion_evidence.schema.json",
     "schemas/protocol_passport.schema.json",
     "schemas/claim_readout_handoff.schema.json",
@@ -48,6 +49,7 @@ BASE_REQUIRED_FILES = [
     "scripts/check_version_consistency.py",
     "scripts/run_regression_fixtures.py",
     "scripts/check_protocol_passport.py",
+    "scripts/check_claim_readout_handoff.py",
 ]
 DESCRIPTION_TERMS = ["protocol", "SOP", "QC", "benchmark", "readiness"]
 ALLOWED_LICENSES = {"MPL-2.0"}
@@ -117,12 +119,43 @@ def manifest_resources(manifest: dict[str, object]) -> set[str]:
     return resources
 
 
+def schema_reference_errors(skill_dir: Path) -> list[str]:
+    errors: list[str] = []
+    schema_root = skill_dir / "schemas"
+
+    def references(value: object):
+        if isinstance(value, dict):
+            reference = value.get("$ref")
+            if isinstance(reference, str):
+                yield reference
+            for nested in value.values():
+                yield from references(nested)
+        elif isinstance(value, list):
+            for nested in value:
+                yield from references(nested)
+
+    for schema_path in sorted(schema_root.glob("*.json")):
+        try:
+            schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+            errors.append(f"Invalid schema {schema_path.relative_to(skill_dir)}: {error}")
+            continue
+        for reference in references(schema):
+            target_text = reference.split("#", 1)[0]
+            if not target_text or "://" in target_text or target_text.startswith("urn:"):
+                continue
+            target = schema_path.parent / target_text
+            if not target.is_file() or target.is_symlink():
+                errors.append(
+                    f"Schema dependency missing for {schema_path.relative_to(skill_dir)}: {target_text}"
+                )
+    return errors
+
+
 def validate_skill(skill_dir: Path) -> list[str]:
     errors: list[str] = []
     if not skill_dir.exists():
         return [f"Skill directory does not exist: {skill_dir}"]
-    if skill_dir.name != CANONICAL_NAME:
-        errors.append(f"Skill directory must be named {CANONICAL_NAME!r}")
 
     top_level = {path.name for path in skill_dir.iterdir()}
     unexpected = sorted(top_level - ALLOWED_TOP_LEVEL)
@@ -135,6 +168,7 @@ def validate_skill(skill_dir: Path) -> list[str]:
     for filename in BASE_REQUIRED_FILES:
         if not (skill_dir / filename).is_file():
             errors.append(f"Missing required file: {filename}")
+    errors.extend(schema_reference_errors(skill_dir))
     if (skill_dir / "validators").exists():
         errors.append("Do not keep a top-level validators/ directory; use references/ or scripts/")
 
@@ -172,6 +206,68 @@ def validate_skill(skill_dir: Path) -> list[str]:
             errors.append("references/skill_manifest.json name does not match canonical skill name")
         if skill_version and manifest.get("version") != skill_version:
             errors.append("references/skill_manifest.json version does not match SKILL.md metadata.version")
+        profiles = manifest.get("runtime_profiles")
+        if not isinstance(profiles, dict) or profiles.get("default") != "protocol_gate":
+            errors.append("references/skill_manifest.json must declare protocol_gate as default")
+        else:
+            profile_doc_path = skill_dir / "references" / "runtime_profiles.md"
+            profile_doc = (
+                profile_doc_path.read_text(encoding="utf-8")
+                if profile_doc_path.is_file()
+                else ""
+            )
+            for profile in ["protocol_gate", "protocol_full", "delta_review"]:
+                budget = profiles.get(profile)
+                if not isinstance(budget, dict):
+                    errors.append(f"runtime_profiles.{profile} must be an object with resource budgets")
+                    continue
+                for field in ["max_reference_files", "max_reference_characters"]:
+                    value = budget.get(field)
+                    if not isinstance(value, int) or isinstance(value, bool) or value <= 0:
+                        errors.append(f"runtime_profiles.{profile}.{field} must be a positive integer")
+                if isinstance(budget, dict):
+                    resources = budget.get("baseline_resources")
+                    if (
+                        not isinstance(resources, list)
+                        or not resources
+                        or not all(isinstance(item, str) for item in resources)
+                        or len(resources) != len(set(resources))
+                    ):
+                        errors.append(
+                            f"runtime_profiles.{profile}.baseline_resources must be a non-empty unique string array"
+                        )
+                    else:
+                        missing = [item for item in resources if not (skill_dir / item).is_file()]
+                        if missing:
+                            errors.append(
+                                f"runtime_profiles.{profile}.baseline_resources are missing: {missing}"
+                            )
+                        else:
+                            character_count = sum(
+                                len((skill_dir / item).read_text(encoding="utf-8"))
+                                for item in resources
+                            )
+                            max_files = budget.get("max_reference_files")
+                            max_characters = budget.get("max_reference_characters")
+                            if isinstance(max_files, int) and len(resources) > max_files:
+                                errors.append(
+                                    f"runtime_profiles.{profile} baseline exceeds max_reference_files"
+                                )
+                            if (
+                                isinstance(max_characters, int)
+                                and character_count > max_characters
+                            ):
+                                errors.append(
+                                    f"runtime_profiles.{profile} baseline exceeds max_reference_characters"
+                                )
+                    expected_row = (
+                        f"| `{profile}` | {budget.get('max_reference_files')} | "
+                        f"{budget.get('max_reference_characters')} |"
+                    )
+                    if expected_row not in profile_doc:
+                        errors.append(
+                            f"references/runtime_profiles.md budget row is out of sync for {profile}"
+                        )
 
     # Cross-check all manifest and SKILL resource references against actual files.
     declared_resources = manifest_resources(manifest)
@@ -197,7 +293,7 @@ def validate_skill(skill_dir: Path) -> list[str]:
     version_check = skill_dir / "scripts" / "check_version_consistency.py"
     if version_check.exists():
         result = subprocess.run(
-            [sys.executable, str(version_check.resolve())],
+            [sys.executable, str(version_check.resolve()), "--mode", "package"],
             cwd=skill_dir,
             text=True,
             capture_output=True,

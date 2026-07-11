@@ -6,7 +6,7 @@
     "fragile_step": "Antibody staining and FMO-defined gate placement."
   },
   "readiness": {
-    "score": 82,
+    "score": 7.2,
     "maturity_level": 2,
     "execution_gate": "executable_with_controls"
   },

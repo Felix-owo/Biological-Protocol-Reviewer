@@ -29,6 +29,30 @@ ALLOWED_ACTIONS = {
     "author_input_needed",
     "no_action_needed",
 }
+CONTRACT_VERSION = "1.0.0"
+ROOT_REQUIRED_FIELDS = {
+    "contract_version",
+    "handoff_id",
+    "skill_context",
+    "claim_readout_map",
+}
+ROOT_ALLOWED_FIELDS = ROOT_REQUIRED_FIELDS | {"notes", "extensions"}
+ITEM_REQUIRED_FIELDS = {
+    "claim_id",
+    "claim_text",
+    "evidence_role",
+    "readout_id",
+    "readout_supports",
+    "protocol_step_or_method",
+    "parameter_authority",
+    "qc_gate",
+    "failure_mode",
+    "manuscript_impact",
+    "revision_action",
+    "source_ids",
+}
+EXTENSION_NAMESPACES = {"biological_protocol_reviewer", "rigorous_reviewer"}
+EXTENSION_FIELDS = {"source_record_ids", "notes"}
 
 
 def load_json(path: Path) -> Any:
@@ -39,14 +63,70 @@ def substantive(value: Any, min_len: int = 4) -> bool:
     return isinstance(value, str) and len(value.strip()) >= min_len
 
 
+def validate_unique_ids(value: Any, path: str, require_non_empty: bool = True) -> list[str]:
+    if not isinstance(value, list) or (require_non_empty and not value):
+        qualifier = "non-empty " if require_non_empty else ""
+        return [f"{path} must be a {qualifier}array"]
+    errors: list[str] = []
+    seen: set[str] = set()
+    for index, source_id in enumerate(value):
+        item_path = f"{path}[{index}]"
+        if not substantive(source_id, 2):
+            errors.append(f"{item_path} must be a substantive string of at least 2 characters")
+            continue
+        normalized = source_id.strip()
+        if normalized in seen:
+            errors.append(f"{item_path} duplicates source ID {normalized!r}")
+        seen.add(normalized)
+    return errors
+
+
+def validate_extensions(value: Any) -> list[str]:
+    path = "extensions"
+    if not isinstance(value, dict):
+        return [f"{path} must be an object"]
+    errors: list[str] = []
+    for field in sorted(set(value) - EXTENSION_NAMESPACES):
+        errors.append(f"{path} contains unsupported field `{field}`")
+    for namespace in sorted(set(value) & EXTENSION_NAMESPACES):
+        namespace_value = value[namespace]
+        namespace_path = f"{path}.{namespace}"
+        if not isinstance(namespace_value, dict):
+            errors.append(f"{namespace_path} must be an object")
+            continue
+        for field in sorted(set(namespace_value) - EXTENSION_FIELDS):
+            errors.append(f"{namespace_path} contains unsupported field `{field}`")
+        if "notes" in namespace_value and not isinstance(namespace_value["notes"], str):
+            errors.append(f"{namespace_path}.notes must be a string")
+        if "source_record_ids" in namespace_value:
+            errors.extend(
+                validate_unique_ids(
+                    namespace_value["source_record_ids"],
+                    f"{namespace_path}.source_record_ids",
+                    require_non_empty=False,
+                )
+            )
+    return errors
+
+
 def validate(data: Any) -> list[str]:
     if not isinstance(data, dict):
         return ["handoff must be a JSON object"]
     errors: list[str] = []
+    for field in sorted(ROOT_REQUIRED_FIELDS - set(data)):
+        errors.append(f"missing required root field `{field}`")
+    for field in sorted(set(data) - ROOT_ALLOWED_FIELDS):
+        errors.append(f"root contains unsupported field `{field}`")
+    if data.get("contract_version") != CONTRACT_VERSION:
+        errors.append(f"contract_version must be {CONTRACT_VERSION!r}")
     if not substantive(data.get("handoff_id"), 3):
         errors.append("handoff_id must be a substantive string")
     if data.get("skill_context") not in {"rigorous-reviewer", "biological-protocol-reviewer", "cross-skill"}:
         errors.append("skill_context is invalid")
+    if "notes" in data and not isinstance(data["notes"], str):
+        errors.append("notes must be a string")
+    if "extensions" in data:
+        errors.extend(validate_extensions(data["extensions"]))
     items = data.get("claim_readout_map")
     if not isinstance(items, list) or not items:
         errors.append("claim_readout_map must be a non-empty array")
@@ -56,17 +136,22 @@ def validate(data: Any) -> list[str]:
         if not isinstance(item, dict):
             errors.append(f"{path} must be an object")
             continue
-        for key in [
-            "claim_id",
-            "claim_text",
-            "readout_id",
-            "readout_supports",
-            "protocol_step_or_method",
-            "qc_gate",
-            "failure_mode",
-            "manuscript_impact",
-        ]:
-            if not substantive(item.get(key), 2 if key in {"claim_id", "readout_id"} else 8):
+        for field in sorted(ITEM_REQUIRED_FIELDS - set(item)):
+            errors.append(f"{path} missing required field `{field}`")
+        for field in sorted(set(item) - ITEM_REQUIRED_FIELDS):
+            errors.append(f"{path} contains unsupported field `{field}`")
+        minimum_lengths = {
+            "claim_id": 2,
+            "claim_text": 8,
+            "readout_id": 2,
+            "readout_supports": 8,
+            "protocol_step_or_method": 4,
+            "qc_gate": 8,
+            "failure_mode": 8,
+            "manuscript_impact": 8,
+        }
+        for key, minimum_length in minimum_lengths.items():
+            if not substantive(item.get(key), minimum_length):
                 errors.append(f"{path}.{key} must be substantive")
         if item.get("evidence_role") not in ALLOWED_ROLES:
             errors.append(f"{path}.evidence_role is invalid")
@@ -74,13 +159,7 @@ def validate(data: Any) -> list[str]:
             errors.append(f"{path}.parameter_authority is invalid")
         if item.get("revision_action") not in ALLOWED_ACTIONS:
             errors.append(f"{path}.revision_action is invalid")
-        source_ids = item.get("source_ids")
-        if not isinstance(source_ids, list) or not source_ids:
-            errors.append(f"{path}.source_ids must be a non-empty array")
-        else:
-            for source_idx, source_id in enumerate(source_ids):
-                if not substantive(source_id, 2):
-                    errors.append(f"{path}.source_ids[{source_idx}] must be substantive")
+        errors.extend(validate_unique_ids(item.get("source_ids"), f"{path}.source_ids"))
         if item.get("evidence_role") == "decisive":
             if (
                 item.get("parameter_authority") in {"recommended_unvalidated", "unresolved"}

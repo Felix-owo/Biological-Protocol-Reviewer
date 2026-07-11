@@ -10,7 +10,7 @@ Before opening a pull request, run:
 
 ```bash
 python biological-protocol-reviewer/scripts/check_installable_skill.py --skill-dir biological-protocol-reviewer
-python biological-protocol-reviewer/scripts/check_version_consistency.py
+python biological-protocol-reviewer/scripts/check_version_consistency.py --mode release --repo-root .
 python biological-protocol-reviewer/scripts/run_regression_fixtures.py
 python -m unittest discover -s tests -v
 python tools/score_protocol_benchmark.py --benchmark-root benchmarks/v1.0

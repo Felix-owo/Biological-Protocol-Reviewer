@@ -1,4 +1,11 @@
 {
+  "runtime_profile": "protocol_full",
+  "profile_contract": {
+    "protocol_panel_applicable": true,
+    "operator_burden_applicable": true,
+    "mini_pilot_applicable": true,
+    "review_to_sop_mapping_applicable": true
+  },
   "protocol_reconstruction": {
     "intended_result": "Generate reusable single-cell expression data for downstream interpretation.",
     "primary_readout": "single-cell expression matrix",
@@ -6,7 +13,7 @@
     "fragile_step": "library QC and metadata capture before sequencing"
   },
   "readiness": {
-    "score": 72,
+    "score": 7.2,
     "maturity_level": 2,
     "execution_gate": "pilot_required"
   },
@@ -93,7 +100,7 @@
   "operator_burden_budget": [
     {
       "added_requirement": "metadata manifest",
-      "burden": "medium",
+      "burden": "moderate",
       "justification": "Required for reusable omics data and audit"
     }
   ],

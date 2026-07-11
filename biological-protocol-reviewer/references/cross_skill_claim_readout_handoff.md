@@ -14,6 +14,12 @@ readout without checking parameter authority, QC gates, and failure modes.
 
 ## Required mapping
 
+The root object requires `contract_version: "1.0.0"`, `handoff_id`,
+`skill_context`, and `claim_readout_map`. Optional root fields are limited to
+`notes` and `extensions`. Extensions must use the
+`biological_protocol_reviewer` or `rigorous_reviewer` namespace and may contain
+only unique `source_record_ids` and `notes`.
+
 | Field | Required content |
 |---|---|
 | claim_id | Stable ID for the manuscript/proposal claim. |
@@ -22,11 +28,11 @@ readout without checking parameter authority, QC gates, and failure modes.
 | readout_id | Stable protocol readout ID. |
 | readout_supports | What the readout can support if it passes. |
 | protocol_step_or_method | SOP section, method, assay, proof-of-measurement, or analysis step. |
-| parameter_authority | original / local validated / external benchmark / recommended-unvalidated / unresolved. |
+| parameter_authority | original / local_validated / external_benchmark / vendor_manual / institutional_sop / recommended_unvalidated / unresolved / not_applicable. |
 | qc_gate | QC threshold, positive/negative control, fail action, and record field. |
 | failure_mode | False-positive, false-negative, safety, reproducibility, or interpretability risk. |
 | manuscript_impact | How the claim changes if the readout or protocol gate fails. |
-| revision_action | Add control / add validation / narrow claim / mark preliminary / author input needed. |
+| revision_action | add_control / add_validation / add_qc_gate / narrow_claim / mark_preliminary / author_input_needed / no_action_needed. |
 | source_ids | Evidence-ledger or source-table IDs supporting the mapping. |
 
 ## Rules
@@ -34,7 +40,7 @@ readout without checking parameter authority, QC gates, and failure modes.
 - A protocol readout cannot be treated as decisive unless it maps to a specific
   claim and includes a control, acceptance criterion, fail action, and
   interpretation boundary.
-- If a decisive claim depends on `recommended-unvalidated` or `unresolved`
+- If a decisive claim depends on `recommended_unvalidated` or `unresolved`
   parameters, the revised SOP must add mini-pilot validation or keep the claim
   handoff as blocked.
 - If the protocol is strong but the manuscript claim overreaches the readout,

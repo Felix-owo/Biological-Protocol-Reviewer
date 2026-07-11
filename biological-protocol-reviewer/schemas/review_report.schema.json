@@ -3,6 +3,8 @@
   "$id": "review_report.schema.json",
   "type": "object",
   "required": [
+    "runtime_profile",
+    "profile_contract",
     "protocol_reconstruction",
     "readiness",
     "protocol_readiness_contract",
@@ -10,17 +12,105 @@
     "evidence_benchmark",
     "parameter_authority_isolation",
     "readout_contracts",
-    "protocol_panel_synthesis",
     "issues",
     "qc_and_metadata_review",
     "safety_governance_review",
-    "operator_burden_budget",
-    "mini_pilot_plan",
-    "parameter_provenance",
-    "review_to_sop_mapping"
+    "parameter_provenance"
   ],
   "additionalProperties": false,
   "properties": {
+    "runtime_profile": {
+      "type": "string",
+      "enum": [
+        "protocol_gate",
+        "protocol_full",
+        "delta_review"
+      ]
+    },
+    "profile_contract": {
+      "type": "object",
+      "required": [
+        "protocol_panel_applicable",
+        "operator_burden_applicable",
+        "mini_pilot_applicable",
+        "review_to_sop_mapping_applicable"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "protocol_panel_applicable": {
+          "type": "boolean"
+        },
+        "operator_burden_applicable": {
+          "type": "boolean"
+        },
+        "mini_pilot_applicable": {
+          "type": "boolean"
+        },
+        "review_to_sop_mapping_applicable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "delta_review_trace": {
+      "type": "object",
+      "required": [
+        "prior_review_id",
+        "changed_artifact_ids",
+        "prior_open_finding_ids",
+        "resolved_finding_ids",
+        "new_finding_ids",
+        "carried_forward_finding_ids"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "prior_review_id": {
+          "type": "string",
+          "minLength": 3
+        },
+        "changed_artifact_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "prior_open_finding_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "resolved_finding_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "new_finding_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "carried_forward_finding_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        }
+      }
+    },
     "protocol_reconstruction": {
       "type": "object",
       "required": [
@@ -59,9 +149,9 @@
       "additionalProperties": false,
       "properties": {
         "score": {
-          "type": "integer",
+          "type": "number",
           "minimum": 0,
-          "maximum": 100
+          "maximum": 10
         },
         "maturity_level": {
           "type": "integer",
@@ -191,7 +281,7 @@
             "type": "string",
             "enum": [
               "low",
-              "medium",
+              "moderate",
               "high"
             ]
           },
@@ -244,5 +334,158 @@
         "$ref": "external_companion_evidence.schema.json"
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "runtime_profile"
+        ],
+        "properties": {
+          "runtime_profile": {
+            "const": "protocol_full"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "protocol_panel_synthesis",
+          "operator_burden_budget",
+          "mini_pilot_plan",
+          "review_to_sop_mapping"
+        ],
+        "properties": {
+          "profile_contract": {
+            "properties": {
+              "protocol_panel_applicable": {
+                "const": true
+              },
+              "operator_burden_applicable": {
+                "const": true
+              },
+              "mini_pilot_applicable": {
+                "const": true
+              },
+              "review_to_sop_mapping_applicable": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "runtime_profile"
+        ],
+        "properties": {
+          "runtime_profile": {
+            "const": "delta_review"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "delta_review_trace"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "profile_contract"
+        ],
+        "properties": {
+          "profile_contract": {
+            "required": [
+              "protocol_panel_applicable"
+            ],
+            "properties": {
+              "protocol_panel_applicable": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "protocol_panel_synthesis"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "profile_contract"
+        ],
+        "properties": {
+          "profile_contract": {
+            "required": [
+              "operator_burden_applicable"
+            ],
+            "properties": {
+              "operator_burden_applicable": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "operator_burden_budget"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "profile_contract"
+        ],
+        "properties": {
+          "profile_contract": {
+            "required": [
+              "mini_pilot_applicable"
+            ],
+            "properties": {
+              "mini_pilot_applicable": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "mini_pilot_plan"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "profile_contract"
+        ],
+        "properties": {
+          "profile_contract": {
+            "required": [
+              "review_to_sop_mapping_applicable"
+            ],
+            "properties": {
+              "review_to_sop_mapping_applicable": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "review_to_sop_mapping"
+        ]
+      }
+    }
+  ]
 }

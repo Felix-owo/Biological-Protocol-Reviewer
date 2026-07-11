@@ -1,5 +1,7 @@
 # Review_Report.md
 
+**Runtime profile:** protocol_full
+
 ## 1. Protocol重建 / Protocol reconstruction
 
 - Protocol: Demo flow cytometry staining SOP.
@@ -14,7 +16,7 @@ The protocol is executable after adding explicit controls, QC gates, and source-
 
 ## 3. 成熟度 / Readiness score
 
-- Readiness score: 82/100.
+- Readiness score: 7.2/10.
 - Maturity level: Level 2.
 - Execution gate: executable with controls.
 
@@ -117,6 +119,12 @@ Run one positive-control and one negative-control sample before processing the f
 | --- | --- |
 | Missing viability gate | Section 7 quality control |
 
-## 20. Red-line self-audit
+## 20. Review-to-SOP mapping
+
+| Issue | SOP section | Revision | Status |
+| --- | --- | --- | --- |
+| M01 | Section 7 quality control | Add viability release gate and fail action. | resolved in draft |
+
+## 21. Red-line self-audit
 
 No request asks for harmful biological-agent creation, oversight evasion, or concealment.

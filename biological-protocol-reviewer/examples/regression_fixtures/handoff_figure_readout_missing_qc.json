@@ -1,4 +1,5 @@
 {
+  "contract_version": "1.0.0",
   "handoff_id": "handoff-figure-readout-missing-qc",
   "skill_context": "cross-skill",
   "claim_readout_map": [
@@ -16,5 +17,11 @@
       "revision_action": "add_qc_gate",
       "source_ids": ["M1", "S1"]
     }
-  ]
+  ],
+  "extensions": {
+    "biological_protocol_reviewer": {
+      "source_record_ids": ["M1", "S1"],
+      "notes": "BPR evidence-ledger records used for this handoff."
+    }
+  }
 }

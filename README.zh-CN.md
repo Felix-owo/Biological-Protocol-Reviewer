@@ -4,30 +4,34 @@
 
 [![License: MPL-2.0](https://img.shields.io/badge/License-MPL--2.0-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Standard-Agent_Skills-blueviolet.svg)](https://agentskills.io/specification)
-[![Version](https://img.shields.io/badge/Version-v1.4.2-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.5.0-blue.svg)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/Python-3.10--3.13-3776AB.svg)](#校验方式)
 [![Works with](https://img.shields.io/badge/Works_with-Codex-blue.svg)](#安装方式)
 
-**biological-protocol-reviewer** 是一个用于生物实验 protocol 严格评审和 SOP 重写的 Codex skill。它面向动物、细胞、分子生物学、流式/成像、组学、统计复现性、安全治理和前沿实验方法，目标不是润色文字，而是判断 protocol 是否能被安全执行、正确解释、稳定复现、完整审计，并把不完整 bench notes 改写成有证据支撑的可执行 SOP。
+**biological-protocol-reviewer** 是一个用于生物实验 protocol 严格评审、并可按明确请求重写 SOP 的 Codex skill。它面向动物、细胞、分子生物学、流式/成像、组学、统计复现性、安全治理和前沿实验方法，默认先判断 protocol 是否能被安全执行、正确解释、稳定复现和完整审计。
 
 
 ## 默认输出
 
-默认生成两个用户可见文件：
+默认采用 `protocol_gate`，只生成一个用户可见文件：
 
-- `Review_Report.md`：protocol 重建、readiness score、Level 0-3 成熟度门槛、模块激活表、证据对标表、按严重性排序的问题块、假设台账、参数溯源、操作者负担预算、mini-pilot 方案，以及 review-to-SOP 映射。
-- `Revised_Protocol.md`：面向 bench 的 Markdown SOP，包括快速执行摘要、开始前准备、编号步骤、试剂配制、资源/设备/软件/引物/抗体表、QC gate、疑难排查、预期结果、最小数据分析和审计附录。
+- `Review_Report.md`：protocol 重建、readiness score、Level 0-3 成熟度门槛、模块激活表、证据对标表、按严重性排序的问题块、假设台账和参数溯源。panel synthesis、操作者负担、mini-pilot 与 review-to-SOP mapping 只在 `protocol_full` 或明确标记适用时加入。
+
+只有用户明确要求 SOP 重写时才采用 `protocol_full` 并生成
+`Revised_Protocol.md`。`delta_review` 只加载改变的步骤和此前未解决的
+finding。详见 `references/runtime_profiles.md`。
 
 这个 skill 不把 protocol 审核当作 copyediting。它首先问：这个流程能否执行、解释、复现、审计，并符合安全和治理要求。
 
-## v1.4.2 加固说明
+## v1.5.0 行为与契约变化
 
-本 patch release 保留 v1.4.x 的核心 Skill 行为，主要增强仓库工程可靠性：
+这是一次有意改变默认行为和结构化契约的 minor release：
 
-- CI 现在会安装 `requirements-dev.txt`，运行 Ruff，用 `jsonschema` 校验 JSON Schema，覆盖 Python 3.10-3.13，并用显式 template mode 检查 Protocol Passport 模板。
-- `protocol_passport`、`claim_readout_handoff` 和 `external_companion_evidence` schema 收紧字段契约和来源身份要求。
-- 回归 fixture 与 benchmark 增加 Protocol Passport、companion source resolution、动物 randomization/blinding、qPCR/MIQE 缺口和 resource identity failure 覆盖。
-- 一次性的 v1.4.0 升级说明已移动到 `docs/release_notes/v1.4.0.md`。
+- 默认使用 review-only 的 `protocol_gate`；只有明确请求 `protocol_full` 才重写 SOP，`delta_review` 只加载改变的内容和未解决 finding。
+- readiness 统一使用 0-10 数值尺度，Level 0-3 必须与分数一致；operator burden 统一为 `low / moderate / high`。
+- claim-readout handoff 强制 `contract_version: "1.0.0"`、封闭 root/item 字段、唯一 source IDs 和有限 reviewer extension namespace。
+- package 校验可在任意缓存目录名下运行；release 校验保持显式；缺少 PyYAML 时，完成态 YAML Passport 严格 fail closed。
+- 行为 benchmark 会拒绝关键词堆砌和错误 readiness。v1.5.0 真实模型输出评分仍为 pending，不声称经验 pass rate。
 
 ## 结构化资源与校验
 
@@ -84,6 +88,7 @@ Biological Protocol Reviewer 可以在当前 host 已暴露相关能力时使用
 │   │   ├── protocol_rubric.json
 │   │   ├── skill_manifest.json
 │   │   ├── agent_behavior_core.md
+│   │   ├── runtime_profiles.md
 │   │   ├── sop_traceability_and_change_discipline.md
 │   │   ├── external_evidence_companion_policy.md
 │   │   ├── protocol_passport.md
@@ -143,7 +148,14 @@ GitHub 发布用的 README、CHANGELOG、LICENSE、CI、tests 和 benchmark defi
 
 ## 安装方式
 
-从 GitHub 安装时应使用子路径 `biological-protocol-reviewer`。本地安装时，Codex
+如需可复现的 v1.5.0 release checkout：
+
+```bash
+git clone --branch v1.5.0 --depth 1 https://github.com/Felix-owo/Biological-Protocol-Reviewer.git
+cd Biological-Protocol-Reviewer
+```
+
+从该 checkout 安装时应使用子路径 `biological-protocol-reviewer`。本地安装时，Codex
 解析到的 skill 路径应指向：
 
 ```text
@@ -161,18 +173,21 @@ GitHub 发布用的 README、CHANGELOG、LICENSE、CI、tests 和 benchmark defi
 5. 用 peer-reviewed protocol、top-journal methods、official standards、vendor/instrument manuals、core-facility SOP 和 local validation 对标参数、控制和 QC。
 6. 执行安全和治理红线检查。
 7. 用 `references/protocol_rubric.json` 和 `templates/issue_block_templates.json` 分配严重性并写完整问题块。
-8. 改写为 SOP-first Markdown：bench-critical 内容放主文，设计理由、治理、记录、证据来源、假设和参数溯源放附录。
-9. 运行 linter、checklist 和可执行 validator。
+8. 默认产出评审报告；只有明确请求时才改写 SOP-first Markdown。
+9. 对报告以及实际存在的 SOP 运行相应 linter 和可执行 validator。
 
 ## 校验方式
 
-当输出文件存在时运行：
+默认 review-only 输出运行：
 
 ```bash
-python3 biological-protocol-reviewer/scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
+python3 biological-protocol-reviewer/scripts/protocol_output_validator.py --profile protocol_gate --report Review_Report.md
 ```
 
-该 validator 检查 Review_Report 和 Revised_Protocol.md 的必需结构、章节顺序、未解决模糊语言，以及推荐参数是否缺少参数溯源。它不能替代科学判断。
+明确请求 SOP 重写时，使用 `--profile protocol_full` 并加入
+`--protocol Revised_Protocol.md`；修订增量使用 `--profile delta_review`，报告必须列出 prior review、changed artifact、prior-open、resolved、new 和 carried-forward IDs。validator
+只检查实际提供的文件，包括报告结构、可选 SOP 章节顺序、未解决模糊语言和推荐参数溯源；它不能替代科学判断。
+strict content 默认启用；`--lenient-content` 只允许用于已明确标识、不会参与执行决策的历史草稿，JSON 输出会固定标记 `decision_eligible: false`。
 
 当需要结构化 JSON 审计提取、Protocol Passport 或回归测试 fixture 时运行：
 
@@ -189,7 +204,7 @@ python3 biological-protocol-reviewer/scripts/check_claim_readout_handoff.py biol
 python3 -m pip install -r requirements-dev.txt
 python3 -m ruff check .
 python3 biological-protocol-reviewer/scripts/check_installable_skill.py --skill-dir biological-protocol-reviewer
-python3 biological-protocol-reviewer/scripts/check_version_consistency.py
+python3 biological-protocol-reviewer/scripts/check_version_consistency.py --mode release --repo-root .
 python3 biological-protocol-reviewer/scripts/check_protocol_passport.py biological-protocol-reviewer/templates/protocol_passport_template.yaml --allow-template
 python3 biological-protocol-reviewer/scripts/run_regression_fixtures.py
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q
@@ -206,7 +221,7 @@ GitHub Actions 会在 push 和 pull request 时运行同一组检查。版本化
 ## 典型输入
 
 ```text
-请使用 biological-protocol-reviewer 审核并重写这个 protocol。
+请使用 biological-protocol-reviewer 审核这个 protocol；除非我明确要求，否则不要重写 SOP。
 
 Protocol title/version:
 Purpose and primary readout:

@@ -4,30 +4,34 @@
 
 [![License: MPL-2.0](https://img.shields.io/badge/License-MPL--2.0-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Standard-Agent_Skills-blueviolet.svg)](https://agentskills.io/specification)
-[![Version](https://img.shields.io/badge/Version-v1.4.2-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.5.0-blue.svg)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/Python-3.10--3.13-3776AB.svg)](#validation)
 [![Works with](https://img.shields.io/badge/Works_with-Codex-blue.svg)](#installation)
 
-**biological-protocol-reviewer** is a Codex skill for evidence-grounded biological protocol review and SOP rewriting. It audits animal, cell, molecular, flow/imaging, omics, statistics, safety/governance, and frontier-method workflows, then turns incomplete bench notes into a source-backed review report and a directly executable SOP.
+**biological-protocol-reviewer** is a Codex skill for evidence-grounded biological protocol review with optional SOP rewriting. It audits animal, cell, molecular, flow/imaging, omics, statistics, safety/governance, and frontier-method workflows, producing a source-backed review before any requested rewrite.
 
 
 ## What This Skill Produces
 
-By default, the skill produces two user-facing files:
+By default, the skill uses the `protocol_gate` profile and produces one user-facing file:
 
-- `Review_Report.md`: protocol reconstruction, readiness score, Level 0-3 maturity gate, module activation table, benchmark evidence table, severity-ranked findings, assumption ledger, parameter provenance, operator-burden budget, mini-pilot plan, and review-to-SOP mapping.
-- `Revised_Protocol.md`: bench-facing Markdown SOP with execution summary, before-you-begin checklist, numbered steps, reagent setup, resource/equipment/software/primer/antibody tables, QC gates, troubleshooting, anticipated results, minimal analysis, and audit-ready appendices.
+- `Review_Report.md`: protocol reconstruction, readiness score, Level 0-3 maturity gate, module activation table, benchmark evidence table, severity-ranked findings, assumption ledger, and parameter provenance. Panel synthesis, operator-burden, mini-pilot, and review-to-SOP mapping sections are included only in `protocol_full` or when explicitly marked applicable.
+
+`Revised_Protocol.md` is produced only when the user explicitly requests an SOP
+rewrite (`protocol_full`). `delta_review` limits context to changed sections and
+prior open findings. See `references/runtime_profiles.md`.
 
 The skill is intentionally not a copyeditor. It asks whether the protocol can be executed, interpreted, reproduced, audited, and governed safely.
 
-## v1.4.2 Hardening Notes
+## v1.5.0 Behavior And Contract Changes
 
-This patch release keeps the v1.4.x skill behavior intact and strengthens repository reliability:
+This minor release intentionally changes the default runtime and structured contracts:
 
-- CI now installs `requirements-dev.txt`, runs Ruff, validates JSON Schemas with `jsonschema`, tests Python 3.10-3.13, and checks the Protocol Passport template in explicit template mode.
-- `protocol_passport`, `claim_readout_handoff`, and `external_companion_evidence` schemas now use stricter field contracts and source-identity requirements.
-- Regression fixtures and benchmark cases now cover Protocol Passport, companion-source resolution, animal randomization/blinding, qPCR/MIQE gaps, and resource-identity failures.
-- The one-off v1.4.0 upgrade note moved to `docs/release_notes/v1.4.0.md`.
+- `protocol_gate` is now the default review-only profile; SOP rewriting requires an explicit `protocol_full` request, while `delta_review` limits context to changed sections and open findings.
+- Readiness uses one numeric 0-10 scale, Level 0-3 must agree with that score, and operator burden uses `low / moderate / high`.
+- Claim-readout handoffs require contract version `1.0.0`, sealed root/item fields, unique source IDs, and bounded reviewer extension namespaces.
+- Package checks now work in arbitrary cache directory names, release checks remain explicit, and completed YAML passports fail closed when PyYAML is unavailable.
+- Behavioral benchmark gates reject keyword inventories and inconsistent readiness claims. The v1.5.0 model-output benchmark remains pending and does not claim an empirical pass rate.
 
 
 ## Structured Resources And Validation
@@ -97,6 +101,7 @@ Every Grade A-C benchmark source should include a DOI, PMID, official URL, manua
 │   │   ├── protocol_rubric.json
 │   │   ├── skill_manifest.json
 │   │   ├── agent_behavior_core.md
+│   │   ├── runtime_profiles.md
 │   │   ├── sop_traceability_and_change_discipline.md
 │   │   ├── external_evidence_companion_policy.md
 │   │   ├── protocol_passport.md
@@ -157,7 +162,14 @@ self-contained while the repository remains testable.
 
 ## Installation
 
-Install from this repository using the subpath `biological-protocol-reviewer`.
+For a reproducible v1.5.0 release checkout:
+
+```bash
+git clone --branch v1.5.0 --depth 1 https://github.com/Felix-owo/Biological-Protocol-Reviewer.git
+cd Biological-Protocol-Reviewer
+```
+
+Install from this checkout using the subpath `biological-protocol-reviewer`.
 For a local install, the path that Codex resolves as the skill should point to:
 
 ```text
@@ -176,18 +188,27 @@ also contains GitHub documentation.
 5. Benchmark parameters and controls against peer-reviewed protocols, top-journal methods, official standards, vendor/instrument manuals, core-facility SOPs, and local validation.
 6. Run safety/governance red lines.
 7. Audit failure modes and assign severity using `references/protocol_rubric.json` and `templates/issue_block_templates.json`.
-8. Rewrite the protocol as a SOP-first Markdown document, keeping bench-critical steps in the main body and audit rationale in appendices.
-9. Validate the outputs with the linter, checklist, and executable validator.
+8. Produce the review report; rewrite the protocol as SOP-first Markdown only when explicitly requested.
+9. Validate the report and, when present, the SOP with the applicable linter and executable validator.
 
 ## Validation
 
-When deliverable files exist, run:
+For the default review-only deliverable, run:
 
 ```bash
-python3 biological-protocol-reviewer/scripts/protocol_output_validator.py --report Review_Report.md --protocol Revised_Protocol.md
+python3 biological-protocol-reviewer/scripts/protocol_output_validator.py --profile protocol_gate --report Review_Report.md
 ```
 
-The validator checks required report and protocol sections, section order, unresolved vague language, and missing provenance for recommended parameters. It does not replace scientific judgment.
+When an SOP rewrite was explicitly requested, use `--profile protocol_full` and
+add `--protocol Revised_Protocol.md`. For a revision delta, use
+`--profile delta_review`; the report must list the prior review, changed artifact,
+prior-open, resolved, new, and carried-forward IDs. The validator checks the files supplied,
+including report structure, optional protocol section order, unresolved vague
+language, and missing provenance. Strict content checks are enabled by default.
+`--lenient-content` is only for identified legacy, non-decision drafts and must
+not be used for an execution-readiness gate; JSON output marks it as
+`decision_eligible: false`. The validator does not replace
+scientific judgment.
 
 For structured JSON audit extracts, Protocol Passport artifacts, or regression fixtures, run:
 
@@ -204,7 +225,7 @@ For repository maintenance, run the deterministic test and benchmark-definition 
 python3 -m pip install -r requirements-dev.txt
 python3 -m ruff check .
 python3 biological-protocol-reviewer/scripts/check_installable_skill.py --skill-dir biological-protocol-reviewer
-python3 biological-protocol-reviewer/scripts/check_version_consistency.py
+python3 biological-protocol-reviewer/scripts/check_version_consistency.py --mode release --repo-root .
 python3 biological-protocol-reviewer/scripts/check_protocol_passport.py biological-protocol-reviewer/templates/protocol_passport_template.yaml --allow-template
 python3 biological-protocol-reviewer/scripts/run_regression_fixtures.py
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q
@@ -223,7 +244,7 @@ The skill assumes legitimate institutional work by trained personnel when the co
 ## Typical Prompt
 
 ```text
-Use biological-protocol-reviewer to review and rewrite this protocol.
+Use biological-protocol-reviewer to review this protocol. Do not rewrite the SOP unless I explicitly request it.
 
 Protocol title/version:
 Purpose and primary readout:

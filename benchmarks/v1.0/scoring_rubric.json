@@ -11,6 +11,12 @@
     "minimum_case_pass_rate": 0.8,
     "critical_case_pass_required": true
   },
+  "behavioral_gates": [
+    "At least one severity-coded finding must contain non-empty problem, evidence, impact, resolution, and decisive-readout fields.",
+    "Every must_detect concept must occur inside a complete reasoned finding whose severity meets the case minimum; global keyword inventories do not count.",
+    "Readiness must state a numeric 0-10 score and one Level 0-3 maturity value, and the score must fall within that level's rubric range.",
+    "A keyword inventory without a reasoned finding cannot pass."
+  ],
   "notes": [
     "This set uses synthetic, non-sensitive cases only.",
     "CI validates benchmark definitions deterministically; model-output scoring is intended for release evaluation."

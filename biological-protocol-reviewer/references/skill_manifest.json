@@ -1,13 +1,72 @@
 {
   "name": "biological-protocol-reviewer",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "architecture": "single-skill-with-internal-module-routing",
   "default_language": "zh-CN",
-  "mission": "Publication-grade review and rewriting of biological experimental protocols into bench-facing Markdown SOP outputs with audit-ready appendices.",
+  "mission": "Publication-grade review of biological protocols, with explicit-request rewriting into bench-facing Markdown SOP outputs.",
   "required_outputs": [
-    "Review_Report.md",
+    "Review_Report.md"
+  ],
+  "optional_outputs": [
     "Revised_Protocol.md"
   ],
+  "runtime_profiles": {
+    "default": "protocol_gate",
+    "protocol_gate": {
+      "deliverables": "Review_Report.md only",
+      "max_reference_files": 10,
+      "max_reference_characters": 80000,
+      "baseline_resources": [
+        "references/agent_behavior_core.md",
+        "references/runtime_profiles.md",
+        "references/module_activation_and_routing.md",
+        "references/evidence_benchmarking_workflow.md",
+        "references/evidence_and_standards_hard_gates.md",
+        "references/risk_classification_and_redlines.md",
+        "references/protocol_rubric.json",
+        "templates/issue_block_templates.json"
+      ]
+    },
+    "protocol_full": {
+      "deliverables": "Review_Report.md plus explicitly requested Revised_Protocol.md",
+      "max_reference_files": 22,
+      "max_reference_characters": 180000,
+      "baseline_resources": [
+        "references/agent_behavior_core.md",
+        "references/runtime_profiles.md",
+        "references/module_activation_and_routing.md",
+        "references/evidence_benchmarking_workflow.md",
+        "references/evidence_and_standards_hard_gates.md",
+        "references/risk_classification_and_redlines.md",
+        "references/protocol_rubric.json",
+        "templates/issue_block_templates.json",
+        "references/expert_operator_detailing_standard.md",
+        "references/operator_burden_and_mini_pilot.md",
+        "references/sop_traceability_and_change_discipline.md",
+        "references/markdown_sop_style.md",
+        "templates/Revised_Protocol_md_structure.md",
+        "references/revised_protocol_qc_checklist.md",
+        "references/output_qc_linter.md",
+        "references/protocol_readiness_contract.md",
+        "references/protocol_panel_protocol.md",
+        "references/readout_contract.md"
+      ]
+    },
+    "delta_review": {
+      "deliverables": "Changed sections and prior open findings only",
+      "max_reference_files": 9,
+      "max_reference_characters": 70000,
+      "baseline_resources": [
+        "references/agent_behavior_core.md",
+        "references/runtime_profiles.md",
+        "references/protocol_rubric.json",
+        "templates/issue_block_templates.json",
+        "references/protocol_readiness_contract.md",
+        "references/module_activation_and_routing.md",
+        "references/output_qc_linter.md"
+      ]
+    }
+  },
   "structured_format_resources": [
     "references/protocol_rubric.json",
     "templates/issue_block_templates.json",
@@ -32,6 +91,7 @@
     "schemas/protocol_passport.schema.json",
     "schemas/claim_readout_handoff.schema.json",
     "references/agent_behavior_core.md",
+    "references/runtime_profiles.md",
     "references/sop_traceability_and_change_discipline.md"
   ],
   "internal_modules": [
@@ -46,7 +106,7 @@
     "materials_reagents_equipment",
     "data_records",
     "frontier_methods",
-    "operator_burden_budget",
+    "operator_burden_budget_when_applicable",
     "mini_pilot_validation",
     "protocol_readiness_contract",
     "protocol_panel_protocol",
@@ -56,6 +116,7 @@
     "readout_contracts",
     "protocol_passport",
     "scope_discipline",
+    "runtime_profiles",
     "sop_change_traceability"
   ],
   "required_quality_gates": [
@@ -66,7 +127,6 @@
     "evidence_benchmark_table",
     "assumption_ledger_when_needed",
     "parameter_provenance_when_needed",
-    "original_to_revised_mapping",
     "critical_major_issue_acceptance_criteria",
     "professional_issue_block_logic_chain",
     "exact_source_identity_for_grade_A_to_C",
@@ -75,9 +135,6 @@
     "mini_pilot_when_unvalidated",
     "fair_data_quality_release_gates",
     "resource_identity_gate",
-    "sop_first_markdown_structure",
-    "markdown_appendices_A_to_K",
-    "markdown_sop_style",
     "protocol_output_validator",
     "schema_based_linter",
     "golden_output_fixtures",
@@ -90,13 +147,23 @@
     "external_companion_evidence_schema",
     "user_corpus_first_no_silent_skip",
     "protocol_readiness_contract_before_sop_rewrite",
-    "protocol_panel_synthesis_before_readiness_score",
+    "protocol_panel_synthesis_when_applicable",
     "parameter_authority_isolation",
     "cross_skill_claim_readout_handoff",
     "readout_contracts_for_qc_release",
     "data_records_repository_gate",
     "protocol_passport_validator",
-    "agent_behavior_core_scope_gate",
+    "agent_behavior_core_scope_gate"
+  ],
+  "protocol_full_quality_gates": [
+    "protocol_panel_synthesis_before_readiness_score",
+    "operator_burden_budget",
+    "mini_pilot_decision",
+    "review_to_sop_mapping",
+    "original_to_revised_mapping",
+    "sop_first_markdown_structure",
+    "markdown_appendices_A_to_K",
+    "markdown_sop_style",
     "sop_change_traceability_gate"
   ],
   "risk_policy": {

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -12,9 +13,13 @@ TEMPLATE = ROOT / "biological-protocol-reviewer" / "templates" / "protocol_passp
 
 
 class ProtocolPassportValidatorTests(unittest.TestCase):
-    def run_checker(self, *args: str) -> subprocess.CompletedProcess[str]:
+    def run_checker(self, *args: str, no_site: bool = False) -> subprocess.CompletedProcess[str]:
+        command = [sys.executable]
+        if no_site:
+            command.append("-S")
+        command.extend([str(CHECKER), *args])
         return subprocess.run(
-            [sys.executable, str(CHECKER), *args],
+            command,
             cwd=ROOT,
             text=True,
             capture_output=True,
@@ -35,6 +40,34 @@ class ProtocolPassportValidatorTests(unittest.TestCase):
         self.assertNotEqual(strict.returncode, 0)
         template_mode = self.run_checker(str(TEMPLATE), "--allow-template")
         self.assertEqual(template_mode.returncode, 0, template_mode.stdout + template_mode.stderr)
+
+    def test_completed_yaml_fails_closed_without_pyyaml(self) -> None:
+        strict = self.run_checker(str(TEMPLATE), no_site=True)
+        self.assertNotEqual(strict.returncode, 0)
+        self.assertIn("PyYAML is required", strict.stderr)
+
+    def test_template_mode_has_limited_fallback_without_pyyaml(self) -> None:
+        result = self.run_checker(str(TEMPLATE), "--allow-template", no_site=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("template identity was verified", result.stdout)
+
+    def test_template_mode_rejects_modified_yaml_without_pyyaml(self) -> None:
+        text = TEMPLATE.read_text(encoding="utf-8").replace('protocol_id: ""', 'protocol_id: "completed"', 1)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "modified-template.yaml"
+            path.write_text(text, encoding="utf-8")
+            result = self.run_checker(str(path), "--allow-template", no_site=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("exactly matching the bundled", result.stderr)
+
+    def test_checker_enforces_schema_minimum_lengths(self) -> None:
+        text = (FIXTURES / "passport_valid_minimal.json").read_text(encoding="utf-8")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "short.json"
+            path.write_text(text.replace('"primary_readout": "fluorescence lineage readout"', '"primary_readout": "abc"'), encoding="utf-8")
+            result = self.run_checker(str(path))
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("primary_readout must contain at least 4 characters", result.stderr)
 
 
 if __name__ == "__main__":

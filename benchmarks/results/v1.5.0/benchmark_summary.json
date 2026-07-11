@@ -1,0 +1,12 @@
+{
+  "skill": "biological-protocol-reviewer",
+  "version": "1.5.0",
+  "benchmark_set": "benchmarks/v1.0",
+  "status": "pending_model_output_scoring",
+  "definition_validation": "expected to pass with tools/score_protocol_benchmark.py --benchmark-root benchmarks/v1.0",
+  "model_outputs_scored": false,
+  "mean_score": null,
+  "pass_rate": null,
+  "limitation": "No release-time model-output files are bundled. Deterministic contract and adversarial tests do not establish an empirical model pass rate.",
+  "recommended_next_action": "Populate benchmarks/results/v1.5.0/outputs/ and store scorer JSON output after running real model-output regression."
+}

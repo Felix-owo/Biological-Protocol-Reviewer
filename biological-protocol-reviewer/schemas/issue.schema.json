@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "issue.schema.json",
+  "$id": "urn:biological-protocol-reviewer:schema:issue:1.0.0",
   "type": "object",
   "required": [
     "issue_id",

@@ -1,0 +1,21 @@
+{
+  "contract_version": "0.9.0",
+  "handoff_id": "invalid-version",
+  "skill_context": "cross-skill",
+  "claim_readout_map": [
+    {
+      "claim_id": "C1",
+      "claim_text": "A protocol-derived claim is linked to a controlled readout.",
+      "evidence_role": "supporting",
+      "readout_id": "R1",
+      "readout_supports": "The readout supports the bounded claim when QC passes.",
+      "protocol_step_or_method": "Imaging quantification",
+      "parameter_authority": "local_validated",
+      "qc_gate": "Positive and negative controls define the release threshold.",
+      "failure_mode": "Threshold drift can create a false-positive signal.",
+      "manuscript_impact": "The claim must remain bounded by the validated readout.",
+      "revision_action": "no_action_needed",
+      "source_ids": ["S1"]
+    }
+  ]
+}

@@ -4,6 +4,17 @@ Default language: Simplified Chinese unless the user requests otherwise.
 
 # Protocol评审报告：<Protocol title>
 
+**Runtime profile:** <protocol_gate / protocol_full / delta_review>
+
+For `delta_review`, complete this trace block and omit it for other profiles:
+
+- Prior review ID: <stable prior review ID>
+- Changed artifact IDs: <one or more changed section/file/version IDs>
+- Prior open finding IDs: <one or more IDs>
+- Resolved finding IDs: <IDs or none>
+- New finding IDs: <IDs or none>
+- Carried-forward finding IDs: <IDs or none>
+
 ## 1. Protocol身份信息
 
 | 字段 | 内容 |
@@ -14,7 +25,7 @@ Default language: Simplified Chinese unless the user requests otherwise.
 | 目标readout |  |
 | 下游用途 |  |
 | 审核日期 |  |
-| Skill版本 | biological-protocol-reviewer v1.4.2 |
+| Skill版本 | biological-protocol-reviewer v1.5.0 |
 
 ## 2. Protocol重建 / Protocol reconstruction
 
@@ -32,6 +43,7 @@ Default language: Simplified Chinese unless the user requests otherwise.
 | 结论项 | 判断 |
 |---|---|
 | 总体结论 |  |
+| Readiness score | 0.0-10.0 |
 | 当前成熟度 | Level 0 / 1 / 2 / 3 |
 | 修订目标 | Level 3 publication-grade, bench-facing SOP |
 | 最大失败模式 |  |
@@ -228,6 +240,8 @@ Include when recommended or substituted parameters are introduced.
 
 | Added requirement | Burden | Value | Keep/appendix/omit decision |
 |---|---|---|---|
+
+Burden must be one of: `low`, `moderate`, `high`.
 
 ## 20. Local mini-pilot validation
 

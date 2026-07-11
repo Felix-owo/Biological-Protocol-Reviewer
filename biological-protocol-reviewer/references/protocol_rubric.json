@@ -4,7 +4,7 @@
   "score_scale": {
     "minimum": 0,
     "maximum": 10,
-    "interpretation": "Score the revised protocol package after review, not the original protocol alone. Penalize unresolved execution blockers, unverified dynamic standards, missing source identity, and missing local validation."
+    "interpretation": "Score the protocol state actually under review. If no revised SOP exists, do not treat proposed fixes as implemented. Penalize unresolved execution blockers, unverified dynamic standards, missing source identity, and missing local validation."
   },
   "categories": {
     "execution_reproducibility": {
